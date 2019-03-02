@@ -1,0 +1,68 @@
+.el-header{
+    margin-left: 200px !important;
+    padding: 0px !important;
+}
+.el-submenu__title i{  
+    color:#fff !important;
+}
+
+element.style{
+    background: #1f2d3d !important;
+}
+a:-webkit-any-link{
+    cursor: pointer !important;
+}
+
+//搜索框
+// .el-form-item--small.el-form-item {
+//     margin-bottom: 0px;
+// }
+//表格和搜索框的间距
+.table-container {
+    margin-top: 20px;
+}
+.el-form-item__label{
+    width: 50px;
+}
+.el-form el-form--inline{
+    display: inline;
+}
+
+//
+el-form-item--small.el-form-item {
+    margin-bottom: 18px;
+}
+
+//数据列表距上高度
+.operate-container {
+    margin-top: 20px;
+}
+
+//添加向右浮动
+.operate-container .btn-add {
+    float: right;
+}
+.batch-operate-container, .pagination-container {
+    // display: inline-block;
+    margin-top: 20px;
+}
+
+//给所有的表格加边框
+.el-table{
+    border: 1px solid #ebeef5;
+    margin-top: 20px;
+}
+
+//订单设置的边框
+.el-form-item.is-success .el-input__inner{
+    border-color: #67c23a !important;
+}
+
+//订单的input输入框
+.input-width[data-v-37ed6d3e] {
+    width: 30% !important;
+}
+
+// .el-card__body {
+//     padding: 0px !important; 
+// }
