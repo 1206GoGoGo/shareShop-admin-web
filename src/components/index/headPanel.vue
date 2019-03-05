@@ -16,21 +16,25 @@
 
         <el-popover
             placement="top-start"
-            width="150"
+            width="240"
             trigger="hover">
             <el-row :gutter="2" class="user-info-item">
-               <el-col :span="10" style="text-align: right;">登陆名:</el-col>
-               <el-col :span="14" style="text-align: center;">丽丽</el-col>
+               <el-col :span="10" style="text-align: right;">Login Name:</el-col>
+               <el-col :span="14" style="text-align: center;">csy</el-col><!--如果名字太长就截掉-->
             </el-row>
             <el-row :gutter="2" class="user-info-item">
-               <el-col :span="10" style="text-align: right;">权限:</el-col>
-               <el-col :span="14" style="text-align: center;">{{}}</el-col>
+               <el-col :span="10" style="text-align: right;">Real Name:</el-col>
+               <el-col :span="14" style="text-align: center;">changshiying</el-col>
+            </el-row>
+            <el-row :gutter="2" class="user-info-item">
+               <el-col :span="10" style="text-align: right;">Permission:</el-col>
+               <el-col :span="14" style="text-align: center;">Super Admin</el-col><!--{{}}-->
             </el-row>
             <el-row :gutter="2" class="user-info-item-button">
-               <el-col :span="24">
+                <el-col :span="24">
                     <el-button size="mini" type="primary" round>首页</el-button>
                     <el-button size="mini" type="primary" round>退出</el-button>
-               </el-col>
+                </el-col>
                
             </el-row>
             <div class="user-info" slot="reference"> 
@@ -110,7 +114,7 @@ export default {
 .user-info-item{
     height:30px;
     padding:3px 7px;
-    padding-left:12px;
+    padding-left:5px;
     margin-bottom: 8px;
     line-height: 30px; 
     border-bottom:0px solid #f5f5f5;

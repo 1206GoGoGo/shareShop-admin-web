@@ -1,10 +1,9 @@
 <template>
     <div class="app-container">
-<!--公告部分 S-->        
+<!--添加须知 S-->        
         <el-card class="box-card" :class="showInfo? 'show': 'hide'"> 
             <div slot="header" class="clearfix" @click="show">
-                <el-button style="float: left; padding: 3px 0" type="text">公告</el-button>
-                <!-- <el-button style="float: right; padding: 3px 0" type="text"   @click="show">{{msg}}</el-button> -->
+                <el-button style="float: left; padding: 3px 0" type="text">添加须知</el-button>
             </div>
             <div class="text item" v-if="showInfo">
                 <p>1、超级管理员可以管理所有功能</p>
@@ -13,15 +12,15 @@
                 <p>4、商品管理员可以管理商品动态</p>
             </div>
         </el-card>
-<!--公告部分 E-->      
+<!--添加须知 E-->      
 <!--添加管理员部分 S-->
         <div class="table-container">
             <el-form :inline="true" :model="AddManagerForm" status-icon :rules="Vrules" ref="AddManagerForm" label-width="100px" >
                 <el-form-item label="登陆名:"  prop="username">
-                    <el-input  v-model="AddManagerForm.username" style="width:203px" autocomplete="off"></el-input>
+                    <el-input clearable  v-model="AddManagerForm.username" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名:" prop="name">
-                    <el-input  v-model="AddManagerForm.name" style="width:203px" autocomplete="off"></el-input>
+                    <el-input clearable  v-model="AddManagerForm.name" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" prop="password">
                     <el-input type="password" v-model="AddManagerForm.password" style="width:203px" autocomplete="off"></el-input>
@@ -29,16 +28,16 @@
                 <el-form-item label="确认密码:" prop="checkPass">
                     <el-input type="password" v-model.number="AddManagerForm.checkPass" style="width:203px"></el-input>
                 </el-form-item>
-                <el-form-item label="证件类型:">
+                <el-form-item label="证件类型:" prop="identityCardType">
                     <el-select v-model="AddManagerForm.identityCardType" placeholder="请选择" style="width:203px">
                     <el-option label="身份证" value="IDcard"></el-option>
                     <el-option label="通行证" value="Passcard"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="证件号码:" prop="identityCardNo">
-                    <el-input  v-model="AddManagerForm.identityCardNo" autocomplete="off" style="width:203px"></el-input>
+                    <el-input clearable v-model="AddManagerForm.identityCardNo" autocomplete="off" style="width:203px"></el-input>
                 </el-form-item>
-                 <el-form-item label="权限:">
+                <el-form-item label="权限:" prop="level">
                     <el-select v-model="AddManagerForm.level" placeholder="请选择" style="width:203px">
                     <el-option label="权限一" value="shanghai"></el-option>
                     <el-option label="权限二" value="beijing"></el-option>
@@ -61,8 +60,8 @@
                         placeholder="请选择时间">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="邮箱:" prop="age">
-                    <el-input  v-model="AddManagerForm.age" style="width:203px" autocomplete="off"></el-input>
+                <el-form-item label="邮箱:" prop="email">
+                    <el-input clearable  v-model="AddManagerForm.email" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="but">
                     <el-button type="primary" @click="submitForm('AddManagerForm')">提交</el-button>
@@ -75,25 +74,12 @@
 </template>
 
 <script>
+import {AddManager} from '@/api/admin'
+
 export default {
     data(){
-        var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
-      
+
+      //检查密码
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
@@ -104,55 +90,97 @@ export default {
           callback();
         }
       };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
+
+      //再次输入密码
+      var validateCheckPass = (rule, value, callback) => {
+        if (this.AddManagerForm.password === '') {
+          callback(new Error('请先输入密码'));
+        } else if(value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.AddManagerForm.pass) {
+        } else if (value != this.AddManagerForm.password) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
         }
       };
+
+      //检查证件号
+      // var checkNo = (rule, value, callback) => {
+      //   // alert(typeof value);//value的值是一个string类型的
+      //   // console.log(typeof value)
+      //   if (!value) {
+      //     callback(new Error('证件号码不能为空'));
+      //   } else if (!Number.isInteger(value)) {
+      //       callback(new Error('请输入数字'));
+      //     } 
+      //     else {
+      //       callback();
+      //     }
+      // };
+
       return {
         showInfo: false,  
         AddManagerForm: {
-          pass: '',
+          password: '',
           checkPass: '',
           identityCardType:'',
           identityCardNo:'',
           level:'',
           gender:'',
-          age: '',
-          resource:'',
-          birthday:'',  
-          pickerOptions1: {
-            disabledDate(time) {
-                return time.getTime() > Date.now();
-            },
-          },
-          
+          email: '',
+          birthday:'',        //注意前台的出生年月重置的时候重置不了！！！！！！！！！！！！！！！！！！
+          // pickerOptions1: {
+          //   disabledDate(time) {
+          //       return time.getTime() > Date.now();
+          //   },
+          // },
         },
         Vrules: {
+          username: [
+            { required: true, message: '请输入登录名', trigger: 'blur' },
+            { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+          ],
+          name:[
+            { required: true, message: '请输入姓名', trigger: 'blur' }
+          ],
           password: [
-            { validator: validatePass, trigger: 'blur' }
+            { validator: validatePass, trigger: 'blur' },
+            { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
           ],
           checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+            { validator: validateCheckPass, trigger: 'blur' }
           ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
-          ]
+          identityCardNo:[
+            { required: true, message: '请输入证件号码', trigger: 'blur' }
+          ],
+          identityCardType:[
+            { required: true, message: '请选择证件类型', trigger: 'change' }
+          ],
+          level:[
+            { required: true, message: '请选择权限', trigger: 'change' }
+          ],
+          gender:[
+            { required: true, message: '请选择性别', trigger: 'change' }
+          ],
+          birthday:[
+            { type: 'array', required: true, message: '请选择出生日期', trigger: 'change' },
+          ],
+          email:[
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }         
+          ],
         }
       };
 
     },
 
     methods:{
-//公告显示与隐藏方法 S
+
+//公告显示与隐藏 
         show(){
                 this.showInfo = !this.showInfo
             },
-//公告显示与隐藏方法 E
+//提交
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {
             if (valid) {
@@ -163,8 +191,22 @@ export default {
                 }
             });
         },
+
+        //提交信息
+        // submitForm(){     //怎么报注册失败信息？？？？？？？？？？？？？？？？？？？？？
+        //   AddManager(this.AddManagerForm).then(response=>{
+        //     this.$message({
+        //       message: '修改成功！',
+        //       type: 'success',
+        //       duration:1000
+        //       });
+        //       this.$router.push({path: '/admin/list_admin'})  
+        //     });
+        // },
+
+        //重置
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+          this.$refs[formName].resetFields();
         }
     },
 }
@@ -198,14 +240,9 @@ export default {
     .text p{
         padding: 5px;
     }
-    
     .table-container{
         border: 1px solid #ebeef5;
         padding: 20px;
         width: 90%;
     }
-
-    /* .btn{
-        align-content: center;
-    } */
 </style>

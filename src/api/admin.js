@@ -18,7 +18,7 @@ export function getAdminDetail(params) {
 
 export function updateManage(data) {
   return request({
-    url:'/manager/info/getDetail/',
+    url:'/manager/info/modify/',
     method:'post',
     data:data
   })
@@ -31,3 +31,12 @@ export function deleteManage(params) {
     params:params
   })
 }
+
+export function AddManager(data) {
+  return request({
+    url:'/manager/info/add',
+    method:'post',   
+    data:data
+  })
+}
+

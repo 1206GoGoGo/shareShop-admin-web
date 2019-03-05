@@ -1,41 +1,61 @@
 <template>
     <div class="app-container">
+        <!--条件搜索 S-->
         <el-card shadow="never">
             <div>
                 <i class="el-icon-search"></i>
                 <span>条件搜索</span>
                 <el-button
                     style="float: right"
-                    
+                    @click="handleSearchList()"
                     type="primary"
                     size="small">
                     查询结果
                 </el-button>
+                <el-button
+                    style="float: right;margin-right: 15px"
+                    @click="handleResetSearch()"
+                    size="small">
+                    重置
+                </el-button>
             </div>
             <div style="margin-top: 10px">
-                <el-form :inline="true"  size="small" label-width="140px">
-                    <el-form-item label="输入搜索：">
-                        <el-input style="width: 203px"  placeholder="用户名称/订单号"></el-input>
+                <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
+                    <el-form-item label="登录名：">
+                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="真实姓名：">
+                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号："> 
+                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="证件号码：">
+                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户等级:" prop="level">
+                        <el-select v-model="listQuery.level" placeholder="请选择" style="width: 203px">
+                            <el-option label="权限一" value="shanghai"></el-option>
+                            <el-option label="权限二" value="beijing"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="查询时间：">
-                        <!-- <el-input style="width: 203px"  placeholder="用户名称/订单号"></el-input> -->
-                        <!-- <div class="block"> -->
                             <el-date-picker
                             style="width: 363px"
-                            v-model="value4"
+                            v-model="listQuery.SearchDate"
                             type="datetimerange"
                             range-separator="至"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions1">
                             </el-date-picker>
-                        <!-- </div>  -->
                     </el-form-item>
-
-                </el-form>
+                </el-form> 
             </div>
         </el-card>
+<!--条件搜索 E-->
         <!-- v-loading="listLoading" -->
-        <div class="table-container">
+        <!-- <div class="table-container">
             <el-table ref="productTable"
                         :data="list"
                         style="width: 100%"
@@ -79,33 +99,136 @@
                         </p>
                     </template>
                 </el-table-column>
-            </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="20"
-                  layout="total, prev, pager, next"
-                  :total="count">
-                </el-pagination>
-            </div>
+            </el-table> 
+        </div>-->
+<!--主表格 S-->            
+        <el-table
+        :data="list"
+        style="width: 100%"
+        @selection-change="handleSelectionChange">
+            <el-table-column type="expand">
+                <template slot-scope="props">
+                    <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="真实姓名">
+                            <span>{{ props.row.name }}</span>
+                        </el-form-item>
+                        <el-form-item label="消费商品">
+                            <span>{{ props.row.poductName }}</span>
+                        </el-form-item>
+                        <el-form-item label="消费价格">
+                            <span>{{ props.row.productPrice }}</span>
+                        </el-form-item>
+                        <el-form-item label="消费数量">
+                            <span>{{ props.row.productQuantity }}</span>
+                        </el-form-item>
+                        <el-form-item label="消费金额">
+                            <span>{{ props.row.orderMoeny }}</span>
+                        </el-form-item>
+                        <el-form-item label="订单状态">
+                            <span>{{ props.row.orderStatus }}</span>
+                        </el-form-item>
+                        <el-form-item label="订单地址">
+                            <span>{{ props.row.firstAddr }}</span>
+                        </el-form-item>
+                        <el-form-item label="订单号">
+                            <span>{{ props.row.orderNumber }}</span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="编号"
+                prop="userInfoId">
+            </el-table-column>
+            <el-table-column
+                label="登录名"
+                prop="username">
+            </el-table-column>
+            <el-table-column
+                label="消费商品"
+                prop="name">
+            </el-table-column>
+            <el-table-column
+                label="消费时间"
+                prop="phoneNumber">
+            </el-table-column>
+            <el-table-column
+                label="用户等级"
+                prop="level">
+            </el-table-column>
+            <!-- <el-table-column label="操作" width="160" align="center">
+                <template slot-scope="scope">
+                    <p>
+                    <el-button
+                        size="mini"
+                        @click="handleUpdateUser(scope.$index, scope.row)">编辑
+                    </el-button>
+                    </p> 
+                    <p>
+                    <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">删除
+                    </el-button>
+                    </p>
+                </template>
+            </el-table-column> -->
+        </el-table>
+<!--主表格 E-->            
+        <div class="pagination-container">
+            <el-pagination
+                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                layout="total, sizes,prev, pager, next,jumper"
+                :current-page.sync="listQuery.pageNum"
+                :page-size="listQuery.pageSize"
+                :page-sizes="[5,10,15]"
+                :total="total">
+            </el-pagination>
         </div>
+        <!-- <div class="Pagination" style="text-align: left;margin-top: 10px;">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="20"
+                layout="total, prev, pager, next"
+                :total="count">
+            </el-pagination>
+        </div> -->
     </div>
 </template>
 
 <script>
+import {fetchList} from '@/api/user'  //是否是从一个表里面查询到的member？？？？？？？？？
+
+const defaultListQuery = {
+    pageNum: 1,
+    pageSize: 10,
+    
+    name:null,
+    username:null,
+    phoneNumber:null,
+    identityCardNo:null,
+    level:null,
+    SearchDate:null
+    
+  };
+
 export default {
     data(){
         return{
+            listQuery: Object.assign({}, defaultListQuery),
             list: null,
             //listLoading: true,
-            offset: 0,
-            limit: 20,
-            count: 0,
-            currentPage: 1,
+            
+            // offset: 0,
+            // limit: 20,
+            // count: 0,
+            //currentPage: 1,
 
-            pickerOptions2: {
+            pickerOptions1: {
             shortcuts: [{
                 text: '最近一周',
                 onClick(picker) {
@@ -132,27 +255,68 @@ export default {
                 }
             }]
             },
-            value4:'',
+            SearchDate:'',
         }
     },
     methods:{
-        handleSizeChange(val){
-                console.log(`每页 ${val} 条`);
+
+        //重置
+        handleResetSearch(){
+            this.listQuery = Object.assign({}, defaultListQuery);
         },
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.offset = (val - 1)*this.limit;
-            //this.getUsers()
+
+        //获取搜索列表
+        getSearchList(){
+            this.listLoading=true;
+            //需要参数吗？？？？？？？？this.listQuery
+            fetchList(this.listQuery).then(response => {
+                this.listLoading = false;
+                this.list = response.data.list;
+                this.total = response.data.total;
+            });
         },
+
+        //获取搜索结果
+        handleSearchList(val){
+            this.listQuery.pageNum = 1;
+            this.listQuery.pageSize = val;
+            this.getSearchList();
+        },
+        
+        //handleShowUser(){},
+        //handleUpdateUser(){},
+        //handleDelete(){},
+
         handleSelectionChange(){},
-        handleShowUser(){},
-        handleUpdateUser(){},
-        handleDelete(){}
+
+        //获取页码
+        handleSizeChange(val){
+            this.listQuery.pageNum = 1;
+            this.listQuery.pageSize = val;
+            // this.getList();       ?????????????????
+        },
+        //获取当前页
+        handleCurrentChange(val) {
+            this.listQuery.pageNum = val;
+            // this.getList();        ????????????????????
+        },
     }
 }
 </script>
 
 <style scoped>
+    .demo-table-expand {
+        font-size: 0;
+    }
+    .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+    }
 </style>
 
 

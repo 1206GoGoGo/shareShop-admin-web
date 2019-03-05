@@ -6,21 +6,21 @@
                 <span>条件搜索</span>
                 <el-button
                     style="float: right"
-                    
+                    @click="getSearchList()"
                     type="primary"
                     size="small">
                     查询结果
                 </el-button>
             </div>
             <div style="margin-top: 10px">
-                <el-form :inline="true"  size="small" label-width="140px">
-                    <el-form-item label="seller名称：">
-                        <el-input style="width: 203px"  placeholder="seller名称"></el-input>
+                <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
+                    <el-form-item label="seller登陆名：">
+                        <el-input style="width: 203px" v-model="listQuery.username"  placeholder="seller登陆名"></el-input>
                     </el-form-item>
                     <el-form-item label="查询时间：">
                         <el-date-picker
                         style="width: 363px"
-                        v-model="value4"
+                        v-model="listQuery.querytime"
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
@@ -41,32 +41,34 @@
                         border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
                 <el-table-column label="编号" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+                    <template slot-scope="scope">{{scope.row.yieldId}}</template>
                 </el-table-column>
-                <el-table-column label="销出商品" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+                <el-table-column label="商品名称"  align="center">
+                    <template slot-scope="scope">{{scope.row.poductName}}</template>
                 </el-table-column>
-                <el-table-column label="商品数量" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+                <el-table-column label="商品数量" width="80" align="center">
+                    <template slot-scope="scope">{{scope.row.productQuantity}}</template>
                 </el-table-column>
-                <el-table-column label="总回扣" width="140" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+                <el-table-column label="订单金额" width="120" align="center"><!--可以查到吗！！！！！-->
+                    <template slot-scope="scope">{{scope.row.orderMoeny}}</template>
                 </el-table-column>
-                <el-table-column label="总收益" width="100" align="center"><!--有问题！！！！！-->
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+                <el-table-column label="支付金额" width="120" align="center"><!--可以查到吗！！！！！-->
+                    <template slot-scope="scope">{{scope.row.paymentMoney}}</template>
                 </el-table-column>
-                <el-table-column label="操作" width="160" align="center">
+                <el-table-column label="收益金额" width="120" align="center">
+                    <template slot-scope="scope">{{scope.row.yieldMoney}}</template>
+                </el-table-column>
+                <el-table-column label="收益时间" width="160" align="center">
+                    <template slot-scope="scope">{{scope.row.createTime}}</template>
+                </el-table-column>
+                 <!-- <el-table-column label="操作" width="160" align="center">
                     <template slot-scope="scope">
-                        <p>
-                        <el-button
-                            size="mini"
-                            @click="handleShowUser(scope.$index, scope.row)">查看
-                        </el-button>
+                       <p>
                         <el-button
                             size="mini"
                             @click="handleUpdateUser(scope.$index, scope.row)">编辑
                         </el-button>
-                        </p>
+                        </p> 
                         <p>
                         <el-button
                             size="mini"
@@ -75,32 +77,47 @@
                         </el-button>
                         </p>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
             </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
+            <div class="pagination-container">
                 <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="20"
-                  layout="total, prev, pager, next"
-                  :total="count">
+                    background
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    layout="total, sizes,prev, pager, next,jumper"
+                    :current-page.sync="listQuery.pageNum"
+                    :page-size="listQuery.pageSize"
+                    :page-sizes="[5,10,15]"
+                    :total="total">
                 </el-pagination>
             </div>
         </div>
     </div>
 </template>
 
+
 <script>
+import {fetchList} from '@/api/user'
+
+const defaultListQuery = {
+    pageNum: 1,
+    pageSize: 10,
+    
+    username:null,
+    querytime:null,
+    
+  };
 export default {
     data(){
         return{
+            listQuery: Object.assign({}, defaultListQuery),
             list: null,
             //listLoading: true,
-            offset: 0,
-            limit: 20,
-            count: 0,
-            currentPage: 1,
+
+            // offset: 0,
+            // limit: 20,
+            // count: 0,
+            // currentPage: 1,
 
             pickerOptions2: {
             shortcuts: [{
@@ -129,22 +146,63 @@ export default {
                 }
             }]
             },
-            value4:'',
+
         }
     },
     methods:{
+
+        //获取搜索列表
+        getSearchList(){
+            this.listLoading=true;
+            //需要参数吗？？？？？？？？this.listQuery
+            fetchList(this.listQuery).then(response => {
+            this.listLoading = false;
+            this.list = response.data.list;  //接收到的是什么？？？？？？？？？？？？？？
+            this.total = response.data.total;
+            });
+        },
+
+        // //删除用户
+        // handleDelete(index, row){
+        //     let ids=[];
+        //     ids.push(row.userInfoId);
+        //     this.deleteUser(ids);
+        // },
+        
+        // //删除详细信息
+        // deleteUser(ids){
+        //     this.$confirm('是否要进行该删除操作?', '提示', {
+        //         confirmButtonText: '确定',
+        //         cancelButtonText: '取消',
+        //         type: 'warning'
+        //         }).then(() => {
+        //     //let params = new URLSearchParams(); //?????????????post 还是get??????
+        //     //params.append("ids",ids);
+        //     deleteUser(this.userInfoId).then(response=>{
+        //         this.$message({
+        //         message: '删除成功！',
+        //         type: 'success',
+        //         duration: 1000
+        //         });
+        //         this.listQuery.pageNum=1;
+        //         // this.getSearchList();     ?????????????
+        //         });
+        //     })
+        // },
+
+        //获取页码
         handleSizeChange(val){
-                console.log(`每页 ${val} 条`);
+            this.listQuery.pageNum = 1;
+            this.listQuery.pageSize = val;
+            // this.getList();       ?????????????????
         },
+        //获取当前页
         handleCurrentChange(val) {
-            this.currentPage = val;
-            this.offset = (val - 1)*this.limit;
-            //this.getUsers()
+            this.listQuery.pageNum = val;
+            // this.getList();        ????????????????????
         },
+
         handleSelectionChange(){},
-        handleShowUser(){},
-        handleUpdateUser(){},
-        handleDelete(){}
     }
 }
 </script>

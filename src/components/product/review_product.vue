@@ -141,6 +141,7 @@ export default {
     margin-bottom: 0;
     width: 50%;
   }
+
 </style>
 
 

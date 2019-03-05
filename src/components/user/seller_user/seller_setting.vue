@@ -1,122 +1,117 @@
 <template>
     <div class="app-container">
-        <el-card shadow="never">
-            <div>
-                <i class="el-icon-search"></i>
-                <span>条件搜索</span>
-                <el-button
-                    style="float: right"
-                    
-                    type="primary"
-                    size="small">
-                    查询结果
-                </el-button>
-            </div>
-            <div style="margin-top: 10px">
-                <el-form :inline="true"  size="small" label-width="140px">
-                    <el-form-item label="商品分类：">
-                        <el-input style="width: 203px"  placeholder="会员名称/关键字"></el-input>
+        <el-card shadow="never" class="card">
+            <div class="setting">
+                <el-form :inline="true" :model="DiscountSetting" size="small" ref="SettingForm" label-width="150px">
+                    <el-alert class="alert"
+                        title="Note that the unit of the discount here is the percentage"
+                        type="warning"
+                        show-icon
+                        :closable="false">
+                    </el-alert>
+                    Member Discount:
+                    <div class="block">
+                        <el-slider                       
+                        v-model="DiscountSetting.discountRate"
+                        show-input>
+                        </el-slider>
+                    </div>
+                    Seller Discount:
+                    <div class="block">
+                        <el-slider                       
+                        v-model="DiscountSetting.sellerDiscountRate"
+                        show-input>
+                        </el-slider>
+                    </div>
+                    Seller Commission:
+                    <div class="block">
+                        <el-slider                        
+                        v-model="DiscountSetting.yieldRate"
+                        show-input>
+                        </el-slider>
+                    </div>
+                    <el-form-item>
+                        <el-button
+                        class="btn"
+                        @click="confirm('SettingForm')"
+                        type="primary">提交</el-button>
                     </el-form-item>
-                    <el-form-item label="优惠折扣：">
-                        <el-input style="width: 203px"  placeholder="会员名称/关键字"></el-input>
-                    </el-form-item>
-                    <!-- <el-button
-                    style="float:right; margin-right:20px"
-                    
-                    type="primary"
-                    size="small">
-                    保存
-                    </el-button> -->
-                </el-form> 
+                </el-form>
             </div>
         </el-card>
-        <!-- v-loading="listLoading" -->
-        <div class="table-container">
-            <el-table ref="productTable"
-                        :data="list"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange"
-                        
-                        border>
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="编号" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="商品名称"  align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="商品级别" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="商品折扣" width="140" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="操作" width="160" align="center">
-                    <template slot-scope="scope">
-                        <p>
-                        <el-button
-                            size="mini"
-                            @click="handleShowUser(scope.$index, scope.row)">查看
-                        </el-button>
-                        <el-button
-                            size="mini"
-                            @click="handleUpdateUser(scope.$index, scope.row)">编辑
-                        </el-button>
-                        </p>
-                        <p>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button>
-                        </p>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="20"
-                  layout="total, prev, pager, next"
-                  :total="count">
-                </el-pagination>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
+import {getDiscountSetting} from '@/api/user';
+const defaultDiscountSetting = {
+    // id: null,
+    // flashOrderOvertime: 0,
+    // normalOrderOvertime: 0,
+    // confirmOvertime: 0,
+    // finishOvertime: 0,
+    // commentOvertime: 0
+    discountId:null,
+    discountRate:0,
+    sellerDiscountRate:0,
+    yieldRate:0
+  };
+
 export default {
+    created(){
+      this.getDetail();
+    },
+
     data(){
         return{
-            list: null,
-            //listLoading: true,
-            offset: 0,
-            limit: 20,
-            count: 0,
-            currentPage: 1,
+            DiscountSetting: Object.assign({}, defaultDiscountSetting),
         }
     },
     methods:{
-        handleSizeChange(val){
-                console.log(`每页 ${val} 条`);
+        //获取优惠信息
+        getDetail(){
+            getDiscountSetting().then(response=>{
+                this.DiscountSetting=response.data;
+            })
         },
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.offset = (val - 1)*this.limit;
-            //this.getUsers()
+
+        //提交修改优惠设置
+        confirm(){
+            this.$confirm('是否要提交修改?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              updateDiscountSetting(this.discountId,this.DiscountSetting).then(response=>{
+                this.$message({
+                  type: 'success',
+                  message: '提交成功!',
+                  duration:1000
+                  });
+                })
+            });
         },
-        handleSelectionChange(){},
-        handleShowUser(){},
-        handleUpdateUser(){},
-        handleDelete(){}
+        
     }
 }
 </script>
 
 <style scoped>
+.setting{
+    margin: 30px 60px;
+    /* margin-left: 60px; */
+}
+.block{
+    padding: 10px;
+    width: 80%;
+}
+.alert{
+    width:80%;
+    margin-bottom: 30px;
+}
+.card{
+    width: 70%;
+}
 </style>
 
 

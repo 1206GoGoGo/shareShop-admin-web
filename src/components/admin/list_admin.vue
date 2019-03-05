@@ -22,7 +22,7 @@
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="权限：">
-                        <!--v-model="listQuery.level"这样写对吗？？？？？？  -->
+                        <!--v-model="listQuery.level"这样写？？？？？？再看以下表字段  -->
                         <el-select v-model="listQuery.level" style="width: 203px" placeholder="全部" clearable class="input-width">
                         <el-option v-for="item in level"
                             :key="item.value"
@@ -129,8 +129,8 @@
                 </el-pagination>
             </div>
         </div>
-<!--编辑弹出框！！！！-->        
-        <!-- <el-dialog                    ！！！！！！！！！！！！！！！！！报错代码！！！！！！！！！！！！！！！！！
+<!--编辑弹出框-->        
+        <el-dialog                    
             title="管理员信息"
             
             :visible.sync="dialogVisible" width="80%">
@@ -171,7 +171,7 @@
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleConfirm">确 定</el-button>
             </span>
-        </el-dialog> -->
+        </el-dialog>
     </div>
 </template>
 
@@ -201,13 +201,17 @@ export default {
             list: null,
             total: null,
             // listLoading: true,
-            name:'',
-            username:'',
-            phoneNumber:'',
-            identityCardNo:'',
-            identityCardType:'',
-            email:'',
-            birthday:'',
+            AdminDetail:{
+                managerInfoId:null,
+                name:'',
+                username:'',
+                phoneNumber:'',
+                identityCardNo:'',
+                identityCardType:'',
+                email:'',
+                birthday:'',
+                level:[],
+            },
             level: [{
                 value: 0,
                 label: '超级管理员'
@@ -222,7 +226,6 @@ export default {
                 label: '订单管理员'
             }],
             dialogVisible:false,
-            managerInfoId:null,
         }
     },
     methods:{
@@ -266,7 +269,7 @@ export default {
             this.listQuery.pageNum = val;
             this.getList();
         },
-        //？？？？？？？？？？？？？？
+
         handleSelectionChange(){},
 
         //获取管理员详细信息

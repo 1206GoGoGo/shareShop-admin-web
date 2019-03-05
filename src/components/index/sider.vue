@@ -14,24 +14,27 @@
        
        <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>User</template>   
-            <el-submenu index="1-1">
+            <!-- <el-submenu index="1-1">
                 <template slot="title">普通用户管理</template> 
                 <el-menu-item index="1-1-1">基本信息</el-menu-item>
                 <el-menu-item index="1-1-2">消费记录</el-menu-item>
-                <!-- <el-menu-item index="1-1-3">>>订单查询</el-menu-item> -->
-            </el-submenu>
-            <el-submenu index="1-2">
+                <el-menu-item index="1-1-3">订单查询</el-menu-item>
+            </el-submenu> -->
+            <el-menu-item index="1-1">用户信息</el-menu-item>
+            <el-menu-item index="1-2">消费记录</el-menu-item>
+            <el-menu-item index="1-3">优惠设置</el-menu-item>
+            <!-- <el-submenu index="1-2">
                 <template slot="title">会员管理</template> 
                 <el-menu-item index="1-2-1">基本信息</el-menu-item>
                 <el-menu-item index="1-2-2">消费记录</el-menu-item>
                 <el-menu-item index="1-2-3">优惠设置</el-menu-item>
-            </el-submenu>
-            <el-submenu index="1-3">
+            </el-submenu> -->
+            <el-submenu index="1-4">
                 <template slot="title">seller管理</template> 
-                <el-menu-item index="1-3-1">基本信息</el-menu-item><!--可以修改状态-->
-                <el-menu-item index="1-3-2">优惠设置</el-menu-item><!--包括优惠设置、提现设置-->
-                <el-menu-item index="1-3-3">消费记录</el-menu-item>
-                <el-menu-item index="1-3-4">收入明细</el-menu-item>
+                <el-menu-item index="1-4-1">基本信息</el-menu-item><!--搜索表里面有其特殊的信息-->
+                <!-- <el-menu-item index="1-3-2">优惠设置</el-menu-item>
+                <el-menu-item index="1-3-3">消费记录</el-menu-item> -->
+                <el-menu-item index="1-4-2">收入明细</el-menu-item>
             </el-submenu>
         </el-submenu>
 
@@ -129,18 +132,21 @@ export default {
             switch(index)
             {
                 //通过index来控制路由跳转
-                case "1-1-1":locthis.$router.push({path:'/user/general_user/general_info'});break;
-                case "1-1-2":locthis.$router.push({path:'/user/general_user/general_record'});break;
-                // case "1-1-3":locthis.$router.push({path:'/zydm'});break;
-                case "1-2-1":locthis.$router.push({path:'/user/member_user/member_info'});break;
-                case "1-2-2":locthis.$router.push({path:'/user/member_user/member_record'});break;
-                case "1-2-3":locthis.$router.push({path:'/user/member_user/member_setting'});break;
-                // case "1-2-4":locthis.$router.push({path:'/xxkcgsdm'});break;
-                // case "1-2-5":locthis.$router.push({path:'/khfsdm'});break;
-                case "1-3-1":locthis.$router.push({path:'/user/seller_user/seller_info'});break;
-                case "1-3-2":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
-                case "1-3-3":locthis.$router.push({path:'/user/seller_user/seller_record'});break;
-                case "1-3-4":locthis.$router.push({path:'/user/seller_user/seller_income'});break;
+                // case "1-1-1":locthis.$router.push({path:'/user/general_user/general_info'});break;
+                // case "1-1-2":locthis.$router.push({path:'/user/general_user/general_record'});break;
+
+                // case "1-2-1":locthis.$router.push({path:'/user/member_user/member_info'});break;
+                // case "1-2-2":locthis.$router.push({path:'/user/member_user/member_record'});break;
+                // case "1-2-3":locthis.$router.push({path:'/user/member_user/member_setting'});break;
+
+                case "1-1":locthis.$router.push({path:'/user/general_user/general_info'});break;
+                case "1-2":locthis.$router.push({path:'/user/general_user/general_record'});break;
+                case "1-3":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
+
+                case "1-4-1":locthis.$router.push({path:'/user/seller_user/seller_info'});break;
+                // case "1-3-2":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
+                // case "1-3-3":locthis.$router.push({path:'/user/seller_user/seller_record'});break;
+                case "1-4-2":locthis.$router.push({path:'/user/seller_user/seller_income'});break;
 
                 case "2-1-1":locthis.$router.push({path:'/product/recommend/list_recommend'});break;
                 case "2-1-2":locthis.$router.push({path:'/product/recommend/add_recommend'});break;
