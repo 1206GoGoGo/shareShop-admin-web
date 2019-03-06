@@ -7,8 +7,8 @@ ShoppingMall是一个电商后台管理系统的前端项目，基于Vue+Element
 ![68b30537f7fd6daba6c8327a54d155b5.png](en-resource://database/999:0)
 
 ### 运行步骤
-1、下载node并安装：https://nodejs.org/en.
-2、克隆源代码到本地，使用VS Code打开
-3、在VS Code终端命令行中运行命令：npm install,下载相关依赖;
-4、在VS Code终端命令行中运行命令：npm run dev,运行项目;
-5、访问地址：http://localhost:8090 即可打开后台管理系统页面。
+>1、下载node并安装：https://nodejs.org/en.
+>2、克隆源代码到本地，使用VS Code打开
+>3、在VS Code终端命令行中运行命令：npm install,下载相关依赖;
+>4、在VS Code终端命令行中运行命令：npm run dev,运行项目;
+>5、访问地址：http://localhost:8090 即可打开后台管理系统页面。
