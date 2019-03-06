@@ -1,1 +1,6 @@
-####backstage management of eshop
+#### backstage management of eshop
+### 说明
+基于Vue+ElementUI的电商后台管理员系统。
+### 项目介绍
+shareshop项目是一套共享电商系统，包括前台商城系统及后台管理系统，基于Spring+Mysql+Vue实现。 前台商城系统包含首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、会员中心、客户服务、帮助中心等模块。 后台管理系统包含商品管理、订单管理、会员管理、优惠券管理、页面管理、财务管理、管理员管理等模块。
+### 项目结构
