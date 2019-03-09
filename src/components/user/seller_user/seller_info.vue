@@ -49,29 +49,29 @@
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand">
-                        <el-form-item label="邮箱">
+                    <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
+                        <el-form-item label="邮箱:">
                             <span>{{ props.row.email }}</span>
                         </el-form-item>
-                        <el-form-item label="地址">
-                            <span>{{ props.row.firstAddr }}</span>
-                        </el-form-item>
-                        <el-form-item label="用户状态"><!--冻结、可用！！！！！用按钮-可以修改的那种-->
+                        <el-form-item label="用户状态:"><!--冻结、可用！！！！！用按钮-可以修改的那种-->
                             <span>{{ props.row.status }}</span>
                         </el-form-item>
-                        <el-form-item label="注册时间">
+                        <el-form-item label="账户余额:">
+                            <span>{{ props.row.userMoney }}</span>
+                        </el-form-item>
+                        <el-form-item label="注册时间:">
                             <span>{{ props.row.registerTime }}</span>
                         </el-form-item>
-                        <el-form-item label="证件号码">
+                        <el-form-item label="证件号码:">
                             <span>{{ props.row.identityCardNo }}</span>
                         </el-form-item>
-                        <el-form-item label="证件类型">
+                        <el-form-item label="证件类型:">
                             <span>{{ props.row.identityCardType }}</span>
                         </el-form-item>
-                        <el-form-item label="出生日期">
+                        <el-form-item label="出生日期:">
                             <span>{{ props.row.birthday }}</span>
                         </el-form-item>
-                        <el-form-item label="性别">  <!--基本信息里面可以统计 下线数量 吗？？？？？？-->
+                        <el-form-item label="性别:">
                             <span>{{ props.row.gender }}</span>
                         </el-form-item>
                     </el-form>
@@ -93,26 +93,26 @@
                 label="手机号"
                 prop="phoneNumber">
             </el-table-column>
-            <el-table-column label="操作" width="160" align="center">
+            <el-table-column label="操作" width="260" align="center">
                 <template slot-scope="scope">
-                    <p>
                     <el-button
                         size="mini"
                         @click="handleUpdateSeller(scope.$index, scope.row)">编辑
                     </el-button>
-                    </p> 
-                    <p>
                     <el-button
                         size="mini"
                         type="danger"
                         @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
-                    </p>
+                    <el-button
+                        size="mini"
+                        @click="getSellerAddr(scope.$index, scope.row)">地址
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
 <!--信息的表头 E-->
-
+<!--分页 S-->
         <div class="pagination-container">
             <el-pagination
                 background
@@ -125,28 +125,25 @@
                 :total="total">
             </el-pagination>
         </div>
-        
+<!--分页 E-->        
 <!--修改信息的弹出框 S-->
         <el-dialog                    
-            title="用户信息"
+            title="Seller信息"
             
-            :visible.sync="dialogVisible" width="80%">
-            <el-form :model="SellerDetail"
-                    ref="DetailForm" label-width="100px">
+            :visible.sync="dialogVisible" width="70%">
+            <el-form :model="SellerDetail" :inline="true"
+                    ref="DetailForm" label-width="150px">
                 <el-form-item label="编号:"> <!--编号不能修改！！！！！-->
-                    <el-input v-model="SellerDetail.userInfoId" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.userInfoId" class="input-width" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="登录名:"> <!--编号不能修改！！！！！-->
-                    <el-input v-model="SellerDetail.username" class="input-width"></el-input>
-                </el-form-item>
+                <!-- <el-form-item label="登录名:"> 
+                    <el-input v-model="SellerDetail.username" class="input-width" readonly></el-input>
+                </el-form-item> -->
                 <el-form-item label="姓名:">
                     <el-input v-model="SellerDetail.name" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:">
                     <el-input v-model="SellerDetail.phoneNumber" class="input-width"></el-input>
-                </el-form-item>
-                <el-form-item label="地址:">
-                    <el-input v-model="SellerDetail.firstAddr" class="input-width"></el-input>
                 </el-form-item>
                  <el-form-item label="邮箱:">
                     <el-input v-model="SellerDetail.email" class="input-width"></el-input>
@@ -164,7 +161,7 @@
                     <el-input v-model="SellerDetail.birthday" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="用户状态:">
-                    <el-input v-model="SellerDetail.state" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.status" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="性别:">
                     <el-input v-model="SellerDetail.gender" class="input-width"></el-input>
@@ -190,21 +187,59 @@ const defaultListQuery = {
     username:null,
     phoneNumber:null,
     identityCardNo:null,
-    email:null,
-    // email:null,
-    // firstAddr:null,
-    // registerTime:null,
-    // identityCardType:null,
-    // status:null,
-    // birthday:null,
-    // gender:null,     //需要排序吗？？？？？？？？？？？？？？？？？？？？
+    email:null
   };
 
 export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
-            list: null,
+            dialogVisible:false,
+            list: [
+                {
+                    userInfoId:'12323324',
+                    name:'张三',
+                    username:'zhangnan',
+                    phoneNumber:18654789087,
+                    userMoney:'3245',
+                    identityCardNo:653789087654326789,
+                    identityCardType:'身份证',
+                    email:'1764537390@qq.com',
+                    registerTime:'2019-9-8',
+                    status:'正常',
+                    birthday:'2009-9-9',
+                    gender:'女',
+
+                },
+                {
+                    userInfoId:'12323324',
+                    name:'张三',
+                    username:'zhangnan',
+                    phoneNumber:18654789087,
+                    userMoney:'3245',
+                    identityCardNo:653789087654326789,
+                    identityCardType:'身份证',
+                    email:'1764537390@qq.com',
+                    registerTime:'2019-9-8',
+                    status:'正常',
+                    birthday:'2009-9-9',
+                    gender:'女',
+                },
+                {
+                    userInfoId:'12323324',
+                    name:'张三',
+                    username:'zhangnan',
+                    phoneNumber:18654789087,
+                    userMoney:'3245',
+                    identityCardNo:653789087654326789,
+                    identityCardType:'身份证',
+                    email:'1764537390@qq.com',
+                    registerTime:'2019-9-8',
+                    status:'正常',
+                    birthday:'2009-9-9',
+                    gender:'女',
+                }
+            ],
             //listLoading: true,
             // offset: 0,
             // limit: 20,
@@ -218,7 +253,7 @@ export default {
                 identityCardNo:null,
                 identityCardType:null,
                 email:null,
-                firstAddr:null,
+                userMoney:null,
                 registerTime:null,
                 status:null,
                 birthday:null,
@@ -237,7 +272,6 @@ export default {
         //获取搜索列表
         getSearchList(){
             this.listLoading=true;
-            //需要参数吗？？？？？？？？this.listQuery
             fetchListSeller(this.listQuery).then(response => {
             this.listLoading = false;
             this.list = response.data.list;
@@ -252,13 +286,20 @@ export default {
             this.getSearchList();
         },
 
+        // //获取seller详细信息
+        // handleUpdateSeller(index, row){
+        //     this.dialogVisible=true;
+        //     this.userInfoId=row.userInfoId;    
+        //     getSellerDetail(row.userInfoId).then(response=>{
+        //         this.SellerDetail=response.data;
+        //     });
+        // },
+
         //获取seller详细信息
-        handleUpdateSeller(index, row){
-            this.dialogVisible=true;
-            this.userInfoId=row.userInfoId;    
-            getSellerDetail(row.userInfoId).then(response=>{
-                this.SellerDetail=response.data;
-            });
+        handleUpdateSeller(index, row) {
+            this.dialogVisible = true;
+            // this.isEdit = true;
+            this.SellerDetail = Object.assign({},row);
         },
 
         //修改用户信息  this.managerInfoId

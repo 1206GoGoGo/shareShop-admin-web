@@ -43,14 +43,8 @@
 </template>
 
 <script>
-import {getDiscountSetting} from '@/api/user';
+import { getDiscountSetting } from '@/api/user';
 const defaultDiscountSetting = {
-    // id: null,
-    // flashOrderOvertime: 0,
-    // normalOrderOvertime: 0,
-    // confirmOvertime: 0,
-    // finishOvertime: 0,
-    // commentOvertime: 0
     discountId:null,
     discountRate:0,
     sellerDiscountRate:0,
@@ -82,7 +76,7 @@ export default {
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              updateDiscountSetting(this.discountId,this.DiscountSetting).then(response=>{
+              updateDiscountSetting(this.DiscountSetting).then(response=>{
                 this.$message({
                   type: 'success',
                   message: '提交成功!',

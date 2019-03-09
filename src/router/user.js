@@ -1,6 +1,6 @@
 import general_info from '@/components/user/general_user/general_info'
 import general_record from '@/components/user/general_user/general_record'
-import member_info from '@/components/user/member_user/member_info'
+import member_info from '@/components/user/seller_user/member_info'
 import member_record from '@/components/user/member_user/member_record'
 import member_setting from '@/components/user/member_user/member_setting'
 import seller_info from '@/components/user/seller_user/seller_info'
@@ -24,7 +24,7 @@ export default [
         component:general_record,
     },
     {
-        path:"/user/member_user/member_info",
+        path:"/user/seller_user/member_info",
         meta:{
             //loginUnRequired:true,
         },

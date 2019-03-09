@@ -18,13 +18,16 @@ export default {
         return {
 
         }
-    }
+    },
+    
 }
 </script>
 
 <style scoped>
 .el-main{
     padding: 0px !important;
+    position: relative;
+    height: 100%;
 }
 .main-panel{
     padding: 0px !important;

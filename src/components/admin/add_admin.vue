@@ -28,6 +28,12 @@
                 <el-form-item label="确认密码:" prop="checkPass">
                     <el-input type="password" v-model.number="AddManagerForm.checkPass" style="width:203px"></el-input>
                 </el-form-item>
+                <el-form-item label="手机号码:" prop="phoneNumber">
+                    <el-input clearable  v-model.number="AddManagerForm.phoneNumber" style="width:203px" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱:" prop="email">
+                    <el-input clearable  v-model="AddManagerForm.email" style="width:203px" autocomplete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="证件类型:" prop="identityCardType">
                     <el-select v-model="AddManagerForm.identityCardType" placeholder="请选择" style="width:203px">
                     <el-option label="身份证" value="IDcard"></el-option>
@@ -43,14 +49,7 @@
                     <el-option label="权限二" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="性别:">
-                    <el-radio-group v-model="AddManagerForm.gender" style="width:203px">
-                    <el-radio label="男"></el-radio>
-                    <el-radio label="女"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
                 <el-form-item label="出生日期:">
-                    <!-- v-model="listQuery.createTime" -->
                     <el-date-picker
                         class="input-width"
                         v-model="AddManagerForm.birthday"
@@ -60,8 +59,11 @@
                         placeholder="请选择时间">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="邮箱:" prop="email">
-                    <el-input clearable  v-model="AddManagerForm.email" style="width:203px" autocomplete="off"></el-input>
+                <el-form-item label="性别:">
+                    <el-radio-group v-model="AddManagerForm.gender" style="width:203px">
+                    <el-radio label="男"></el-radio>
+                    <el-radio label="女"></el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item class="but">
                     <el-button type="primary" @click="submitForm('AddManagerForm')">提交</el-button>
@@ -76,10 +78,23 @@
 <script>
 import {AddManager} from '@/api/admin'
 
+const defaultAddManagerForm = {
+    username:'',
+    name:'',
+    password: '',
+    checkPass: '',
+    phoneNumber:'',
+    identityCardType:'',
+    identityCardNo:'',
+    level:'',
+    gender:'',
+    email: '',
+    birthday:'', 
+  };
 export default {
     data(){
 
-      //检查密码
+      //验证密码
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
@@ -104,6 +119,38 @@ export default {
         }
       };
 
+      //验证手机号
+      var checkphoneNumber = (rule, value, callback) => {
+        if(this.AddManagerForm.phoneNumber === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!Number.isInteger(value)) {
+          callback(new Error('请输入数字'));
+        } else {
+          callback();
+        }
+      };
+      // else if (value!=/^1[34578]\d{8}$/) {
+      //     callback(new Error('必须为10位数'));
+      //   }
+
+      //验证手机号
+      //  var checkphoneNumber = (rule, value, callback) => {
+      //   if (!value) {
+      //     return callback(new Error('请输入手机号'));
+      //   }
+      //   setTimeout(() => {
+      //     if (!Number.isInteger(value)) {
+      //       callback(new Error('请输入数字值'));
+      //     } else {
+      //       if (length(value) != 10) {
+      //         callback(new Error('必须为10位数'));
+      //       } else {
+      //         callback();
+      //       }
+      //     }
+      //   }, 1000);
+      // };
+
       //检查证件号
       // var checkNo = (rule, value, callback) => {
       //   // alert(typeof value);//value的值是一个string类型的
@@ -120,21 +167,7 @@ export default {
 
       return {
         showInfo: false,  
-        AddManagerForm: {
-          password: '',
-          checkPass: '',
-          identityCardType:'',
-          identityCardNo:'',
-          level:'',
-          gender:'',
-          email: '',
-          birthday:'',        //注意前台的出生年月重置的时候重置不了！！！！！！！！！！！！！！！！！！
-          // pickerOptions1: {
-          //   disabledDate(time) {
-          //       return time.getTime() > Date.now();
-          //   },
-          // },
-        },
+        AddManagerForm: Object.assign({}, defaultAddManagerForm),
         Vrules: {
           username: [
             { required: true, message: '请输入登录名', trigger: 'blur' },
@@ -149,6 +182,9 @@ export default {
           ],
           checkPass: [
             { validator: validateCheckPass, trigger: 'blur' }
+          ],
+          phoneNumber:[
+            { validator: checkphoneNumber, trigger: 'blur' },
           ],
           identityCardNo:[
             { required: true, message: '请输入证件号码', trigger: 'blur' }
@@ -180,19 +216,29 @@ export default {
         show(){
                 this.showInfo = !this.showInfo
             },
+
 //提交
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-            if (valid) {
-                alert('submit!');
-                } else {
-                console.log('error submit!!');
-                return false;
-                }
+            // if (valid) {
+            //     alert('submit!');
+            //     } else {
+            //     console.log('error submit!!');
+            //     return false;
+            //     }
+            //怎么报注册失败信息？？？？？？？？？？？？？？？？？？？？？
+              AddManager(this.AddManagerForm).then(response=>{
+                this.$message({
+                  message: '添加成功！',
+                  type: 'success',
+                  duration:1000
+                  });
+                  this.$router.push({path: '/admin/list_admin'})  
+                });
             });
         },
 
-        //提交信息
+        // //提交信息
         // submitForm(){     //怎么报注册失败信息？？？？？？？？？？？？？？？？？？？？？
         //   AddManager(this.AddManagerForm).then(response=>{
         //     this.$message({
@@ -207,6 +253,7 @@ export default {
         //重置
         resetForm(formName) {
           this.$refs[formName].resetFields();
+          this.AddManagerForm = Object.assign({}, defaultAddManagerForm);
         }
     },
 }

@@ -35,10 +35,11 @@
                 <!-- <el-menu-item index="1-3-2">优惠设置</el-menu-item>
                 <el-menu-item index="1-3-3">消费记录</el-menu-item> -->
                 <el-menu-item index="1-4-2">收入明细</el-menu-item>
+                <el-menu-item index="1-4-3">会员查询</el-menu-item>
             </el-submenu>
         </el-submenu>
 
-        <el-submenu index="2">
+        <el-submenu index="2" disabled>
             <template   slot="title"><i class="el-icon-goods"></i>Commodity</template>  
             <el-submenu index="2-1">
                 <template slot="title">推荐商品管理</template> 
@@ -147,6 +148,7 @@ export default {
                 // case "1-3-2":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
                 // case "1-3-3":locthis.$router.push({path:'/user/seller_user/seller_record'});break;
                 case "1-4-2":locthis.$router.push({path:'/user/seller_user/seller_income'});break;
+                case "1-4-3":locthis.$router.push({path:'/user/seller_user/member_info'});break;
 
                 case "2-1-1":locthis.$router.push({path:'/product/recommend/list_recommend'});break;
                 case "2-1-2":locthis.$router.push({path:'/product/recommend/add_recommend'});break;
@@ -190,6 +192,8 @@ export default {
         left:0px;
         bottom:0px;
         background-color:#5b6270;
+        height: 100%;
+        /* width: 100%; */
     }
     /* .sider .title-area{20b2aa
         height:84px;

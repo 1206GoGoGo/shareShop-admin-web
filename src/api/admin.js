@@ -1,8 +1,10 @@
 import request from '@/utils/request'
+import '@/mock.js'
 
-export function fetchList() {  //params  需要参数吗？？？？？？？？？？？
+export function fetchList(params) {  //params  
   return request({
-    url:'/manager/info/getList',
+    // url:'/manager/info/getList',
+    url:'/admin/list_admin',
     method:'get',
     params:params
   })
@@ -16,7 +18,7 @@ export function getAdminDetail(params) {
   })
 }
 
-export function updateManage(data) {
+export function updateManager(data) {
   return request({
     url:'/manager/info/modify/',
     method:'post',
@@ -24,7 +26,7 @@ export function updateManage(data) {
   })
 }
 
-export function deleteManage(params) {
+export function deleteManager(params) {
   return request({
     url:'/manager/info/delete',
     method:'get',   //是post还是个get???????????????

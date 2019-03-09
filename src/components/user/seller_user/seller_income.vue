@@ -40,44 +40,52 @@
                         
                         border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="编号" width="100" align="center">
+                <!-- <el-table-column label="编号" width="100" align="center">
                     <template slot-scope="scope">{{scope.row.yieldId}}</template>
-                </el-table-column>
-                <el-table-column label="商品名称"  align="center">
+                </el-table-column> -->
+                <!-- <el-table-column label="商品名称"  align="center">
                     <template slot-scope="scope">{{scope.row.poductName}}</template>
                 </el-table-column>
                 <el-table-column label="商品数量" width="80" align="center">
                     <template slot-scope="scope">{{scope.row.productQuantity}}</template>
                 </el-table-column>
-                <el-table-column label="订单金额" width="120" align="center"><!--可以查到吗！！！！！-->
+                <el-table-column label="订单金额" width="120" align="center">
                     <template slot-scope="scope">{{scope.row.orderMoeny}}</template>
                 </el-table-column>
-                <el-table-column label="支付金额" width="120" align="center"><!--可以查到吗！！！！！-->
+                <el-table-column label="支付金额" width="120" align="center">
                     <template slot-scope="scope">{{scope.row.paymentMoney}}</template>
-                </el-table-column>
-                <el-table-column label="收益金额" width="120" align="center">
+                </el-table-column> -->
+                <!-- <el-table-column label="收益金额" width="120" align="center">
                     <template slot-scope="scope">{{scope.row.yieldMoney}}</template>
                 </el-table-column>
                 <el-table-column label="收益时间" width="160" align="center">
                     <template slot-scope="scope">{{scope.row.createTime}}</template>
+                </el-table-column> -->
+                <el-table-column label="交易时间"  align="center">
+                    <template slot-scope="scope">{{scope.row.createTime}}</template>
                 </el-table-column>
-                 <!-- <el-table-column label="操作" width="160" align="center">
+                <el-table-column label="交易类型" width="200" align="center">
+                    <template slot-scope="scope">{{scope.row.type }}</template>
+                </el-table-column>
+                <el-table-column label="交易金额" width="200" align="center">
+                    <template slot-scope="scope">{{scope.row.money}}</template>
+                </el-table-column>
+                <el-table-column label="余额" width="200" align="center"><!--从哪里获得？？？？？？？？？？？？？-->
+                    <template slot-scope="scope">{{scope.row.userMoney}}</template>
+                </el-table-column>
+                <el-table-column label="操作" width="160" align="center">
                     <template slot-scope="scope">
-                       <p>
                         <el-button
                             size="mini"
-                            @click="handleUpdateUser(scope.$index, scope.row)">编辑
+                            @click="handleGetDetail(scope.$index, scope.row)">获取详情
                         </el-button>
-                        </p> 
-                        <p>
-                        <el-button
+                        <!-- <el-button
                             size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button>
-                        </p>
+                        </el-button> -->
                     </template>
-                </el-table-column>-->
+                </el-table-column>
             </el-table>
             <div class="pagination-container">
                 <el-pagination
@@ -111,7 +119,26 @@ export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
-            list: null,
+            list: [
+                {
+                    createTime:'2017-8-8',
+                    type:'支出',
+                    money:'30000',
+                    userMoney:'20'
+                },
+                {
+                    createTime:'2013-8-8',
+                    type:'收入',
+                    money:'30000',
+                    userMoney:'200'
+                },
+                {
+                    createTime:'2017-8-8',
+                    type:'提现',
+                    money:'30000',
+                    userMoney:'200'
+                },
+            ],
             //listLoading: true,
 
             // offset: 0,
@@ -156,9 +183,9 @@ export default {
             this.listLoading=true;
             //需要参数吗？？？？？？？？this.listQuery
             fetchList(this.listQuery).then(response => {
-            this.listLoading = false;
-            this.list = response.data.list;  //接收到的是什么？？？？？？？？？？？？？？
-            this.total = response.data.total;
+                this.listLoading = false;
+                this.list = response.data.list;  //接收到的是什么？？？？？？？？？？？？？？
+                this.total = response.data.total;
             });
         },
 

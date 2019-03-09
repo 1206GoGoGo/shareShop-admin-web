@@ -21,7 +21,7 @@
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-                    <el-form-item label="登录名：">
+                    <!-- <el-form-item label="登录名：">
                         <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
                     </el-form-item>
                     <el-form-item label="真实姓名：">
@@ -35,13 +35,25 @@
                     </el-form-item>
                     <el-form-item label="邮箱：">
                         <el-input style="width: 203px" v-model="listQuery.email" placeholder="证件号码"></el-input>
+                    </el-form-item> -->
+                    <el-form-item label="seller登录名：">
+                        <el-input style="width: 203px" v-model="listQuery.sellerName" placeholder="seller登录名"></el-input>
                     </el-form-item>
-                    <el-form-item label="用户级别：" prop="level">
+                    <el-form-item>
+                        <el-alert class="alert"
+                            title="Please check the seller's member information here."
+                            type="warning"
+                            show-icon
+                            style="width:100%; padding-left:20px; height:35px;"
+                            :closable="false">
+                        </el-alert>
+                    </el-form-item>
+                    <!-- <el-form-item label="用户级别：" prop="level">
                         <el-select v-model="listQuery.level" placeholder="请选择" style="width: 203px">
                             <el-option label="权限一" value="shanghai"></el-option>
                             <el-option label="权限二" value="beijing"></el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form> 
             </div>
         </el-card>
@@ -60,7 +72,7 @@
                         <el-form-item label="真实姓名：">
                             <span>{{ props.row.name }}</span>
                         </el-form-item>
-                        <el-form-item label="邮箱：">
+                        <el-form-item label="邮箱：" class="label-position">
                             <span>{{ props.row.email }}</span>
                         </el-form-item>
                         <el-form-item label="证件类型：">
@@ -103,11 +115,11 @@
                 label="真实姓名"
                 prop="name">
             </el-table-column> -->
-            <el-table-column
+            <!-- <el-table-column
              style="text-align: center"
                 label="用户级别"
                 prop="level">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
              style="text-align: center"
                 label="手机号"
@@ -129,7 +141,7 @@
                     
                     <el-button
                         size="mini"
-                        @click="getUserAddr(scope.$index, scope.row)">地址
+                        @click="getUserAddr(scope.$index, scope.row)">获取地址
                     </el-button>
                 </template>
             </el-table-column>
@@ -234,14 +246,14 @@
             title="用户信息"
             
             :visible.sync="dialogVisible" width="70%">
-            <el-form :model="UserDetail" :inline="true"
+            <el-form :model="UserDetail"  :inline="true"
                     ref="DetailForm" label-width="150px">
                 <el-form-item label="编号:">
                     <el-input v-model="UserDetail.userInfoId" class="input-width" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="登录名:">
+                <!-- <el-form-item label="登录名:">
                     <el-input v-model="UserDetail.username" class="input-width" readonly></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="姓名:">
                     <el-input v-model="UserDetail.name" class="input-width"></el-input>
                 </el-form-item>
@@ -250,16 +262,6 @@
                 </el-form-item>
                 <el-form-item label="邮箱:">
                     <el-input v-model="UserDetail.email" class="input-width"></el-input>
-                </el-form-item>
-                <el-form-item label="用户级别:">
-                    <el-select v-model="UserDetail.level" placeholder="全部" clearable class="input-width">
-                        <el-option v-for="item in UserDetail.level"
-                            class="input-width"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                        </el-select>
                 </el-form-item>
                 <el-form-item label="证件号码:">
                     <el-input v-model="UserDetail.identityCardNo" class="input-width"></el-input>
@@ -323,13 +325,13 @@ const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
     
-    // userInfoId:null,  ？？
-    name:null,
+    // userInfoId:null,
+    // name:null,
     username:null,
-    phoneNumber:null,
-    identityCardNo:null,
-    email:null,
-    level:null
+    // phoneNumber:null,
+    // identityCardNo:null,
+    // email:null,
+    // level:null
   };
 
 export default {
@@ -394,7 +396,6 @@ export default {
                 phoneNumber:null,
                 identityCardNo:null,
                 email:null,
-                // firstAddr:null,
                 registerTime:null,
                 identityCardType:null,
                 status:null,
@@ -413,7 +414,6 @@ export default {
         //获取搜索列表
         getSearchList(){
             this.listLoading=true;
-            //this.listQuery即为搜索条件
             fetchList(this.listQuery).then(response => {
             this.listLoading = false;
             this.list = response.data.list;
@@ -428,10 +428,10 @@ export default {
             this.getSearchList();
         },
 
-        //获取用户详细信息
+        // //获取用户详细信息
         // handleUpdateUser(index, row){
         //     this.dialogVisible=true;
-        //     this.userInfoId=row.userInfoId;
+        //     // this.userInfoId=row.userInfoId;
         //     getUserDetail(row.userInfoId).then(response=>{
         //         this.UserDetail=response.data;
         //     });
@@ -446,14 +446,14 @@ export default {
 
         //修改用户信息  this.managerInfoId
         handleConfirm(){ 
-          updateUser(this.UserDetail).then(response=>{
-            this.dialogVisible=false;
-            // this.managerInfoId=null;
-            this.$message({
-              message: '修改成功！',
-              type: 'success',
-              duration:1000
-              });
+            updateUser(this.UserDetail).then(response=>{
+                this.dialogVisible=false;
+                // this.managerInfoId=null;
+                this.$message({
+                message: '修改成功！',
+                type: 'success',
+                duration:1000
+                });
                 // this.getSearchList(); 
             });
         },

@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <!--条件搜索 S-->
+<!--条件搜索 S-->
         <el-card shadow="never">
             <div>
                 <i class="el-icon-search"></i>
@@ -24,7 +24,7 @@
                     <el-form-item label="登录名：">
                         <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
                     </el-form-item>
-                    <el-form-item label="真实姓名：">
+                    <!-- <el-form-item label="真实姓名：">
                         <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号："> 
@@ -38,10 +38,10 @@
                             <el-option label="权限一" value="shanghai"></el-option>
                             <el-option label="权限二" value="beijing"></el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="查询时间：">
                             <el-date-picker
-                            style="width: 363px"
+                            style="width: 373px"
                             v-model="listQuery.SearchDate"
                             type="datetimerange"
                             range-separator="至"
@@ -54,6 +54,7 @@
             </div>
         </el-card>
 <!--条件搜索 E-->
+
         <!-- v-loading="listLoading" -->
         <!-- <div class="table-container">
             <el-table ref="productTable"
@@ -103,12 +104,12 @@
         </div>-->
 <!--主表格 S-->            
         <el-table
-        :data="list"
+        :data="listRecord"
         style="width: 100%"
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand">
+                    <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
                         <el-form-item label="真实姓名">
                             <span>{{ props.row.name }}</span>
                         </el-form-item>
@@ -137,7 +138,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                label="编号"
+                label="用户编号"
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
@@ -146,16 +147,16 @@
             </el-table-column>
             <el-table-column
                 label="消费商品"
-                prop="name">
+                prop="poductName">
             </el-table-column>
             <el-table-column
                 label="消费时间"
-                prop="phoneNumber">
+                prop="createTime">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 label="用户等级"
                 prop="level">
-            </el-table-column>
+            </el-table-column> -->
             <!-- <el-table-column label="操作" width="160" align="center">
                 <template slot-scope="scope">
                     <p>
@@ -207,11 +208,11 @@ const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
     
-    name:null,
+    // name:null,
     username:null,
-    phoneNumber:null,
-    identityCardNo:null,
-    level:null,
+    // phoneNumber:null,
+    // identityCardNo:null,
+    // level:null,
     SearchDate:null
     
   };
@@ -220,7 +221,46 @@ export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
-            list: null,
+            listRecord: [
+                { 
+                    userInfoId:'12323324',
+                    username:'shdshdshdasd',
+                    poductName:'黑色棒球帽',
+                    createTime:'2010-8-7',
+                    name:'张娜',
+                    productPrice:'2000',
+                    productQuantity:'3',
+                    orderMoeny:'6000',
+                    orderStatus:'已发货',
+                    firstAddr:'dwudduygdyffffffffff',
+                    orderNumber:'2343454646',
+                },{
+                    userInfoId:'12323324',
+                    username:'shdshdshdasd',
+                    poductName:'黑色棒球帽',
+                    createTime:'2010-8-7',
+                    name:'张娜',
+                    productPrice:'2000',
+                    productQuantity:'3',
+                    orderMoeny:'6000',
+                    orderStatus:'已发货',
+                    firstAddr:'dwudduygdyffffffffff',
+                    orderNumber:'2343454646',
+                },
+                {
+                    userInfoId:'12323324',
+                    username:'shdshdshdasd',
+                    poductName:'黑色棒球帽',
+                    createTime:'2010-8-7',
+                    name:'张娜',
+                    productPrice:'2000',
+                    productQuantity:'3',
+                    orderMoeny:'6000',
+                    orderStatus:'已发货',
+                    firstAddr:'dwudduygdyffffffffff',
+                    orderNumber:'2343454646',
+                }
+            ],
             //listLoading: true,
             
             // offset: 0,
