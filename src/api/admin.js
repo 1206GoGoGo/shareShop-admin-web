@@ -1,15 +1,25 @@
 import request from '@/utils/request'
 import '@/mock.js'
 
+//管理员查询
 export function fetchList(params) {  //params  
   return request({
-    // url:'/manager/info/getList',
-    url:'/admin/list_admin',
+    url:'/manager/info/getList',
     method:'get',
     params:params
   })
 }
 
+//管理员分类查询
+export function getAdminCateInfo(params) {  //params  
+  return request({
+    url:'/manager/class/getList',
+    method:'get',
+    params:params
+  })
+}
+
+//查询详细信息
 export function getAdminDetail(params) {
   return request({
     url:'/manager/info/getDetail',
@@ -18,14 +28,16 @@ export function getAdminDetail(params) {
   })
 }
 
+//更新管理员信息
 export function updateManager(data) {
   return request({
-    url:'/manager/info/modify/',
+    url:'/manager/info/modify',
     method:'post',
     data:data
   })
 }
 
+//删除管理员
 export function deleteManager(params) {
   return request({
     url:'/manager/info/delete',
@@ -34,6 +46,7 @@ export function deleteManager(params) {
   })
 }
 
+//添加管理员
 export function AddManager(data) {
   return request({
     url:'/manager/info/add',
@@ -42,3 +55,11 @@ export function AddManager(data) {
   })
 }
 
+//添加管理员分类
+export function AddManagerCate(data) {
+  return request({
+    url:'/manager/class/add',
+    method:'post',   
+    data:data
+  })
+}

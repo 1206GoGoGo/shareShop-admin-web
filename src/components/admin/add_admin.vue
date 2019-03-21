@@ -290,6 +290,6 @@ export default {
     .table-container{
         border: 1px solid #ebeef5;
         padding: 20px;
-        width: 90%;
+        width: 95%;
     }
 </style>

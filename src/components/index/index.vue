@@ -4,7 +4,7 @@
          <Sider></Sider>
       </el-aside>
       <el-main>
-        <MainPanel></MainPanel>
+        <MainPanel ></MainPanel>
         <el-popover
             placement="top-start"
             width="200"
@@ -45,8 +45,6 @@ export default {
     name:'index',
     data:function(){
         return{
-
-
         }
     },
     components:{

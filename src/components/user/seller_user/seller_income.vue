@@ -9,7 +9,7 @@
                     @click="getSearchList()"
                     type="primary"
                     size="small">
-                    查询结果
+                    查询
                 </el-button>
             </div>
             <div style="margin-top: 10px">
@@ -27,13 +27,13 @@
                         end-placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
-
                 </el-form>
             </div>
         </el-card>
         <!-- v-loading="listLoading" -->
         <div class="table-container">
             <el-table ref="productTable"
+                        highlight-current-row
                         :data="list"
                         style="width: 100%"
                         @selection-change="handleSelectionChange"
@@ -61,17 +61,17 @@
                 <el-table-column label="收益时间" width="160" align="center">
                     <template slot-scope="scope">{{scope.row.createTime}}</template>
                 </el-table-column> -->
-                <el-table-column label="交易时间"  align="center">
-                    <template slot-scope="scope">{{scope.row.createTime}}</template>
+                <el-table-column label="交易时间" align="center">
+                    <template slot-scope="scope">{{scope.row.createTime | dateFormatter}}</template>
                 </el-table-column>
-                <el-table-column label="交易类型" width="200" align="center">
-                    <template slot-scope="scope">{{scope.row.type }}</template>
+                <el-table-column label="交易类型" width="180" align="center">
+                    <template slot-scope="scope">{{scope.row.type | typeFormatter}}</template>
                 </el-table-column>
-                <el-table-column label="交易金额" width="200" align="center">
-                    <template slot-scope="scope">{{scope.row.money}}</template>
+                <el-table-column label="交易金额" width="160" align="center">
+                    <template slot-scope="scope">￥{{scope.row.money}}</template>
                 </el-table-column>
-                <el-table-column label="余额" width="200" align="center"><!--从哪里获得？？？？？？？？？？？？？-->
-                    <template slot-scope="scope">{{scope.row.userMoney}}</template>
+                <el-table-column label="余额" width="160" align="center"><!--从哪里获得？？？？？？？？？？？？？-->
+                    <template slot-scope="scope">￥{{scope.row.userMoney}}</template>
                 </el-table-column>
                 <el-table-column label="操作" width="160" align="center">
                     <template slot-scope="scope">
@@ -105,8 +105,8 @@
 
 
 <script>
-import {fetchList} from '@/api/user'
-
+import {fetchListIncome} from '@/api/user'
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -119,27 +119,28 @@ export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
+            //listLoading: true,
             list: [
                 {
                     createTime:'2017-8-8',
-                    type:'支出',
+                    type:'0',
                     money:'30000',
                     userMoney:'20'
                 },
                 {
                     createTime:'2013-8-8',
-                    type:'收入',
+                    type:'1',
                     money:'30000',
                     userMoney:'200'
                 },
                 {
                     createTime:'2017-8-8',
-                    type:'提现',
+                    type:'1',
                     money:'30000',
                     userMoney:'200'
                 },
             ],
-            //listLoading: true,
+            
 
             // offset: 0,
             // limit: 20,
@@ -176,46 +177,38 @@ export default {
 
         }
     },
+
+    filters:{
+        //日期转换
+        dateFormatter(time){
+            let date=new Date(time)
+            return formatDate(date,'MM.dd.yyyy hh:mm:ss')
+        },
+        //交易类型转换
+        typeFormatter(value){
+            if(value === '0') {return 'In'} 
+            else if(value === '1') {return 'Out'}
+            else {return 'Not clear'}
+        },
+    },
+
     methods:{
 
         //获取搜索列表
         getSearchList(){
             this.listLoading=true;
-            //需要参数吗？？？？？？？？this.listQuery
-            fetchList(this.listQuery).then(response => {
+            fetchListIncome(this.listQuery).then(response => {
                 this.listLoading = false;
-                this.list = response.data.list;  //接收到的是什么？？？？？？？？？？？？？？
+                this.list = response.data;
                 this.total = response.data.total;
             });
         },
 
-        // //删除用户
-        // handleDelete(index, row){
-        //     let ids=[];
-        //     ids.push(row.userInfoId);
-        //     this.deleteUser(ids);
-        // },
-        
-        // //删除详细信息
-        // deleteUser(ids){
-        //     this.$confirm('是否要进行该删除操作?', '提示', {
-        //         confirmButtonText: '确定',
-        //         cancelButtonText: '取消',
-        //         type: 'warning'
-        //         }).then(() => {
-        //     //let params = new URLSearchParams(); //?????????????post 还是get??????
-        //     //params.append("ids",ids);
-        //     deleteUser(this.userInfoId).then(response=>{
-        //         this.$message({
-        //         message: '删除成功！',
-        //         type: 'success',
-        //         duration: 1000
-        //         });
-        //         this.listQuery.pageNum=1;
-        //         // this.getSearchList();     ?????????????
-        //         });
-        //     })
-        // },
+        //获取收益详情
+        handleGetDetail(){
+            
+        },
+
 
         //获取页码
         handleSizeChange(val){

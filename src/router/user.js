@@ -11,24 +11,21 @@ import seller_income from '@/components/user/seller_user/seller_income'
 export default [
     {
         path:"/user/general_user/general_info",
-        meta:{
-            //loginUnRequired:true,
-        },
+        // meta:{
+        //     //loginUnRequired:true,
+        // },
         component:general_info,
+        meta: ['User','Information'],
     },
     {
         path:"/user/general_user/general_record",
-        meta:{
-            //loginUnRequired:true,
-        },
         component:general_record,
+        meta: ['User','Record'],
     },
     {
         path:"/user/seller_user/member_info",
-        meta:{
-            //loginUnRequired:true,
-        },
         component:member_info,
+        meta: ['User','Seller','Member_Information'],
     },
     {
         path:"/user/member_user/member_record",
@@ -46,10 +43,8 @@ export default [
     },
     {
         path:"/user/seller_user/seller_info",
-        meta:{
-            //loginUnRequired:true,
-        },
         component:seller_info,
+        meta: ['User','Seller','Information'],
     },
     {
         path:"/user/seller_user/seller_record",
@@ -60,18 +55,14 @@ export default [
     },
     {
         path:"/user/seller_user/seller_setting",
-        meta:{
-            //loginUnRequired:true,
-        },
         component:seller_setting,
+        meta: ['User','Setting'],
     },
     
     {
         path:"/user/seller_user/seller_income",
-        meta:{
-            //loginUnRequired:true,
-        },
         component:seller_income,
+        meta: ['User','Seller','Income'],
     },
     
 ]

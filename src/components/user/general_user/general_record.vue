@@ -10,7 +10,7 @@
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
-                    查询结果
+                    查询
                 </el-button>
                 <el-button
                     style="float: right;margin-right: 15px"
@@ -55,55 +55,9 @@
         </el-card>
 <!--条件搜索 E-->
 
-        <!-- v-loading="listLoading" -->
-        <!-- <div class="table-container">
-            <el-table ref="productTable"
-                        :data="list"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange"
-                        
-                        border>
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="编号" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="用户姓名" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="消费商品" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="消费数量" width="140" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="消费时间" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="操作" width="160" align="center">
-                    <template slot-scope="scope">
-                        <p>
-                        <el-button
-                            size="mini"
-                            @click="handleShowUser(scope.$index, scope.row)">查看
-                        </el-button>
-                        <el-button
-                            size="mini"
-                            @click="handleUpdateUser(scope.$index, scope.row)">编辑
-                        </el-button>
-                        </p>
-                        <p>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button>
-                        </p>
-                    </template>
-                </el-table-column>
-            </el-table> 
-        </div>-->
 <!--主表格 S-->            
         <el-table
+        highlight-current-row
         :data="listRecord"
         style="width: 100%"
         @selection-change="handleSelectionChange">
@@ -117,13 +71,13 @@
                             <span>{{ props.row.poductName }}</span>
                         </el-form-item>
                         <el-form-item label="消费价格">
-                            <span>{{ props.row.productPrice }}</span>
+                            <span>￥{{ props.row.productPrice }}</span>
                         </el-form-item>
                         <el-form-item label="消费数量">
                             <span>{{ props.row.productQuantity }}</span>
                         </el-form-item>
                         <el-form-item label="消费金额">
-                            <span>{{ props.row.orderMoeny }}</span>
+                            <span>￥{{ props.row.orderMoeny }}</span>
                         </el-form-item>
                         <el-form-item label="订单状态">
                             <span>{{ props.row.orderStatus }}</span>
@@ -131,30 +85,39 @@
                         <el-form-item label="订单地址">
                             <span>{{ props.row.firstAddr }}</span>
                         </el-form-item>
-                        <el-form-item label="订单号">
-                            <span>{{ props.row.orderNumber }}</span>
+                        <el-form-item label="消费时间">
+                            <span>{{ props.row.createTime | dateFormatter}}</span>
                         </el-form-item>
                     </el-form>
                 </template>
             </el-table-column>
             <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
+            <el-table-column
                 label="用户编号"
+                align='center'
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 label="登录名"
+                align='center'
                 prop="username">
             </el-table-column>
             <el-table-column
                 label="消费商品"
+                align='center'
                 prop="poductName">
             </el-table-column>
             <el-table-column
-                label="消费时间"
-                prop="createTime">
+                label="订单号"
+                align='center'
+                prop="orderNumber">
             </el-table-column>
             <!-- <el-table-column
                 label="用户等级"
+                align='center'
                 prop="level">
             </el-table-column> -->
             <!-- <el-table-column label="操作" width="160" align="center">
@@ -203,7 +166,7 @@
 
 <script>
 import {fetchList} from '@/api/user'  //是否是从一个表里面查询到的member？？？？？？？？？
-
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -218,6 +181,15 @@ const defaultListQuery = {
   };
 
 export default {
+
+    //过滤器 格式化
+    filters: {
+        //日期转变
+        dateFormatter(time) {
+            let date = new Date(time);
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
+        },
+    },    
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),

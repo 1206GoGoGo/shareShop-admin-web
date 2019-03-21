@@ -45,6 +45,7 @@
     </el-card> -->
     <div class="table-container">
       <el-table ref="newProductTable"
+                highlight-current-row
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"

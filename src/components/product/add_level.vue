@@ -28,6 +28,7 @@
         <!-- v-loading="listLoading" -->
         <div class="table-container">
             <el-table ref="productTable"
+                        highlight-current-row
                         :data="list"
                         style="width: 100%"
                         @selection-change="handleSelectionChange"

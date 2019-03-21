@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { getDiscountSetting } from '@/api/user';
+import { getDiscountSetting,updateDiscountSetting } from '@/api/user';
 const defaultDiscountSetting = {
     discountId:null,
     discountRate:0,
@@ -85,7 +85,6 @@ export default {
                 })
             });
         },
-        
     }
 }
 </script>

@@ -4,8 +4,8 @@
 import Vue from 'vue'
 import App from './App'// 路由挂载
 import router from './router' // 路由列表
-// import axios from 'axios';
-// import VueAxios from 'vue-axios'
+import axios from 'axios';
+import VueAxios from 'vue-axios'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -13,9 +13,9 @@ import './assets/mycss/mycss.scss' ; //全局修改样式
 
 // import '@/icons'
 
-// import Vuex from 'vuex'
-// Vue.use(Vuex)
-
+import Vuex from 'vuex'
+Vue.use(Vuex)
+Vue.use(VueAxios,axios);
 import store from './store'
 // import VCharts from 'v-charts'
 
@@ -34,11 +34,14 @@ Vue.use(ElementUI);
 // Vue.use(VueRouter);  
 
 
-// axios.defaults.baseURL = process.env.BASE_API;
+axios.defaults.baseURL = process.env.BASE_API;
 
 
-// Vue.prototype.storage=window.localStorage;     本来就有
+Vue.prototype.storage=window.localStorage;    
 
+
+// import '@/permission' // permission control
+Vue.config.productionTip = false
 
 
 // Vue.filter('UserRoleFilter', function (value) {

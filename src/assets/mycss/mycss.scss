@@ -8,6 +8,8 @@
 
 element.style{
     background: #1f2d3d !important;
+    // width: 100px !important;
+    // padding-left:10px !important;
 }
 a:-webkit-any-link{
     cursor: pointer !important;
@@ -71,4 +73,14 @@ el-form-item--small.el-form-item {
 
 // .el-form--inline .el-form-item__label {
 //     display: inline;
+// }
+
+
+// //导航栏变颜色
+// .li.el-menu-item.is-active{
+//     color:rgb(64, 158, 255);
+// }
+
+// .el-table__header{
+//     background: #67c23a;
 // }

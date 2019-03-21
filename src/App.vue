@@ -22,7 +22,7 @@
           </el-footer>
         </el-container>
       </el-container>
-    </el-container> -->
+    </el-container> :routes="routes"-->
 
 
     <el-container>
@@ -32,7 +32,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <sider></sider>
+          <sider :routes="routes"></sider>
         </el-aside>
         <el-main>
           <mainPanel>
@@ -42,17 +42,42 @@
     </el-container>
 
 </div>
-
-
 </template> 
 
 <script>
 import headPanel from '@/components/index/headPanel'
 import sider from '@/components/index/sider'
 import mainPanel from '@/components/index/mainPanel'
+import { mapGetters } from 'vuex'
 export default {
+  // computed: {
+  //   routes() {
+  //     return this.$router.options.routes
+  //   },
+  // },
+  computed: {
+    ...mapGetters([
+      'sider'
+    ]),
+    routes() {
+      return this.$router.options.routes
+    },
+    // isCollapse() {
+    //   return !this.sider.opened
+    // }
+  },
   name: 'App',
-  data:function(){},
+  data:function(){
+    return {
+      //count: 0
+    }
+  },
+  methods:{
+     handleClick (e) {
+      e.preventDefault()
+      e.target.parentElement.classList.toggle('open')
+    }
+  },
   components:{
     headPanel,
     sider,

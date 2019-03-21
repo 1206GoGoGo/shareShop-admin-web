@@ -10,7 +10,7 @@
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
-                    查询结果
+                    查询
                 </el-button>
                 <el-button
                     style="float: right;margin-right: 15px"
@@ -45,56 +45,81 @@
         <!-- v-loading="listLoading" -->
         <el-table
         :data="list"
+        highlight-current-row
         style="width: 100%"
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
-                        <el-form-item label="邮箱:">
-                            <span>{{ props.row.email }}</span>
-                        </el-form-item>
-                        <el-form-item label="用户状态:"><!--冻结、可用！！！！！用按钮-可以修改的那种-->
-                            <span>{{ props.row.status }}</span>
-                        </el-form-item>
                         <el-form-item label="账户余额:">
-                            <span>{{ props.row.userMoney }}</span>
+                            <span>￥{{ props.row.userMoney }}</span>
                         </el-form-item>
                         <el-form-item label="注册时间:">
-                            <span>{{ props.row.registerTime }}</span>
+                            <span>{{ props.row.registerTime | dateFormatter}}</span>
                         </el-form-item>
+                        <!--冻结、可用！！！！！用按钮-可以修改的那种-->
+                        <!-- <el-form-item label="用户状态:">
+                            <span>{{ props.row.status }}</span>
+                        </el-form-item> -->
                         <el-form-item label="证件号码:">
                             <span>{{ props.row.identityCardNo }}</span>
                         </el-form-item>
                         <el-form-item label="证件类型:">
-                            <span>{{ props.row.identityCardType }}</span>
+                            <span>{{ props.row.identityCardType | idFormatter}}</span>
                         </el-form-item>
                         <el-form-item label="出生日期:">
-                            <span>{{ props.row.birthday }}</span>
+                            <span>{{ props.row.birthday | dateFormatter}}</span>
                         </el-form-item>
                         <el-form-item label="性别:">
-                            <span>{{ props.row.gender }}</span>
+                            <span>{{ props.row.gender | genderFormatter}}</span>
                         </el-form-item>
                     </el-form>
                 </template>
-            </el-table-column><!--这个页面怎么确定查到的是店主seller？？？？？？？？？？？-->
-            <el-table-column
-                label="编号" 
-                prop="userInfoId">
             </el-table-column>
             <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
+            <el-table-column
+                type="index"
+                label="编号"
+                align='center'
+                width="55">
+            </el-table-column>
+            <!-- <el-table-column
+                label="编号" 
+                align='center'
+                prop="userInfoId">
+            </el-table-column> -->
+            <el-table-column
                 label="登录名"
-                prop="username">
+                align='center'
+                prop="username"
+                width="130">
             </el-table-column>
             <el-table-column
                 label="真实姓名"
-                prop="name">
+                align='center'
+                prop="name"
+                width="130">
             </el-table-column>
             <el-table-column
                 label="手机号"
-                prop="phoneNumber">
+                align='center'
+                prop="phoneNumber"
+                width="160">
+            </el-table-column>
+            <el-table-column
+                label="邮箱"
+                align='center'
+                prop="email">
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
                 <template slot-scope="scope">
+                    <el-button
+                        size="mini"
+                        @click="getSellerAddr(scope.$index, scope.row)">地址
+                    </el-button>
                     <el-button
                         size="mini"
                         @click="handleUpdateSeller(scope.$index, scope.row)">编辑
@@ -103,10 +128,6 @@
                         size="mini"
                         type="danger"
                         @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
-                    <el-button
-                        size="mini"
-                        @click="getSellerAddr(scope.$index, scope.row)">地址
                     </el-button>
                 </template>
             </el-table-column>
@@ -130,15 +151,15 @@
         <el-dialog                    
             title="Seller信息"
             
-            :visible.sync="dialogVisible" width="70%">
+            :visible.sync="dialogFormVisible" width="70%">
             <el-form :model="SellerDetail" :inline="true"
                     ref="DetailForm" label-width="150px">
-                <el-form-item label="编号:"> <!--编号不能修改！！！！！-->
+                <!-- <el-form-item label="编号:">
                     <el-input v-model="SellerDetail.userInfoId" class="input-width" readonly></el-input>
-                </el-form-item>
-                <!-- <el-form-item label="登录名:"> 
-                    <el-input v-model="SellerDetail.username" class="input-width" readonly></el-input>
                 </el-form-item> -->
+                <el-form-item label="登录名:"> 
+                    <el-input v-model="SellerDetail.username" class="input-width" readonly></el-input>
+                </el-form-item>
                 <el-form-item label="姓名:">
                     <el-input v-model="SellerDetail.name" class="input-width"></el-input>
                 </el-form-item>
@@ -148,36 +169,101 @@
                  <el-form-item label="邮箱:">
                     <el-input v-model="SellerDetail.email" class="input-width"></el-input>
                 </el-form-item>
+                <el-form-item label="出生年月:">
+                    <el-date-picker
+                        v-model="SellerDetail.birthday"
+                        class="input-width"
+                        type="date"
+                        placeholder="Please Select Time">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="性别:"><!--到显示框中就不可用！！！！！！！！！！！！！-->
+                    <el-radio-group v-model="SellerDetail.gender" class="input-width">
+                        <el-radio :label="0">Male</el-radio>
+                        <el-radio :label="1">Female</el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="证件号码:">
                     <el-input v-model="SellerDetail.identityCardNo" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="证件类型:">
-                    <el-input v-model="SellerDetail.identityCardType" class="input-width"></el-input>
+                    <el-select v-model="SellerDetail.identityCardType" placeholder="请选择" clearable class="input-width">
+                        <el-option v-for="item in IDCardType"
+                            class="input-width"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                        </el-select>
                 </el-form-item>
                 <el-form-item label="注册时间:">
-                    <el-input v-model="SellerDetail.registerTime" class="input-width"></el-input>
+                    <el-date-picker
+                        readonly
+                        v-model="SellerDetail.registerTime"
+                        class="input-width"
+                        type="date"
+                        placeholder="Please Select Time">
+                    </el-date-picker>
                 </el-form-item>
-                <el-form-item label="出生年月:">
-                    <el-input v-model="SellerDetail.birthday" class="input-width"></el-input>
+                <el-form-item label="账户余额:">
+                    <el-input v-model="SellerDetail.userMoney" readonly class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="用户状态:">
+                <!-- <el-form-item label="用户状态:">
                     <el-input v-model="SellerDetail.status" class="input-width"></el-input>
-                </el-form-item>
-                <el-form-item label="性别:">
-                    <el-input v-model="SellerDetail.gender" class="input-width"></el-input>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleConfirm">确 定</el-button>
             </span>
         </el-dialog>
 <!--修改信息的弹出框 E-->
+<!--地址弹出框 S-->
+        <el-dialog                    
+            title="Seller地址信息"
+            
+            :visible.sync="dialogTableVisible" width="90%">
+            <el-table ref="AddrTable"
+                    highlight-current-row
+                    :data="Addrlist"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange"  
+                    v-loading="listLoading"
+                    border>     
+                <el-table-column label="NO." type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="邮编" width="90" align="center">
+                    <template slot-scope="scope">{{scope.row.postalCode}}</template>
+                </el-table-column>
+                <el-table-column label="州"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.state}}</template>
+                </el-table-column>
+                <el-table-column label="市"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.city}}</template>
+                </el-table-column>
+                <el-table-column label="第一地址"  width="260"  align="center">
+                    <template slot-scope="scope">{{scope.row.firstAddr}}</template>
+                </el-table-column>
+                <el-table-column label="第二地址"  width="260"  align="center">
+                    <template slot-scope="scope">{{scope.row.secondAddr}}</template>
+                </el-table-column>
+                <el-table-column label="是否默认"  width="100"  align="center">
+                    <template slot-scope="scope">{{scope.row.isDefault | defaultFormatter}}</template>
+                </el-table-column>
+                <el-table-column label="修改时间"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.modifiedTime | dateFormatter}}</template>
+                </el-table-column>
+            </el-table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogTableVisible = false" type="primary">返 回</el-button>
+            </span>
+        </el-dialog>
+<!--地址弹出框 E-->
     </div>
 </template>
 
 <script>
-import {fetchListSeller,getSellerDetail,updateSeller,deleteSeller} from '@/api/user'
+import {getLists,fetchUserAddr,fetchListSeller,getSellerDetail,updateSeller,deleteSeller} from '@/api/user'
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -187,14 +273,32 @@ const defaultListQuery = {
     username:null,
     phoneNumber:null,
     identityCardNo:null,
-    email:null
+    email:null,
+    level:'3',//seller的级别！！！！！！！！！！！！！！！！！
+    status:1,
   };
 
 export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
-            dialogVisible:false,
+            dialogFormVisible:false,
+            dialogTableVisible:false,
+            //listLoading: true,
+            IDCardType:[
+                {
+                    label: "IDP",
+                    value: 0
+                },
+                {
+                    label: "USP",
+                    value: 1
+                },
+                {
+                    label: "SSN",
+                    value: 2
+                }
+            ],
             list: [
                 {
                     userInfoId:'12323324',
@@ -203,12 +307,12 @@ export default {
                     phoneNumber:18654789087,
                     userMoney:'3245',
                     identityCardNo:653789087654326789,
-                    identityCardType:'身份证',
+                    identityCardType:1,
                     email:'1764537390@qq.com',
                     registerTime:'2019-9-8',
-                    status:'正常',
+                    // status:'正常',
                     birthday:'2009-9-9',
-                    gender:'女',
+                    gender:'0',
 
                 },
                 {
@@ -218,12 +322,12 @@ export default {
                     phoneNumber:18654789087,
                     userMoney:'3245',
                     identityCardNo:653789087654326789,
-                    identityCardType:'身份证',
+                    identityCardType:2,
                     email:'1764537390@qq.com',
                     registerTime:'2019-9-8',
-                    status:'正常',
+                    // status:'正常',
                     birthday:'2009-9-9',
-                    gender:'女',
+                    gender:'1',
                 },
                 {
                     userInfoId:'12323324',
@@ -232,15 +336,44 @@ export default {
                     phoneNumber:18654789087,
                     userMoney:'3245',
                     identityCardNo:653789087654326789,
-                    identityCardType:'身份证',
+                    identityCardType:0,
                     email:'1764537390@qq.com',
                     registerTime:'2019-9-8',
-                    status:'正常',
                     birthday:'2009-9-9',
-                    gender:'女',
+                    gender:'0',
                 }
             ],
-            //listLoading: true,
+            // Addrlist:null,
+            Addrlist:
+            [
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                },
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                },
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                }
+            ],
             // offset: 0,
             // limit: 20,
             // count: 0,
@@ -261,21 +394,59 @@ export default {
             },
         }
     },
-    methods:{
 
-        //重置
-        handleResetSearch(){
-            this.listQuery = Object.assign({}, defaultListQuery);
+    //过滤器 格式化
+    filters: {
+
+        //日期转变
+        dateFormatter(time) {
+            let date = new Date(time)
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
         },
-        //有获取全部信息的方法，需要吗？？？？？？？？？？？？？？？？
+
+        //性别格式
+        genderFormatter(value){
+            if(value === "0"){return 'Male'} 
+            else if(value === "1"){return 'Female'}
+            else {return 'Not claer'}
+        },
+
+        // //状态转变
+        // statusFormatter(value){
+        //     if(value === "1"){return 'Normal'} else {return 'Female'}
+        // },
+
+        //证件类型
+        idFormatter(value)
+        {
+            if(value===0){return 'IDP'} //驾照
+            else if(value===1){return 'USP'} //护照
+            else if(value===2){return 'SSN'}  //社会安全号
+            else {return 'Not claer'}
+        }
+    },
+    created(){
+        getList();
+    },
+    methods:{
+        //初始化列表
+        getList(){
+            this.status=1  //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？
+            // getLists(this.listQuery).then(response => {
+            getLists(this.status,{pageSize: 10, pageNum: 1,}).then(response => {
+                this.listLoading = false;
+                this.list = response.data;
+                this.total = response.data.total;
+            })
+        },
 
         //获取搜索列表
         getSearchList(){
             this.listLoading=true;
             fetchListSeller(this.listQuery).then(response => {
-            this.listLoading = false;
-            this.list = response.data.list;
-            this.total = response.data.total;
+                this.listLoading = false;
+                this.list = response.data;
+                this.total = response.data.total;
             });
         },
 
@@ -286,9 +457,14 @@ export default {
             this.getSearchList();
         },
 
+        //重置
+        handleResetSearch(){
+            this.listQuery = Object.assign({}, defaultListQuery);
+        },
+
         // //获取seller详细信息
         // handleUpdateSeller(index, row){
-        //     this.dialogVisible=true;
+        //     this.dialogFormVisible=true;
         //     this.userInfoId=row.userInfoId;    
         //     getSellerDetail(row.userInfoId).then(response=>{
         //         this.SellerDetail=response.data;
@@ -297,7 +473,7 @@ export default {
 
         //获取seller详细信息
         handleUpdateSeller(index, row) {
-            this.dialogVisible = true;
+            this.dialogFormVisible = true;
             // this.isEdit = true;
             this.SellerDetail = Object.assign({},row);
         },
@@ -305,14 +481,21 @@ export default {
         //修改用户信息  this.managerInfoId
         handleConfirm(){ 
           updateSeller(this.SellerDetail).then(response=>{
-            this.dialogVisible=false;
-            // this.managerInfoId=null;
+            this.dialogFormVisible=false;
             this.$message({
               message: '修改成功！',
               type: 'success',
               duration:1000
               });
-                // this.getSearchList(); ??????????????????
+            // this.getSearchList(); ??????????????????
+            });
+        },
+
+        //获取用户地址
+        getSellerAddr(index, row){
+            this.dialogTableVisible = true;  //this.userInfoId???
+            fetchUserAddr(row.userLogin.userId).then(response => {
+                this.list = response.data;
             });
         },
 
@@ -373,6 +556,9 @@ export default {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
+    }
+    .input-width {
+        width: 203px;
     }
 </style>
 

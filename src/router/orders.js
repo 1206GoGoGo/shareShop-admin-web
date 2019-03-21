@@ -8,13 +8,16 @@ export default [
     {
         path:"/orders/list_orders",
         component:list_orders,
+        meta: ['Orders','List'],
     },
     {
         path:"/orders/setting_orders",
         component:setting_orders,
+        meta: ['Orders','Setting'],
     },
     {
         path:"/orders/return_orders",
         component:return_orders,
+        meta: ['Orders','Return'],
     }
 ]

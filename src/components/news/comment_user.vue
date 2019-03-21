@@ -19,61 +19,56 @@
         </el-button>
       </div>
       <div style="margin-top: 15px">
-          <!-- :model="listQuery" -->
-        <el-form :inline="true"      size="small" label-width="140px">
+        <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="商品名称：">
-            <!-- v-model="listQuery.productName" -->
-            <el-input      class="input-width" placeholder="商品名称"></el-input>
+            <el-input v-model="listQuery.productName" class="input-width" placeholder="商品名称"></el-input>
           </el-form-item>
           <el-form-item label="商品货号：">
-            <!-- v-model="listQuery.productName" -->
-            <el-input      class="input-width" placeholder="商品货号"></el-input>
+            <el-input v-model="listQuery.productCode" class="input-width" placeholder="商品货号"></el-input>
+          </el-form-item>
+          <el-form-item label="用户名称：">
+            <el-input v-model="listQuery.userName" class="input-width" placeholder="评论用户名称"></el-input>
           </el-form-item>
         </el-form>
       </div>
     </el-card>
 
     <el-table
-    :data="tableData5"
+    :data="list"
+    highlight-current-row
     style="width: 100%">
     <el-table-column type="expand">
       <template slot-scope="props">
-        <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="商品名称">
-            <span>{{ props.row.name }}</span>
+        <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
+          <el-form-item label="标题:">
+            <span>{{ props.row.title }}</span>
           </el-form-item>
-          <!-- <el-form-item label="所属店铺">
-            <span>{{ props.row.shop }}</span>
-          </el-form-item> -->
-          <el-form-item label="商品货号">
-            <span>{{ props.row.id }}</span>
+          <el-form-item label="评论内容:">
+            <span>{{ props.row.content }}</span>
           </el-form-item>
-          <!-- <el-form-item label="店铺 ID">
-            <span>{{ props.row.shopId }}</span>
-          </el-form-item> -->
-          <el-form-item label="商品分类">
-            <span>{{ props.row.category }}</span>
+          <el-form-item label="重复评论内容:">
+            <span>{{ props.row.secondContent }}</span>
           </el-form-item>
-          <!-- <el-form-item label="店铺地址">
-            <span>{{ props.row.address }}</span>
-          </el-form-item> -->
-          <el-form-item label="商品描述">
-            <span>{{ props.row.desc }}</span>
+          <el-form-item label="评论时间:">
+            <span>{{ props.row.commentTime }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
     <el-table-column
       label="商品货号"
-      prop="id">
+      align='center'
+      prop="productCode">
     </el-table-column>
     <el-table-column
       label="商品名称"
-      prop="name">
+      align='center'
+      prop="productName">
     </el-table-column>
     <el-table-column
-      label="简单描述"
-      prop="desc">
+      label="评价用户"
+      align='center'
+      prop="userName">
     </el-table-column>
     <el-table-column label="操作" width="160" align="center">
         <template slot-scope="scope">
@@ -97,34 +92,114 @@
         </template>
     </el-table-column>
   </el-table>
+    <div class="pagination-container">
+        <el-pagination
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            layout="total,sizes,prev, pager, next,jumper"
+            :current-page.sync="listQuery.pageNum"
+            :page-size="listQuery.pageSize"
+            :page-sizes="[5,10,15]"
+            :total="total">
+        </el-pagination>
+    </div>
   </div>        
 </template>
 
 <script>
+import {fetchList,deleteComment} from '@/api/productComment'
+const defaultListQuery = {
+    pageNum: 1,
+    pageSize: 10,
+    user:null,
+    productCode:null,
+    productName:'',
+  };
+
 export default {
     data(){
-        return {
-            tableData5: [{
-            id: '12987122',
-            name: '好滋好味鸡蛋仔',
-            category: '江浙小吃、小吃零食',
-            desc: '荷兰优质淡奶，奶香浓而不腻',
-            // address: '上海市普陀区真北路',
-            // shop: '王小虎夫妻店',
-            // shopId: '10333'
-            },
-            {
-            id: '12987126',
-            name: '好滋好味鸡蛋仔',
-            category: '江浙小吃、小吃零食',
-            desc: '荷兰优质淡奶，奶香浓而不腻',
-            // address: '上海市普陀区真北路',
-            // shop: '王小虎夫妻店',
-            // shopId: '10333'
-            }]
-        }
+      return {
+        total: null,
+        offset: 0,
+        limit: 20,
+        count: 0,
+        currentPage: 1,
+        listQuery: Object.assign({}, defaultListQuery),
+        list: [{
+            productCode: '12987122',
+            userName:'张三',
+            productName:'帽子',
+            title:'评论帽子',
+            content: '荷兰优质淡奶，奶香浓而不腻',
+            secondContent: '好滋好味鸡蛋仔',
+            commentTime: '2010-9-9',
+          },
+          {
+            productCode: '12987122',
+            userName:'张三',
+            productName:'帽子',
+            title:'评论帽子',
+            content: '荷兰优质淡奶，奶香浓而不腻',
+            secondContent: '好滋好味鸡蛋仔',
+            commentTime: '2010-9-9',
+          }
+        ],
+      }
     },
-    methods(){},
+    methods:{
+      
+      //获取搜索列表
+        getSearchList(){
+            this.listLoading=true;
+            //this.listQuery即为搜索条件
+            fetchList(this.listQuery).then(response => {
+              this.listLoading = false;
+              this.list = response.data.list;
+              this.total = response.data.total;
+            });
+        },
+
+        //获取搜索结果
+        handleSearchList(val){
+            this.listQuery.pageNum = 1;
+            this.listQuery.pageSize = val;
+            this.getSearchList();
+        },
+
+      //重置
+      handleResetSearch(){
+        this.listQuery = Object.assign({}, defaultListQuery);
+      },
+      
+      //删除管理员
+      handleDelete(index, row){
+          let ids=[];
+          ids.push(row.commentId);
+          this.deleteComment(ids);
+      },
+      
+      //删除详细信息
+      deleteComment(ids){
+          this.$confirm('是否要进行该删除操作?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+              }).then(() => {
+          //let params = new URLSearchParams(); //?????????????post 还是get??????
+          //params.append("ids",ids);
+          deleteComment(this.commentId).then(response=>{
+              this.$message({
+              message: '删除成功！',
+              type: 'success',
+              duration: 1000
+              });
+              this.listQuery.pageNum=1;
+              // this.getList();
+              });
+          })
+      },
+    },
     
 }
 </script>

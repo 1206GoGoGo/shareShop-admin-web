@@ -62,45 +62,45 @@
 <!--列表内容-->
         <div class="table-container">
             <el-table ref="productTable"
+                    highlight-current-row
                     :data="list"
                     style="width: 100%"
                     @selection-change="handleSelectionChange"  
-                    
+                    v-loading="listLoading"
                     border>     
-                    <!-- v-loading="listLoading"   -->
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="Number" width="180" align="center">
+                <el-table-column label="No." width="60" align="center">
                     <template slot-scope="scope">{{scope.row.managerInfoId}}</template>
                 </el-table-column>
                 <el-table-column label="Login Name"  width="180"  align="center">
-                    <template slot-scope="scope">{{scope.row.username}}</template>
+                    <template slot-scope="scope">{{scope.row.userLogin.username}}</template>
+                </el-table-column>
+                <el-table-column label="Permission"  width="100"  align="center">
+                    <template slot-scope="scope">{{scope.row.userLogin.level}}</template>
                 </el-table-column>
                 <el-table-column label="Real Name" width="180" align="center">
                     <template slot-scope="scope">{{scope.row.name}}</template>
                 </el-table-column>
-                <el-table-column label="Gender" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.gender}}</template>
-                </el-table-column>
-                <el-table-column label="Permission" width="300" align="center">
-                    <template slot-scope="scope">{{scope.row.level}}</template>
+                <el-table-column label="Gender" width="80" align="center">
+                    <template slot-scope="scope">{{scope.row.gender | genderFormatter}}</template>
                 </el-table-column>
                 <el-table-column label="Registration Time" width="200" align="center">
-                    <template slot-scope="scope">{{scope.row.registerTime}}</template>
+                    <template slot-scope="scope">{{scope.row.registerTime | dateFormatter}}</template>
                 </el-table-column>
-                <el-table-column label="Phone Number" width="280" align="center">
+                <el-table-column label="Phone Number" width="160" align="center">
                     <template slot-scope="scope">{{scope.row.phoneNumber}}</template>
                 </el-table-column>
-                <el-table-column label="ID Card" width="300" align="center">
+                <el-table-column label="ID Card" width="230" align="center">
                     <template slot-scope="scope">{{scope.row.identityCardNo}}</template>
                 </el-table-column>
-                <el-table-column label="Type of ID Card" width="280" align="center">
-                    <template slot-scope="scope">{{scope.row.identityCardType}}</template>
+                <el-table-column label="Type of ID Card" width="180" align="center">
+                    <template slot-scope="scope">{{scope.row.identityCardType | idFormatter}}</template>
                 </el-table-column>
                 <el-table-column label="Email" width="260" align="center">
                     <template slot-scope="scope">{{scope.row.email}}</template>
                 </el-table-column>
-                <el-table-column label="Date of Birth" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.birthday}}</template>
+                <el-table-column label="Date of Birth" width="200" align="center">
+                    <template slot-scope="scope">{{scope.row.birthday | dateFormatter}}</template>
                 </el-table-column>
                 <el-table-column label="Operate" width="160" align="center" fixed="right">
                     <template slot-scope="scope"> 
@@ -175,7 +175,7 @@
                 </el-form-item>
                 <el-form-item label="Type of ID Card:">
                     <el-select v-model="AdminDetail.identityCardType" placeholder="全部" clearable class="input-width">
-                        <el-option v-for="item in AdminDetail.identityCardType"
+                        <el-option v-for="item in IDCardType"
                             class="input-width"
                             :key="item.value"
                             :label="item.label"
@@ -196,8 +196,8 @@
                 </el-form-item>
                 <el-form-item label="Gender:">
                     <el-radio-group v-model="AdminDetail.gender" class="input-width">
-                        <el-radio :label="1">Male</el-radio>
-                        <el-radio :label="0">Female</el-radio>
+                        <el-radio :label="0">Male</el-radio>
+                        <el-radio :label="1">Female</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="Date of Birth:">
@@ -220,7 +220,7 @@
 <script>
 // import axios from 'axios'
 import {fetchList,getAdminDetail,updateManager,deleteManager} from '@/api/admin'
-
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -239,10 +239,10 @@ const defaultListQuery = {
     managerInfoId:null,
     name:'',
     username:'',
-    gender:'',
+    gender:0,
     phoneNumber:'',
     identityCardNo:'',
-    identityCardType:'',
+    identityCardType:null,
     email:'',
     birthday:'',
     level:[],
@@ -253,70 +253,48 @@ export default {
     created() {
       this.getList();
     },
+
+    //过滤器 格式化
+    filters: {
+        dateFormatter(time) {
+            let date = new Date(time);
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
+        },
+        genderFormatter(value){
+            if(value === "0"){return 'Male'} else {return 'Female'}
+        },
+        idFormatter(value)
+        {
+            if(value===0){return 'IDP'} //驾照
+            else if(value===1){return 'USP'} //护照
+            else {return 'SSN'}  //社会安全号
+        }
+    },
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
             AdminDetail: Object.assign({}, defaultAdminDetail),
-            list: [{
-                'managerInfoId': 12345678,
-                'username': 'michleSarah666',
-                'name': 'zhangsanying',
-                'gender': 0,
-                'level':'Super administrator',
-                'registerTime':'2019-08-1',
-                'phoneNumber': 18437963762,
-                'identityCardNo': 421987654321345567,
-                'identityCardType':0,
-                'email':'28973823@qq.com',    
-                'birthday':'1993-08-1',
-            },
-            {
-                'managerInfoId': 12345673,
-                'username': 'michleSarah111',
-                'name': 'zhangsanying',
-                'gender': 1,
-                'level':'Super administrator',
-                'registerTime':'2019-08-1',
-                'phoneNumber': 18437963762,
-                'identityCardNo': 421987654321345567,
-                'identityCardType':1,
-                'email':'28973823@qq.com',    
-                'birthday':'1993-08-1',
-            },
-            {
-                'managerInfoId': 12345670,
-                'username': 'michleSarah888',
-                'name': 'zhangsanying',
-                'gender': 0,
-                'level':'Super administrator',
-                'registerTime':'2019-08-1',
-                'phoneNumber': 18437963762,
-                'identityCardNo': 421987654321345567,
-                'identityCardType':0,
-                'email':'28973823@qq.com',    
-                'birthday':'1993-08-1',
-            }
-            ],
-            // total: null,
+            list:null,
+            total: null,
             offset: 0,
             limit: 20,
             count: 0,
             currentPage: 1,
-            // listLoading: true,
-
-            // AdminDetail:{
-            //     managerInfoId:null,
-            //     name:'',
-            //     username:'',
-            //     gender:'',
-            //     phoneNumber:'',
-            //     identityCardNo:'',
-            //     identityCardType:'',
-            //     registerTime:'',
-            //     email:'',
-            //     birthday:'',
-            //     level:[],
-            // },
+            listLoading: true,
+            IDCardType:[
+                {
+                    label: "IDP",
+                    value: 0
+                },
+                {
+                    label: "USP",
+                    value: 1
+                },
+                {
+                    label: "SSN",
+                    value: 2
+                }
+            ],
             level: [{
                 value: 0,
                 label: '超级管理员'
@@ -331,6 +309,19 @@ export default {
                 label: '订单管理员'
             }],
             dialogVisible:false,
+            // AdminDetail:{
+            //     managerInfoId:null,
+            //     name:'',
+            //     username:'',
+            //     gender:'',
+            //     phoneNumber:'',
+            //     identityCardNo:'',
+            //     identityCardType:'',
+            //     registerTime:'',
+            //     email:'',
+            //     birthday:'',
+            //     level:[],
+            // },
         }
     },
     methods:{
@@ -340,15 +331,19 @@ export default {
             //this.listQuery为空即为查询全部，有查询条件根据条件查询
             fetchList(this.listQuery).then(response => {
                 this.listLoading = false;
-                this.list = response.data.list;
+                this.list = response.data;
                 this.total = response.data.total;
+                // console.log(this.list)
+                // alert(this.list.gender)
             });
         },
-        //获取搜索结果
+        //获取搜索结果?????????????????????????????????????有错
         handleSearchList(val){
             this.listQuery.pageNum = 1;
             this.listQuery.pageSize = val;
             this.getList();
+            // console.log(listQuery)
+            // alert(listQuery)
         },
         //重置
         handleResetSearch(){

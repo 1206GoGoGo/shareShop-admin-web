@@ -10,7 +10,7 @@
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
-                    查询结果
+                    查询
                 </el-button>
                 <el-button
                     style="float: right;margin-right: 15px"
@@ -61,37 +61,36 @@
 <!--信息的表头 S-->
         <el-table
         :data="list"
+        highlight-current-row
         style="width: 100%"
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
-                        <!-- <el-form-item label="地址：">
-                            <span>{{ props.row.firstAddr }}</span>
-                        </el-form-item> -->
-                        <el-form-item label="真实姓名：">
+                        <!-- <el-form-item label="真实姓名：">
                             <span>{{ props.row.name }}</span>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="邮箱：" class="label-position">
                             <span>{{ props.row.email }}</span>
                         </el-form-item>
+                        <el-form-item label="注册时间：">
+                            <span>{{ props.row.registerTime | dateFormatter}}</span>
+                        </el-form-item>
                         <el-form-item label="证件类型：">
-                            <span>{{ props.row.identityCardType }}</span>
+                            <span>{{ props.row.identityCardType | idFormatter}}</span>
                         </el-form-item>
                         <el-form-item label="证件号码：">
                             <span>{{ props.row.identityCardNo }}</span>
                         </el-form-item>
-                        <el-form-item label="用户状态："><!--冻结、可用！！！！！用按钮-可以修改的那种-->
+                        <!--冻结、可用！！！！！用按钮-可以修改的那种-->
+                        <!-- <el-form-item label="用户状态：">
                             <span>{{ props.row.status }}</span>
-                        </el-form-item>
-                        <el-form-item label="注册时间：">
-                            <span>{{ props.row.registerTime }}</span>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="出生日期：">
-                            <span>{{ props.row.birthday }}</span>
+                            <span>{{ props.row.birthday | dateFormatter }}</span>
                         </el-form-item>
                         <el-form-item label="性别：">
-                            <span>{{ props.row.gender }}</span>
+                            <span>{{ props.row.gender | genderFormatter}}</span>
                         </el-form-item>
                     </el-form>
                 </template>
@@ -100,48 +99,51 @@
                 type="selection"
                 width="55">
             </el-table-column>
+            <!-- <el-table-column
+                type="index"
+                label="编号"
+                align='center'
+                width="55">
+            </el-table-column> -->
             <el-table-column
-                style="text-align: center"
+                align='center'
                 label="编号"
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
-             style="text-align: center"
+                align='center'
                 label="登录名"
                 prop="username">
             </el-table-column>
-            <!-- <el-table-column
-             style="text-align: center"
+            <el-table-column
+                align='center'
                 label="真实姓名"
                 prop="name">
-            </el-table-column> -->
+            </el-table-column>
             <!-- <el-table-column
-             style="text-align: center"
+                align='center'
                 label="用户级别"
                 prop="level">
             </el-table-column> -->
             <el-table-column
-             style="text-align: center"
+                align='center'
                 label="手机号"
                 prop="phoneNumber">
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
-                <template slot-scope="scope"  >
-                    
+                <template slot-scope="scope" >
+                    <el-button
+                        size="mini"
+                        @click="getUserAddr(scope.$index, scope.row)">地址
+                    </el-button>
                     <el-button
                         size="mini"
                         @click="handleUpdateUser(scope.$index, scope.row)">编辑
                     </el-button>
-                   
                     <el-button
                         size="mini"
                         type="danger"
                         @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
-                    
-                    <el-button
-                        size="mini"
-                        @click="getUserAddr(scope.$index, scope.row)">获取地址
                     </el-button>
                 </template>
             </el-table-column>
@@ -162,98 +164,19 @@
         </div>
 <!--分页 E-->
 
-        <!-- v-loading="listLoading" -->
-        <!-- <div class="table-container">
-            <el-table ref="productTable"
-                        :data="list"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange"
-                        
-                        border>
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="编号" width="60" align="center">
-                    <template slot-scope="scope">{{scope.row.userInfoId}}</template>
-                </el-table-column>
-                <el-table-column label="登录名" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.name}}</template>
-                </el-table-column>
-                <el-table-column label="真实姓名" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.name}}</template>
-                </el-table-column>
-                <el-table-column label="手机号" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="用户地址" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="注册时间" width="140" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="用户状态" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="邮箱" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="证件号码" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="证件类型" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="出生日期" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="性别" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="操作" width="160" align="center">
-                    <template slot-scope="scope">
-                        <p>
-                        <el-button
-                            size="mini"
-                            @click="handleShowUser(scope.$index, scope.row)">查看
-                        </el-button>
-                        <el-button
-                            size="mini"
-                            @click="handleUpdateUser(scope.$index, scope.row)">编辑
-                        </el-button>
-                        </p>
-                        <p>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button>
-                        </p>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="20"
-                  layout="total, prev, pager, next"
-                  :total="count">
-                </el-pagination>
-            </div>
-        </div> -->
-
 <!--修改信息的弹出框 S-->
         <el-dialog                    
             title="用户信息"
             
-            :visible.sync="dialogVisible" width="70%">
+            :visible.sync="dialogFormVisible" width="70%">
             <el-form :model="UserDetail"  :inline="true"
                     ref="DetailForm" label-width="150px">
                 <el-form-item label="编号:">
                     <el-input v-model="UserDetail.userInfoId" class="input-width" readonly></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="登录名:">
+                <el-form-item label="登录名:">
                     <el-input v-model="UserDetail.username" class="input-width" readonly></el-input>
-                </el-form-item> -->
+                </el-form-item>
                 <el-form-item label="姓名:">
                     <el-input v-model="UserDetail.name" class="input-width"></el-input>
                 </el-form-item>
@@ -263,12 +186,20 @@
                 <el-form-item label="邮箱:">
                     <el-input v-model="UserDetail.email" class="input-width"></el-input>
                 </el-form-item>
+                <el-form-item label="出生年月:">
+                    <el-date-picker
+                        v-model="UserDetail.birthday"
+                        class="input-width"
+                        type="date"
+                        placeholder="Please Select Time">
+                    </el-date-picker>
+                </el-form-item>
                 <el-form-item label="证件号码:">
                     <el-input v-model="UserDetail.identityCardNo" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="证件类型:">
                     <el-select v-model="UserDetail.identityCardType" placeholder="全部" clearable class="input-width">
-                        <el-option v-for="item in UserDetail.identityCardType"
+                        <el-option v-for="item in idCardType"
                             class="input-width"
                             :key="item.value"
                             :label="item.label"
@@ -276,7 +207,7 @@
                         </el-option>
                         </el-select>
                 </el-form-item>
-                <el-form-item label="用户状态:">
+                <!-- <el-form-item label="用户状态:">
                     <el-select v-model="UserDetail.status" placeholder="全部" clearable class="input-width">
                         <el-option v-for="item in UserDetail.status"
                             class="input-width"
@@ -285,18 +216,10 @@
                             :value="item.value">
                         </el-option>
                         </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="注册时间:">
                     <el-date-picker
                         v-model="UserDetail.registerTime"
-                        class="input-width"
-                        type="date"
-                        placeholder="Please Select Time">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="出生年月:">
-                    <el-date-picker
-                        v-model="UserDetail.birthday"
                         class="input-width"
                         type="date"
                         placeholder="Please Select Time">
@@ -310,35 +233,74 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleConfirm">确 定</el-button>
             </span>
         </el-dialog>
 <!--修改信息的弹出框 E-->
+<!--地址弹出框 S-->
+        <el-dialog                    
+            title="用户地址信息"
+            
+            :visible.sync="dialogTableVisible" width="90%">
+            <el-table ref="AddrTable"
+                    highlight-current-row
+                    :data="Addrlist"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange"  
+                    v-loading="listLoading"
+                    border>     
+                <el-table-column label="NO." type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="邮编" width="90" align="center">
+                    <template slot-scope="scope">{{scope.row.postalCode}}</template>
+                </el-table-column>
+                <el-table-column label="州"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.state}}</template>
+                </el-table-column>
+                <el-table-column label="市"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.city}}</template>
+                </el-table-column>
+                <el-table-column label="第一地址"  width="260"  align="center">
+                    <template slot-scope="scope">{{scope.row.firstAddr}}</template>
+                </el-table-column>
+                <el-table-column label="第二地址"  width="260"  align="center">
+                    <template slot-scope="scope">{{scope.row.secondAddr}}</template>
+                </el-table-column>
+                <el-table-column label="是否默认"  width="100"  align="center">
+                    <template slot-scope="scope">{{scope.row.isDefault | defaultFormatter}}</template>
+                </el-table-column>
+                <el-table-column label="修改时间"  width="180"  align="center">
+                    <template slot-scope="scope">{{scope.row.modifiedTime | dateFormatter}}</template>
+                </el-table-column>
+            </el-table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogTableVisible = false" type="primary">返 回</el-button>
+            </span>
+        </el-dialog>
+<!--地址弹出框 E-->
     </div>
 </template>
 
 <script>
 
-import {fetchList,getUserDetail,updateUser,deleteUser} from '@/api/user'
+import {fetchList,getUserDetail,updateUser,fetchUserAddr,deleteUser} from '@/api/user'
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
     
-    // userInfoId:null,
-    // name:null,
-    username:null,
-    // phoneNumber:null,
-    // identityCardNo:null,
-    // email:null,
-    // level:null
+    sellerName:null,
+    //level:''????????????????????????
+    //status:null,???????????????????????
   };
 
 export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
-            dialogVisible:false,
+            dialogFormVisible:false,
+            dialogTableVisible:false,
+            //listLoading: true,
             // list: null,
             list: [{
                 userInfoId:23233432,
@@ -348,9 +310,22 @@ export default {
                 phoneNumber:12362734349,
                 identityCardNo:344321323443,
                 email:'23627834@qq.com',
-                // firstAddr:'湖北省武汉市珞狮路122号 邮编：430070',
                 registerTime:'1990-8-8',
-                identityCardType:'身份证',
+                identityCardType:2,
+                status:'正常',
+                birthday:'1990-8-8',
+                gender:'0',
+            },
+            {
+                userInfoId:23233432,
+                name:'张三',
+                username:'dsddfdf',
+                level:'会员',
+                phoneNumber:12362734349,
+                identityCardNo:344321323443,
+                email:'23627834@qq.com',
+                registerTime:'1990-8-8',
+                identityCardType:0,
                 status:'正常',
                 birthday:'1990-8-8',
                 gender:'女',
@@ -363,32 +338,46 @@ export default {
                 phoneNumber:12362734349,
                 identityCardNo:344321323443,
                 email:'23627834@qq.com',
-                // firstAddr:'地址：湖北省武汉市珞狮路122号 邮编：430070',
                 registerTime:'1990-8-8',
-                identityCardType:'身份证',
+                identityCardType:1,
                 status:'正常',
                 birthday:'1990-8-8',
-                gender:'女',
-            },
-            {
-                userInfoId:23233432,
-                name:'张三',
-                username:'dsddfdf',
-                level:'会员',
-                phoneNumber:12362734349,
-                identityCardNo:344321323443,
-                email:'23627834@qq.com',
-                // firstAddr:'地址：湖北省武汉市珞狮路122号 邮编：430070',
-                registerTime:'1990-8-8',
-                identityCardType:'身份证',
-                status:'正常',
-                birthday:'1990-8-8',
-                gender:'女',
+                gender:'1',
             }
             ],
 
-            //listLoading: true,
-            
+            // Addrlist:null,
+            Addrlist:
+            [
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                },
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                },
+                {
+                    postalCode:2323432,
+                    state:'weowewdfddfd',
+                    city:'dsddfwedeedf',
+                    firstAddr:'dkfhnerkfheifhdjk',
+                    secondAddr:'12362734349',
+                    isDefault:'1',
+                    modifiedTime:'1990-8-8',
+                }
+            ],
+          
             UserDetail:{
                 userInfoId:null,
                 name:null,
@@ -402,7 +391,43 @@ export default {
                 birthday:null,
                 gender:null,
             },
+            idCardType:[
+                {
+                    label:'IDP',
+                    value:0   
+                },
+                {
+                    label:'USP',
+                    value:1   
+                },
+                {
+                    label:'SSN',
+                    value:2   
+                }
+            ],
         }
+    },
+
+    filters:{
+        //证件类型转换
+        idFormatter(value){
+            if(value=== 0 ){ return 'IDP' }
+            else if(value=== 1){return 'USP' }
+            else if(value=== 2){return 'SSN'}
+            else{return 'Not clear'}
+        },
+        //日期转换
+        dateFormatter(time){
+            let date=new Date(time)
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
+        },
+        //性别转换
+        genderFormatter(value){
+            if(value==="0"){return 'Male'}
+            else if(value==="1"){return 'Female'}
+            else{return 'Not clear'}
+        }
+        
     },
     methods:{
 
@@ -416,7 +441,7 @@ export default {
             this.listLoading=true;
             fetchList(this.listQuery).then(response => {
             this.listLoading = false;
-            this.list = response.data.list;
+            this.list = response.data;
             this.total = response.data.total;
             });
         },
@@ -430,7 +455,7 @@ export default {
 
         // //获取用户详细信息
         // handleUpdateUser(index, row){
-        //     this.dialogVisible=true;
+        //     this.dialogFormVisible=true;
         //     // this.userInfoId=row.userInfoId;
         //     getUserDetail(row.userInfoId).then(response=>{
         //         this.UserDetail=response.data;
@@ -439,22 +464,29 @@ export default {
 
         //获取用户详细信息
         handleUpdateUser(index, row) {
-            this.dialogVisible = true;
+            this.dialogFormVisible = true;
             // this.isEdit = true;
             this.UserDetail = Object.assign({},row);
         },
 
-        //修改用户信息  this.managerInfoId
+        //修改用户信息 
         handleConfirm(){ 
             updateUser(this.UserDetail).then(response=>{
-                this.dialogVisible=false;
-                // this.managerInfoId=null;
+                this.dialogFormVisible=false;
                 this.$message({
                 message: '修改成功！',
                 type: 'success',
                 duration:1000
                 });
                 // this.getSearchList(); 
+            });
+        },
+
+        //获取用户地址
+        getUserAddr(index, row){
+            this.dialogTableVisible = true;  //this.userInfoId???
+            fetchUserAddr(row.userLogin.userId).then(response => {
+                this.list = response.data;
             });
         },
 

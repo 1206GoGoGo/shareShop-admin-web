@@ -1,10 +1,10 @@
-<template>
-    <div class="header_container">
+<template v-model="isCollapse">
+    <div class="header_container" >
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/mainPanel' }"><span class="Index">Index</span></el-breadcrumb-item>
-            <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
-            <!-- 绑定的那个页面@command="handleCommand"???????????????-->
+            <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index"><span class="Index">{{item}}</span></el-breadcrumb-item>
         </el-breadcrumb>
+
         <!-- @command="handleCommand" -->
         <!-- <el-dropdown       menu-align='start'>
             <img src="@/assets/images/girl.png" class="avator">
@@ -13,6 +13,18 @@
                 <el-dropdown-item command="signout">退出</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown> -->
+    <!-- <template v-for="item in routes">
+        <router-link tag="li"  class="nav-item nav-dropdown"  v-if="!item.hidden&&item.children&&item.children.length>0" :to="item.path+''+item.children[0].path"  disabled>
+            <div class="nav-link nav-dropdown-toggle" @click="handleClick"><Icon :type="item.icon" color="red"/>{{ item.name}}  </div>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item" v-for="child in item.children" :key="child" v-if='!child.hidden' @click="addActive">
+                    
+                    <router-link :to="item.path+'/'+child.path+'/'+child.children[0].path" class="nav-link" v-if="!child.hidden&&child.children" ><Icon :type="child.icon" color="red" />{{ child.name}} </router-link> 
+                    <router-link :to="item.path+'/'+child.path" class="nav-link" v-else="!child.children" ><Icon :type="child.icon"  color="red" /> {{ child.name}} </router-link> 
+                </li>
+            </ul>
+        </router-link>
+    </template> -->
 
         <el-popover
             placement="top-start"
@@ -32,7 +44,7 @@
             </el-row>
             <el-row :gutter="2" class="user-info-item-button">
                 <el-col :span="24">
-                    <el-button size="mini" type="primary" round>首页</el-button>
+                    <el-button size="mini" type="primary" round>商城</el-button>
                     <el-button size="mini" type="primary" round>退出</el-button>
                 </el-col>
                
@@ -53,12 +65,33 @@
 
 <script>
 export default {
+    props: {
+        routes: {
+            type: Array
+        }
+    },
     data(){
-
+        return{
+            isCollapse:true
+        }
+    },
+    methods:{
+        handleClick (e) {
+            e.preventDefault()
+            e.target.parentElement.classList.toggle('open')
+        },
+        addActive(e){
+            e.preventDefault()
+            e.target.parentElement.parentElement.parentElement.classList.add('open')
+        }
     },
 }
 </script>
 <style scoped>
+    .Index
+    {
+        cursor: pointer;
+    }
     /* .header{
         background: #EFF2F7;
         display: flex;
@@ -79,9 +112,7 @@ export default {
         color: #5b6270;
         text-decoration: none;
     }
-    .Index{
-        cursor: pointer;
-    } */
+     */
     /* a:hover{
         cursor: pointer;
     } */

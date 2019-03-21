@@ -35,6 +35,7 @@
 
     <el-table
     :data="tableData5"
+    highlight-current-row
     style="width: 100%">
     <el-table-column type="expand">
       <template slot-scope="props">
