@@ -120,7 +120,8 @@ export default {
         color: #5b6270;
     } */
     .header_container{
-		background-color: #EFF2F7;
+        /* background-color: #EFF2F7; */
+        background-color: #f2f2f2;
 		height: 60px;
 		display: flex;
 		justify-content: space-between;

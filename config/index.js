@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // target: 'http://10.120.203.64:8080/', //陈澄IP????????????
-      // target: 'http://10.141.1.206:8081/',//服务器IP  
-      target: 'http://10.120.203.1:8080/shareshopDM/', //王启论IP
+      target: 'http://10.141.1.206:8081/shareshopDM/',//服务器IP  
+      // target: 'http://10.120.203.1:8080/shareshopDM/', //王启论IP
       changeOrigin: true,
       // pathRewrite: {  
       //     '^/api': '/', //这里理解成用‘/api’代替target里面的地址，后面组件中我们掉接口时直接用api代替 比如我要调用'http://m.kugou.com/rank/info/?rankid=23784&page=1&json=true'，直接写‘/api/rank/info/?rankid=23784&page=1&json=true’即可  
@@ -51,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

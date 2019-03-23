@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 <!--条件搜索 S-->
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>条件搜索</span>
@@ -12,44 +12,31 @@
                     size="small">
                     查询
                 </el-button>
-                <el-button
+                <!--预留-->
+                <!-- <el-button
                     style="float: right;margin-right: 15px"
                     @click="handleResetSearch()"
                     size="small">
                     重置
-                </el-button>
+                </el-button> -->
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="登录名：">
                         <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
                     </el-form-item>
-                    <!-- <el-form-item label="真实姓名：">
-                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名"></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号："> 
-                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="证件号码：">
-                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码"></el-input>
-                    </el-form-item>
-                    <el-form-item label="用户等级:" prop="level">
-                        <el-select v-model="listQuery.level" placeholder="请选择" style="width: 203px">
-                            <el-option label="权限一" value="shanghai"></el-option>
-                            <el-option label="权限二" value="beijing"></el-option>
-                        </el-select>
+                    <!--预留根据时间查询！！！！！！！！！-->
+                    <!-- <el-form-item label="查询时间：">
+                        <el-date-picker
+                        style="width: 373px"
+                        v-model="listQuery.SearchDate"
+                        type="datetimerange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions1">
+                        </el-date-picker>
                     </el-form-item> -->
-                    <el-form-item label="查询时间：">
-                            <el-date-picker
-                            style="width: 373px"
-                            v-model="listQuery.SearchDate"
-                            type="datetimerange"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :picker-options="pickerOptions1">
-                            </el-date-picker>
-                    </el-form-item>
                 </el-form> 
             </div>
         </el-card>
@@ -64,9 +51,9 @@
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
-                        <el-form-item label="真实姓名">
+                        <!-- <el-form-item label="真实姓名">
                             <span>{{ props.row.name }}</span>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="消费商品">
                             <span>{{ props.row.poductName }}</span>
                         </el-form-item>
@@ -273,9 +260,9 @@ export default {
     methods:{
 
         //重置
-        handleResetSearch(){
-            this.listQuery = Object.assign({}, defaultListQuery);
-        },
+        // handleResetSearch(){
+        //     this.listQuery = Object.assign({}, defaultListQuery);
+        // },
 
         //获取搜索列表
         getSearchList(){

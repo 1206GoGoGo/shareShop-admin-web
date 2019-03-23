@@ -1,6 +1,6 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never">
+    <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
         <div>
             <i class="el-icon-search"></i>
             <span>条件查询</span>
@@ -20,7 +20,7 @@
         </div>
         <div style="margin-top: 15px">
           <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-            <el-form-item label="订单编号：">
+            <el-form-item label="订单号：">
                 <el-input v-model="listQuery.orderNumber" style="width: 203px" class="input-width" placeholder="订单编号"></el-input>
             </el-form-item>
             <el-form-item label="收货人：">
@@ -48,13 +48,12 @@
           </el-form>
         </div>
     </el-card>
-    <!-- show-overflow-tooltip 当内容过长被隐藏时显示 tooltip!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <!-- show-overflow-tooltip 当内容过长被隐藏时显示 tooltip!!!!!!!!!!!!!!!!!!!!!!!!!height="250"-->
     <div class="table-container">
       <el-table ref="orderTable"    
           highlight-current-row
           show-overflow-tooltip
-        
-          height="250"
+          
           :data="list"
           style="width: 100%;"
           @selection-change="handleSelectionChange"
@@ -66,23 +65,20 @@
         <el-table-column label="用户姓名" width="130" align="center">
           <template slot-scope="scope">{{scope.row.consigneeName}}</template>
         </el-table-column>
-        <el-table-column label="订单编号" width="180" align="center">
+        <el-table-column label="订单号" width="180" align="center">
           <template slot-scope="scope">{{scope.row.orderNumber}}</template>
-        </el-table-column>
-        <el-table-column label="提交时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
         </el-table-column>
         <el-table-column label="订单金额" width="120" align="center">
           <template slot-scope="scope">￥{{scope.row.paymentMoney}}</template>
         </el-table-column>
-        <el-table-column label="支付方式" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.paymentMode | formatPayType}}</template>
+        <el-table-column label="提交时间" width="180" align="center">
+          <template slot-scope="scope">{{scope.row.createTime | dateFormatter}}</template>
         </el-table-column>
-        <!-- <el-table-column label="订单来源" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.sourceType | formatSourceType}}</template>
-        </el-table-column> -->
+        <el-table-column label="支付方式" width="120" align="center">
+          <template slot-scope="scope">{{scope.row.paymentMode | typeFormatter}}</template>
+        </el-table-column>
         <el-table-column label="订单状态" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.orderStatus | formatStatus}}</template>
+          <template slot-scope="scope">{{scope.row.orderStatus | statusFormatter}}</template>
         </el-table-column>
         <el-table-column  label="操作" width="200" align="center">
           <template slot-scope="scope">
@@ -93,20 +89,20 @@
             <el-button
               size="mini"
               @click="handleCloseOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===0">关闭订单</el-button>
+              v-show="scope.row.orderStatus===0">关闭订单</el-button><!--待付款-->
             <el-button
               size="mini"
               @click="handleDeliveryOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===1">订单发货</el-button>
+              v-show="scope.row.orderStatus===1">订单发货</el-button><!--待发货-->
             <el-button
               size="mini"
-              @click="handleViewLogistics(scope.$index, scope.row)"
-              v-show="scope.row.status===2||scope.row.status===3">订单跟踪</el-button>
+              @click="handleViewLogistics(scope.$index, scope.row)"  
+              v-show="scope.row.orderStatus===2||scope.row.orderStatus===3">订单跟踪</el-button><!--已发货、已完成-->
             <el-button
               size="mini"
               type="danger"
               @click="handleDeleteOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===4">删除订单</el-button>
+              v-show="scope.row.orderStatus===4">删除订单</el-button><!--已完成-->
           </template>
         </el-table-column>
       </el-table>
@@ -143,7 +139,7 @@
         :total="total">
       </el-pagination>
     </div>
-    <!-- <el-dialog
+   <el-dialog
       title="关闭订单"
       :visible.sync="closeOrder.dialogVisible" width="30%">
       <span style="vertical-align: top">操作备注：</span>
@@ -159,12 +155,13 @@
         <el-button type="primary" @click="handleCloseOrderConfirm">确 定</el-button>
       </span>
     </el-dialog>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog> -->
+    <!-- <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog> -->
 
   </div> 
 </template>
 <script>
 import {fetchList} from '@/api/orders'
+import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -177,9 +174,60 @@ export default {
     data(){
         return{
           listQuery: Object.assign({}, defaultListQuery),
-          //listLoading: true,
+          closeOrder:[
+            {
+              dialogVisible:false,
+              content:null,
+            }
+          ],
+
+          //改为true
+          listLoading: false,
           list: null,
           total: null,
+          operateType:null,
+
+          //数字还是字符串？？？？？？？？？？？？？？？？？？
+          statusOptions:[
+            {
+              label:'Pending payment',//待付款
+              value:0,
+            },
+            {
+              label:'To be shipped',//待发货
+              value:1,
+            },
+            {
+              label:'Shipped',//已发货
+              value:2,
+            },
+            {
+              label:'Completed',//已完成
+              value:'3',
+            },
+            {
+              label:'Closed',//已关闭
+              value:'4',
+            },
+            {
+              label:'Returning',//退货中
+              value:'5',
+            },
+            {
+              label:'refunding',//退款中
+              value:'6',
+            }
+          ],
+          operateOptions:[
+            {
+              label:'关闭订单',
+              value:'0',
+            },
+            {
+              label:'删除订单',
+              value:'1',
+            },
+          ],
           list:[
             {
               orderId:'1231',
@@ -187,8 +235,8 @@ export default {
               consigneeName:'张三张三张三张三张三张三张三张三张三张三张三',
               createTime:'2019-2-2',
               paymentMoney:'2000',
-              paymentMode:'支付宝',
-              orderStatus:'已下单',
+              paymentMode:'',
+              orderStatus:0,
 
             },
             {
@@ -197,8 +245,8 @@ export default {
               consigneeName:'张三',
               createTime:'2019-2-2',
               paymentMoney:'2000',
-              paymentMode:'支付宝',
-              orderStatus:'已下单',
+              paymentMode:'1',
+              orderStatus:1,
             },
             {
               orderId:'1231',
@@ -206,9 +254,28 @@ export default {
               consigneeName:'张三',
               createTime:'2019-2-2',
               paymentMoney:'2000',
-              paymentMode:'支付宝',
-              orderStatus:'已下单',
-            }
+              paymentMode:'0',
+              orderStatus:2,
+            },
+            {
+              orderId:'1231',
+              orderNumber:'2323434',
+              consigneeName:'张三',
+              createTime:'2019-2-2',
+              paymentMoney:'2000',
+              paymentMode:'0',
+              orderStatus:3,
+            },
+            {
+              orderId:'1231',
+              orderNumber:'2323434',
+              consigneeName:'张三',
+              createTime:'2019-2-2',
+              paymentMoney:'2000',
+              paymentMode:'1',
+              orderStatus:4,
+            },
+
           ],
 
           pickerOptions2: {
@@ -239,9 +306,43 @@ export default {
           }]
           },
           selectTime:'',
-            
         }
     },
+
+    //过滤器 格式化
+    filters: {
+
+        //日期转变
+        dateFormatter(time) {
+            let date = new Date(time);
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
+        },
+        //支付方式格式
+        typeFormatter(value){
+            if(value === "0"){return '支付宝'} 
+            else if(value === "1"){return '微信'}
+            else {return 'Not claer'}
+        },
+        //状态转变
+        statusFormatter(value)
+        {
+            if(value===0){return 'Pending payment'} //待付款
+            else if(value===1){return 'To be shipped'} //待发货
+            else if(value===2){return 'Shipped'}  //已收货
+            else if(value===3){return 'Completed'}  //已完成
+            else if(value===4){return 'Closed'}  //已关闭
+            else if(value===5){return 'Returning'}  //退货中
+            else if(value===6){return 'refunding'}  //退款中
+            else {return 'Not claer'}
+        },
+        // defaultFormatter(value)
+        // {
+        //     if(value === "0"){return 'Default'} 
+        //     else if(value === "1"){return 'Undefault'}
+        //     else {return 'Not claer'}
+        // },
+    },
+
     methods:{
 
       //获取搜索列表
@@ -267,14 +368,19 @@ export default {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
 
-        handleBatchOperate(){},
-        handleViewOrder(){},
-        handleCloseOrder(){},
-        handleSelectionChange(){},
-        handleDeleteOrder(){},
-        handleViewLogistics(){},
-        handleDeliveryOrder(){},
-        handleCloseOrderConfirm(){},
+      handleBatchOperate(){},
+      handleViewOrder(){},
+      handleCloseOrder(index,row){
+        this.closeOrder.dialogVisible=true;
+
+      },
+      handleSelectionChange(){},
+      handleDeleteOrder(){},
+      handleViewLogistics(){},
+      handleDeliveryOrder(){},
+      handleCloseOrderConfirm(){},
+      handleCurrentChange(){},
+      handleSizeChange(){},
     }
 }
 </script>

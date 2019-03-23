@@ -7,6 +7,7 @@ import seller_info from '@/components/user/seller_user/seller_info'
 import seller_record from '@/components/user/seller_user/seller_record'
 import seller_setting from '@/components/user/seller_user/seller_setting'
 import seller_income from '@/components/user/seller_user/seller_income'
+import seller_profit from '@/components/user/seller_user/seller_profit'
 
 export default [
     {
@@ -63,6 +64,11 @@ export default [
         path:"/user/seller_user/seller_income",
         component:seller_income,
         meta: ['User','Seller','Income'],
+    },
+    {
+        path:"/user/seller_user/seller_profit",
+        component:seller_profit,
+        meta: ['User','Seller','Income','Profit_Information'],
     },
     
 ]

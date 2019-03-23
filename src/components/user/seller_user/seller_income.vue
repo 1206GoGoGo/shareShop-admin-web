@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
-                <span>条件搜索</span>
+                <span>条件查询</span>
                 <el-button
                     style="float: right"
                     @click="getSearchList()"
@@ -17,7 +17,8 @@
                     <el-form-item label="seller登陆名：">
                         <el-input style="width: 203px" v-model="listQuery.username"  placeholder="seller登陆名"></el-input>
                     </el-form-item>
-                    <el-form-item label="查询时间：">
+                    <!--预留 ！!!!!!!!!!!!!!!!!!!!!!!!!-->
+                    <!-- <el-form-item label="查询时间：">
                         <el-date-picker
                         style="width: 363px"
                         v-model="listQuery.querytime"
@@ -26,7 +27,7 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
                         </el-date-picker>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form>
             </div>
         </el-card>
@@ -39,28 +40,6 @@
                         @selection-change="handleSelectionChange"
                         
                         border>
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <!-- <el-table-column label="编号" width="100" align="center">
-                    <template slot-scope="scope">{{scope.row.yieldId}}</template>
-                </el-table-column> -->
-                <!-- <el-table-column label="商品名称"  align="center">
-                    <template slot-scope="scope">{{scope.row.poductName}}</template>
-                </el-table-column>
-                <el-table-column label="商品数量" width="80" align="center">
-                    <template slot-scope="scope">{{scope.row.productQuantity}}</template>
-                </el-table-column>
-                <el-table-column label="订单金额" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.orderMoeny}}</template>
-                </el-table-column>
-                <el-table-column label="支付金额" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.paymentMoney}}</template>
-                </el-table-column> -->
-                <!-- <el-table-column label="收益金额" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.yieldMoney}}</template>
-                </el-table-column>
-                <el-table-column label="收益时间" width="160" align="center">
-                    <template slot-scope="scope">{{scope.row.createTime}}</template>
-                </el-table-column> -->
                 <el-table-column label="交易时间" align="center">
                     <template slot-scope="scope">{{scope.row.createTime | dateFormatter}}</template>
                 </el-table-column>
@@ -77,13 +56,9 @@
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
-                            @click="handleGetDetail(scope.$index, scope.row)">获取详情
+                            type="primary"
+                            @click="handleGetDetail(scope.$index, scope.row)" >获取详情
                         </el-button>
-                        <!-- <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button> -->
                     </template>
                 </el-table-column>
             </el-table>
@@ -206,7 +181,7 @@ export default {
 
         //获取收益详情
         handleGetDetail(){
-            
+            this.$router.push({path:'/user/seller_user/seller_profit'})
         },
 
 

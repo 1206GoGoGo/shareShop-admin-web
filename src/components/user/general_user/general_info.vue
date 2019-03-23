@@ -1,47 +1,47 @@
 <template>
     <div class="app-container">
 <!--条件搜索 S-->
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>条件搜索</span>
                 <el-button
                     style="float: right"
+                    @click="handleSearchException()"
+                    type="danger"
+                    size="small">
+                    状态异常用户
+                </el-button>
+                <el-button
+                    style="float: right;margin-right: 15px"
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
                     查询
                 </el-button>
-                <el-button
+                <!-- <el-button
                     style="float: right;margin-right: 15px"
                     @click="handleResetSearch()"
                     size="small">
                     重置
-                </el-button>
+                </el-button> -->
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="登录名：">
-                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="真实姓名：">
-                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="手机号："> 
-                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="证件号码：">
-                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码" clearable></el-input>
                     </el-form-item>
-                    <el-button
-                        style="float: right"
-                        @click="handleSearchException()"
-                        type="primary"
-                        size="small">
-                        状态异常用户
-                    </el-button>
                     <el-form-item label="邮箱：">
-                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="邮箱"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="邮箱" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="用户级别：">
                         <el-select v-model="listQuery.level" placeholder="全部" clearable>
