@@ -95,25 +95,26 @@
                     </el-form>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 type="selection"
                 width="55">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 align='center'
                 label="编号"
+                width="90"
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="登录名"
-                prop="username">
+                prop="userLogin.username">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="用户级别"
                 :formatter="levelFormatter"
-                prop="level">
+                prop="userLogin.level">
             </el-table-column>
             <el-table-column
                 align='center'
@@ -140,7 +141,7 @@
         </el-table>
 <!--信息的表头 E-->
 <!--分页 S-->
-        <div class="pagination-container">
+        <!-- <div class="pagination-container">
             <el-pagination
                 background
                 @size-change="handleSizeChange"
@@ -150,6 +151,17 @@
                 :page-size="listQuery.pagesize"
                 :page-sizes="[5,10,15]"
                 :total="total">
+            </el-pagination>
+        </div> -->
+
+        <div class="Pagination">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="20"
+                layout="total, prev, pager, next"
+                :total="count">
             </el-pagination>
         </div>
 <!--分页 E-->
@@ -173,22 +185,11 @@
                 <el-form-item label="邮箱:">
                     <el-input v-model="UserDetail.email" class="input-width"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="用户级别:">
-                    <el-input v-model="UserDetail.level" readonly class="input-width"></el-input>
-                </el-form-item> --><!--未改好！！！！！！！！！！！-->
                 <el-form-item label="用户级别:">
-                    <el-select v-model="UserDetail.level" placeholder="请选择"  clearable class="input-width">
-                        <el-option v-for="item in selectlevel"
-                            readonly
-                            class="input-width"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                        </el-select>
+                    <el-input v-model="UserDetail.level" readonly class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="性别:"><!--到显示框中不可用！！！！！！！！！！！！！-->
-                    <el-radio-group v-model="UserDetail.gender" class="input-width">
+                <el-form-item label="性别:"><!--"到显示框中不可用！！！！！！！！！！！！！-->
+                    <el-radio-group v-model="UserDetail.gender" @change="Tellgender" class="input-width">
                         <el-radio :label="0">Male</el-radio>
                         <el-radio :label="1">Female</el-radio>
                     </el-radio-group>
@@ -289,16 +290,17 @@
 import {getLists,fetchList,getUserDetail,updateUser,fetchUserAddr,deleteUser} from '@/api/user'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
-    pageindex: 1,
-    pagesize: 10,
+    pageindex: 0,
+    pagesize: 20,
 
+    id:null,
     name:null,
     username:null,
     phoneNumber:null,
     identityCardNo:null,
     email:null,
     level:null,
-    status:1,
+    status:null,
   };
 
 export default {
@@ -308,6 +310,12 @@ export default {
             dialogFormVisible:false,
             dialogTableVisible:false,
             listLoading: true,
+            //分页
+            currentPage: 1,
+            offset: 0,
+            limit: 20,
+            count: 0,
+
             IDCardType:[
                 {
                     label: "IDP",
@@ -325,109 +333,27 @@ export default {
             selectlevel:[
                 {
                     label: "general user",
-                    value: '0'
+                    value: 1
                 },
                 {
                     label: "member",
-                    value: '1'
+                    value: 2
                 }
             ],
-            lavel:[
-                {
-                    label: "seller",
-                    value: '0'
-                },
-                {
-                    label: "member",
-                    value: '1'
-                }
-            ],
-            // list: null,
-            list: [
-                {
-                    userInfoId:23233432,
-                    name:'张三',
-                    username:'dsddfdf',
-                    level:'1',
-                    phoneNumber:12362734349,
-                    identityCardNo:344321323443,
-                    email:'23627834@qq.com',
-                    registerTime:'2018-3-28',
-                    identityCardType:2,
-                    birthday:'2010-8-24',
-                    gender:'0',
-                },
-                {
-                    userInfoId:23233432,
-                    name:'张三',
-                    username:'dsddfdf',
-                    level:'0',
-                    phoneNumber:12362734349,
-                    identityCardNo:344321323443,
-                    email:'23627834@qq.com',
-                    registerTime:'2001-9-28',
-                    identityCardType:1,
-                    birthday:'1994-8-12',
-                    gender:'1',
-                },
-                {
-                    userInfoId:23233432,
-                    name:'张三',
-                    username:'dsddfdf',
-                    level:'0',
-                    phoneNumber:12362734349,
-                    identityCardNo:344321323443,
-                    email:'23627834@qq.com',
-                    registerTime:'1990-8-8',
-                    identityCardType:0,
-                    birthday:'1990-8-8',
-                    gender:'0',
-                }
-            ],
-            // Addrlist:null,
-            Addrlist:
-            [
-                {
-                    postalCode:2323432,
-                    state:'weowewdfddfd',
-                    city:'dsddfwedeedf',
-                    firstAddr:'dkfhnerkfheifhdjk',
-                    secondAddr:'12362734349',
-                    isDefault:'1',
-                    modifiedTime:'1990-8-8',
-                },
-                {
-                    postalCode:2323432,
-                    state:'weowewdfddfd',
-                    city:'dsddfwedeedf',
-                    firstAddr:'dkfhnerkfheifhdjk',
-                    secondAddr:'12362734349',
-                    isDefault:'1',
-                    modifiedTime:'1990-8-8',
-                },
-                {
-                    postalCode:2323432,
-                    state:'weowewdfddfd',
-                    city:'dsddfwedeedf',
-                    firstAddr:'dkfhnerkfheifhdjk',
-                    secondAddr:'12362734349',
-                    isDefault:'1',
-                    modifiedTime:'1990-8-8',
-                }
-            ],
-
+            list: null,
+            Addrlist:null,
             UserDetail:{
                 userInfoId:null,
                 name:null,
                 username:null,
+                level:null,
                 phoneNumber:null,
                 identityCardNo:null,
                 email:null,
                 registerTime:null,
                 identityCardType:null,
                 birthday:null,
-                gender:null,
-                level:null,
+                gender:0,               
             },
         }
     },
@@ -444,7 +370,7 @@ export default {
         genderFormatter(value){
             if(value === "0"){return 'Male'} 
             else if(value === "1"){return 'Female'}
-            else {return 'Not claer'}
+            else {return 'Not clear'}
         },
         // //状态转变
         // statusFormatter(value){
@@ -457,13 +383,13 @@ export default {
             if(value===0){return 'IDP'} //驾照
             else if(value===1){return 'USP'} //护照
             else if(value===2){return 'SSN'}  //社会安全号
-            else {return 'Not claer'}
+            else {return 'Not clear'}
         },
         defaultFormatter(value)
         {
-            if(value === "0"){return 'Default'} 
-            else if(value === "1"){return 'Undefault'}
-            else {return 'Not claer'}
+            if(value === 0){return 'UnDefault'} 
+            else if(value === 1){return 'default'}
+            else {return 'Not clear'}
         },
     },
     //初始化
@@ -474,20 +400,29 @@ export default {
 
         //初始化列表
         getList(){
-            this.status=1  //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？
+            this.listQuery.status='1' 
+            this.listQuery.id=null
+            this.listQuery.pageindex=0
+            this.listQuery.pagesize=20
             getLists(this.listQuery).then(response => {
-            // getLists(this.status,{pagesize: 10, pageindex: 1,}).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
             })
         },
 
+        Tellgender(value){
+            if(value==='0') {return 'Male'}
+            else if(value === '1'){return 'Female'}
+            else { return 'Not clear' }
+        },
+
         //级别转换
         levelFormatter:function(row,column){
-            let level=row.level
-            if(level === '0'){return 'seller'} 
-            else if(level === '1'){return 'member'}
+            let level=row.userLogin.level
+            if(level === 1){return 'general user'} 
+            else if(level === 2){return 'member'}
+            else { return 'Not clear' }
         },
 
         //获取搜索列表
@@ -502,42 +437,57 @@ export default {
         },
         
         //获取搜索结果
-        handleSearchList(val){
-            this.listQuery.pageindex = 1;
-            this.listQuery.pagesize = val;
+        handleSearchList(){
+            this.listQuery.pageindex = '0';
+            this.listQuery.pagesize = 20;
             this.getSearchList();
         },
 
         //重置
-        handleResetSearch(){
-            this.listQuery = Object.assign({}, defaultListQuery);
-        },
+        // handleResetSearch(){
+        //     this.listQuery = Object.assign({}, defaultListQuery);
+        // },
 
         //获取状态异常用户
         handleSearchException(){
-            this.status=0
-            getLists(this.status,{pagesize: 10, pageindex: 1,}).then(response => {
+            this.listQuery.status='0'
+            getLists(this.listQuery).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
             });
         },
 
-        //获取用户详细信息
-        // handleUpdateUser(index, row){
-        //     this.dialogFormVisible=true;
-        //     this.userInfoId=row.userInfoId;
-        //     getUserDetail(row.userInfoId).then(response=>{
-        //         this.UserDetail=response.data;
-        //     });
-        // },
+        //获取用户详细信息   有问题???????????????????????
+        handleUpdateUser(index, row){
+            this.dialogFormVisible=true
+            this.listQuery.pageindex=null
+            this.listQuery.pagesize=null
+            this.listQuery.status=null
+            this.listQuery.id=row.userId
+            getUserDetail(this.listQuery).then(response=>{
+                this.UserDetail=response.data;
+                //这两行将跨表查询的字段也显示到了弹出框上面！
+                this.UserDetail.username=response.data.userLogin.username
+                this.UserDetail.level=response.data.userLogin.level
+                    if(this.UserDetail.level === 1){this.UserDetail.level= 'general user'} 
+                    else if(this.UserDetail.level === 2){this.UserDetail.level=  'member'}
+                    else { this.UserDetail.level=  'Not clear' }
+                // this.UserDetail.gender=response.data.gender
+                //     if(this.UserDetail.gender === '0'){this.UserDetail.gender.label= '0'} 
+                //     else if(this.UserDetail.gender === '1'){this.UserDetail.gender.label= '1'}
+                //     else { this.UserDetail.gender=  'Not clear' }
+                
+
+            });
+        },
 
         //获取用户详细信息
-        handleUpdateUser(index, row) {
-            this.dialogFormVisible = true;
-            // this.isEdit = true;
-            this.UserDetail = Object.assign({},row);
-        },
+        // handleUpdateUser(index, row) {
+        //     this.dialogFormVisible = true;
+        //     // this.isEdit = true;
+        //     this.UserDetail = Object.assign({},row);
+        // },
 
         //修改用户信息
         handleConfirm(){ 
@@ -552,11 +502,15 @@ export default {
             });
         },
 
-        //获取用户地址
+        //获取用户地址  有问题???????????????????????
         getUserAddr(index, row){
-            this.dialogTableVisible = true;  //this.userInfoId???
-            fetchUserAddr(row.userLogin.userId).then(response => {
-                this.list = response.data;
+            this.dialogTableVisible = true
+            this.listQuery.pageindex=null
+            this.listQuery.pagesize=null
+            this.listQuery.status=null
+            this.listQuery.id=row.userId
+            fetchUserAddr(this.listQuery).then(response => {
+                this.Addrlist = response.data;
             });
         },
 
@@ -582,22 +536,33 @@ export default {
                     type: 'success',
                     duration: 1000
                 });
-                this.listQuery.pageindex=1;
+                this.listQuery.pageindex='0';
                 // this.getSearchList();     
                 });
             })
         },
 
         //获取页码
-        handleSizeChange(val){
-            this.listQuery.pageindex = 1;
-            this.listQuery.pagesize = val;
-            //this.getList();       
+        // handleSizeChange(val){
+        //     this.listQuery.pageindex = '0';
+        //     this.listQuery.pagesize = val;
+        //     //this.getList();       
+        // },
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
         },
+
+
         //获取当前页
+        // handleCurrentChange(val) {
+        //     this.listQuery.pageindex = '0';
+        //     //this.getList();        
+        // },
+
         handleCurrentChange(val) {
-            this.listQuery.pageindex = val;
-            //this.getList();        
+            this.currentPage = val;
+            this.offset = (val - 1)*this.limit;
+            this.getList()
         },
 
         handleSelectionChange(){},

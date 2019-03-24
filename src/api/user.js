@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 //----------------------------------普通用户--------------------------------------------
-//初始化得到列表/查询状态异常用户 （状态=1：正常；状态=10：异常）
+//初始化得到列表/查询状态异常用户 （状态=1：正常；状态=0：异常）
 export function getLists(params) {   //seller也在用这个表，level='3'
   return request({
     url:'/member/info/getList',

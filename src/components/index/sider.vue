@@ -1,5 +1,5 @@
 <template>
-<div class="sider sidebar-container">
+<div class="sider">
     <div class="top">
         Share Shop Admin</div>
         <!-- class="title-area" <img class="whut-logo" src="../../assets/whut-logo.png"> -->
@@ -186,19 +186,6 @@ export default {
 </script>
 
 <style scoped>
-.sidebar-container
-{
-    transition: width .28s;
-    height: 100%;
-    position: fixed;
-    font-size: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
-    overflow: hidden; 
-    /* width: 180px!important; */
-}
 
     .sider{
         display: block;
@@ -208,7 +195,7 @@ export default {
         bottom:0px;
         background-color:#5b6270;
         height: 100%;
-        position: fixed; 
+        position: fixed;  
         z-index: 1001;
         overflow: hidden;
     }

@@ -77,21 +77,21 @@
                     </el-form>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 type="selection"
                 width="55">
-            </el-table-column>
-            <el-table-column
+            </el-table-column> -->
+            <!-- <el-table-column
                 type="index"
                 label="编号"
                 align='center'
                 width="55">
-            </el-table-column>
-            <!-- <el-table-column
+            </el-table-column> -->
+            <el-table-column
                 label="编号" 
                 align='center'
                 prop="userInfoId">
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
                 label="登录名"
                 align='center'
@@ -135,16 +135,26 @@
         </el-table>
 <!--信息的表头 E-->
 <!--分页 S-->
-        <div class="pagination-container">
+        <!-- <div class="pagination-container">
             <el-pagination
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 layout="total, sizes,prev, pager, next,jumper"
-                :current-page.sync="listQuery.pageNum"
-                :page-size="listQuery.pageSize"
+                :current-page.sync="listQuery.pageindex"
+                :page-size="listQuery.pagesize"
                 :page-sizes="[5,10,15]"
                 :total="total">
+            </el-pagination>
+        </div> -->
+        <div class="Pagination">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="20"
+                layout="total, prev, pager, next"
+                :total="count">
             </el-pagination>
         </div>
 <!--分页 E-->        
@@ -266,8 +276,8 @@
 import {getLists,fetchUserAddr,fetchListSeller,getSellerDetail,updateSeller,deleteSeller} from '@/api/user'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
+    pageindex: 0,
+    pagesize: 20,
     
     // userInfoId:null,
     name:null,
@@ -275,8 +285,8 @@ const defaultListQuery = {
     phoneNumber:null,
     identityCardNo:null,
     email:null,
-    level:'3',//seller的级别！！！！！！！！！！！！！！！！！
-    status:1,
+    level:null,//seller的级别！！！！！！！！！！！！！！！！！
+    status:null,
   };
 
 export default {
@@ -286,6 +296,12 @@ export default {
             dialogFormVisible:false,
             dialogTableVisible:false,
             //listLoading: true,
+
+            //分页
+            currentPage: 1,
+            offset: 0,
+            limit: 20,
+            count: 0,
             IDCardType:[
                 {
                     label: "IDP",
@@ -375,10 +391,7 @@ export default {
                     modifiedTime:'1990-8-8',
                 }
             ],
-            // offset: 0,
-            // limit: 20,
-            // count: 0,
-            // currentPage: 1,
+
             SellerDetail:{
                 userInfoId:null,
                 name:null,
@@ -427,14 +440,14 @@ export default {
         }
     },
     created(){
-        getList();
+        this.getList();
     },
     methods:{
         //初始化列表
         getList(){
-            this.status=1  //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？
-            // getLists(this.listQuery).then(response => {
-            getLists(this.status,{pageSize: 10, pageNum: 1,}).then(response => {
+            this.listQuery.status=1 //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？
+            getLists(this.listQuery).then(response => {
+            // getLists(this.status,{pagesize: 10, pageindex: 1,}).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
@@ -453,8 +466,8 @@ export default {
 
         //获取搜索结果
         handleSearchList(val){
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
+            this.listQuery.pageindex = 1;
+            this.listQuery.pagesize = val;
             this.getSearchList();
         },
 
@@ -522,23 +535,34 @@ export default {
                 type: 'success',
                 duration: 1000
                 });
-                this.listQuery.pageNum=1;
+                this.listQuery.pageindex=1;
                 // this.getSearchList();     ?????????????
                 });
             })
         },
 
         //获取页码
-        handleSizeChange(val){
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
-            // this.getList();       ?????????????????
-        },
+        // handleSizeChange(val){
+        //     this.listQuery.pageindex = 1;
+        //     this.listQuery.pagesize = val;
+        //     // this.getList();       ?????????????????
+        // },
         //获取当前页
-        handleCurrentChange(val) {
-            this.listQuery.pageNum = val;
-            // this.getList();        ????????????????????
+        // handleCurrentChange(val) {
+        //     this.listQuery.pageindex = val;
+        //     // this.getList();        ????????????????????
+        // },
+
+
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
         },
+
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.offset = (val - 1)*this.limit;
+            this.getList()
+        },        
 
         handleSelectionChange(){},
     }

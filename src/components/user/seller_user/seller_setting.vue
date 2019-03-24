@@ -2,7 +2,7 @@
     <div class="app-container">
         <el-card shadow="never" class="card">
             <div class="setting">
-                <el-form :inline="true" :model="DiscountSetting" size="small" ref="SettingForm" label-width="150px">
+                <el-form :inline="true" :model="DiscountSetting" size="small" ref="SettingForm" label-width="200px">
                     <el-alert class="alert"
                         title="Note that the unit of the discount here is the percentage"
                         type="warning"
