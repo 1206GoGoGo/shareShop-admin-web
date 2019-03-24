@@ -45,6 +45,7 @@
 <!--主表格 S-->            
         <el-table
         highlight-current-row
+        :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
         :data="listRecord"
         style="width: 100%"
         @selection-change="handleSelectionChange">

@@ -126,7 +126,8 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-left: 20px;
+        padding-left: 20px;
+        margin-left:0px;
     }
     
     /* .wh(36px, 36px); */

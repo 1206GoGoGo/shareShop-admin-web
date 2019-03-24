@@ -52,6 +52,7 @@
     <div class="table-container">
       <el-table ref="orderTable"    
           highlight-current-row
+          :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
           show-overflow-tooltip
           
           :data="list"

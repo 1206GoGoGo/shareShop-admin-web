@@ -106,7 +106,7 @@
             </div>
 <!--商品表 E-->
             <div style="padding-top:20px;">
-                <span>商品信息:</span>
+                <span>提现信息:</span>
             </div>
 <!--提现表 S-->
             <div class="table-container">
@@ -124,10 +124,10 @@
                     <el-table-column label="交易金额" width="130" align="center">
                         <template slot-scope="scope">{{scope.row.consigneeName}}</template>
                     </el-table-column>
-                    <el-table-column label="到账银行" width="100" align="center">
+                    <el-table-column label="到账银行" width="160" align="center">
                         <template slot-scope="scope">{{scope.row.paymentMode | typeFormatter}}</template>
                     </el-table-column>
-                    <el-table-column label="银行卡号" width="100" align="center">
+                    <el-table-column label="银行卡号" width="260" align="center">
                         <template slot-scope="scope">{{scope.row.orderId}}</template>
                     </el-table-column>
                 </el-table>

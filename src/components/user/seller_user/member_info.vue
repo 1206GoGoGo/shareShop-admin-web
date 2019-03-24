@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 <!--条件搜索 S-->
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>条件搜索</span>
@@ -62,6 +62,7 @@
         <el-table
         :data="list"
         highlight-current-row
+        :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
         style="width: 100%"
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">

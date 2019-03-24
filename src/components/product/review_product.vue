@@ -1,6 +1,6 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never">
+    <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
       <div>
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>

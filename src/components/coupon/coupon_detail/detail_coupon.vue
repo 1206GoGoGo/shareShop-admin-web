@@ -1,5 +1,5 @@
 <template> 
-  <el-card class="form-container" shadow="never">
+  <el-card class="form-container" shadow="never" style="background:#f2f2f2;">
     <el-form :model="coupon"
              :rules="rules"
              ref="couponFrom"

@@ -57,15 +57,15 @@
             <el-menu-item index="2-3">属性分类</el-menu-item>
             <!-- <el-menu-item index="2-3">商品级别</el-menu-item> -->
             <el-menu-item index="2-4">商品查询</el-menu-item><!--包括销售量、库存、总金额-->
-            <!-- <el-menu-item index="2-5">新增商品</el-menu-item>     -->
-            <el-menu-item index="2-5">商品收藏</el-menu-item>
+            <el-menu-item index="2-5">新增商品</el-menu-item>    
+            <el-menu-item index="2-6">商品收藏</el-menu-item>
             <!-- <el-menu-item index="2-7">商品评价</el-menu-item>回复、删除 -->
         </el-submenu>
 
         <el-submenu index="3">
             <template   slot="title"><i class="el-icon-sold-out"></i>Order</template>  
             <el-menu-item index="3-1">订单列表</el-menu-item><!--包括订单状态-->
-            <el-menu-item index="3-2">订单设置</el-menu-item>
+            <!-- <el-menu-item index="3-2">订单设置</el-menu-item> -->
             <el-menu-item index="3-3">退货处理</el-menu-item>
             <!-- <el-menu-item index="3-3">订单状态</el-menu-item>             -->
         </el-submenu>
@@ -158,12 +158,12 @@ export default {
                 case "2-3":locthis.$router.push({path:'/product/attr_product'});break;
 
                 case "2-4":locthis.$router.push({path:'/product/list_product'});break;
-                case "2-5":locthis.$router.push({path:'/product/collect_product'});break;
-                // case "2-6":locthis.$router.push({path:'/product/state_product'});break;
+                case "2-5":locthis.$router.push({path:'/product/add_product'});break;
+                case "2-6":locthis.$router.push({path:'/product/collect_product'});break;
                 // case "2-7":locthis.$router.push({path:'/product/review_product'});break; 
 
                 case "3-1":locthis.$router.push({path:'/orders/list_orders'});break;
-                case "3-2":locthis.$router.push({path:'/orders/setting_orders'});break;
+                // case "3-2":locthis.$router.push({path:'/orders/setting_orders'});break;
                 case "3-3":locthis.$router.push({path:'/orders/return_orders'});break;
 
                 case "4-1":locthis.$router.push({path:'/coupon/list_coupon'});break;
@@ -189,14 +189,16 @@ export default {
 <style scoped>
     .sider{
         display: inline-block;
-        position:absolute;
-        width:200px;
+        width:230px;
         top:0px;
         left:0px;
         bottom:0px;
         background-color:#5b6270;
         height: 100%;
         /* width: 100%; */
+        /* 添加 1!!!!!!!!!!!!!!!!!!!!!*/
+        position: relative;
+        overflow: hidden;
     }
     /* .sider .title-area{20b2aa
         height:84px;

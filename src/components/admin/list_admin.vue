@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 <!--条件搜索 S-->
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>Conditional Search</span>
@@ -63,6 +63,8 @@
         <div class="table-container">
             <el-table ref="productTable"
                     highlight-current-row
+                    
+                    :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                     :data="list"
                     style="width: 100%"
                     @selection-change="handleSelectionChange"  
@@ -123,8 +125,8 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     layout="total,sizes,prev, pager, next,jumper"
-                    :current-page.sync="listQuery.pageNum"
-                    :page-size="listQuery.pageSize"
+                    :current-page.sync="listQuery.pageindex"
+                    :page-size="listQuery.pagesize"
                     :page-sizes="[5,10,15]"
                     :total="total">
                 </el-pagination>
@@ -222,17 +224,16 @@
 import {fetchList,getAdminDetail,updateManager,deleteManager} from '@/api/admin'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
-    
+    pageindex: 1,
+    pagesize: 10,
+    status:1,
+
     level:null,
     name:null,
     username:null,
     phoneNumber:null,
     identityCardNo:null,
-    // identityCardType:null,
     email:null,
-    // birthday:null
   };
 
   const defaultAdminDetail = {
@@ -280,7 +281,7 @@ export default {
             limit: 20,
             count: 0,
             currentPage: 1,
-            listLoading: true,
+            listLoading: false,
             IDCardType:[
                 {
                     label: "IDP",
@@ -327,7 +328,7 @@ export default {
     methods:{
         //获取列表
         getList(){
-            this.listLoading=true;
+            // this.listLoading=true;
             //this.listQuery为空即为查询全部，有查询条件根据条件查询
             fetchList(this.listQuery).then(response => {
                 this.listLoading = false;
@@ -339,8 +340,8 @@ export default {
         },
         //获取搜索结果?????????????????????????????????????有错
         handleSearchList(val){
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
+            this.listQuery.pageindex = 1;
+            this.listQuery.pagesize = val;
             this.getList();
             // console.log(listQuery)
             // alert(listQuery)
@@ -357,8 +358,8 @@ export default {
         //获取页码
         handleSizeChange(val){
             // console.log(`每页 ${val} 条`);
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
+            this.listQuery.pageindex = 1;
+            this.listQuery.pagesize = val;
             this.getList();
         },
         //获取当前页
@@ -367,7 +368,7 @@ export default {
             // this.offset = (val - 1)*this.limit;
             // this.getUsers()
 
-            this.listQuery.pageNum = val;
+            this.listQuery.pageindex = val;
             this.getList();
         },
 
@@ -425,7 +426,7 @@ export default {
                 type: 'success',
                 duration: 1000
                 });
-                this.listQuery.pageNum=1;
+                this.listQuery.pageindex=1;
                 this.getList();
                 });
             })

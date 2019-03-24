@@ -1,6 +1,6 @@
 <template>
     <el-container>
-      <el-aside width="300px">
+      <el-aside >
          <Sider></Sider>
       </el-aside>
       <el-main>
@@ -85,7 +85,7 @@ export default {
 .user-info-item{
     height:30px;
     padding:3px 7px;
-     padding-left:12px;
+    padding-left:12px;
     margin-bottom: 8px;
     line-height: 30px; 
     border-bottom:0px solid #f5f5f5;

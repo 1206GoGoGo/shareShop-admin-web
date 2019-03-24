@@ -26,18 +26,17 @@
 
 
     <el-container>
-      <el-header>
-        <headPanel style="margin-left=200px;">
-        </headPanel>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
+      <el-aside width="230px">
           <sider :routes="routes"></sider>
-        </el-aside>
-        <el-main>
-          <mainPanel>
-          </mainPanel>
-        </el-main>
+      </el-aside>
+      <el-container>
+          <el-header>
+            <headPanel style="margin-left=200px;">
+          </headPanel>
+          </el-header>
+          <el-main>
+            <mainPanel></mainPanel>
+          </el-main>
       </el-container>
     </el-container>
 

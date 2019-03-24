@@ -10,16 +10,17 @@
       <el-form-item label="商品名称：" prop="name">
         <el-input v-model="value.name"></el-input>
       </el-form-item>
-      <el-form-item label="商品编号：">
+      <el-form-item label="商品编号：" prop="productSn">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>
-      <el-form-item label="商品描述：" prop="description">
+      <!-- <el-form-item label="商品描述：" prop="description">
         <el-input
           :autoSize="true"
           v-model="value.description"
           type="textarea"
           placeholder="请输入内容"></el-input>
-      </el-form-item>
+      </el-form-item> -->
+      
       <!-- <el-form-item label="副标题：" prop="subTitle">
         <el-input v-model="value.subTitle"></el-input>
       </el-form-item> -->

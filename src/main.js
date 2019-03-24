@@ -21,7 +21,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-require('./mock.js')
+// require('./mock.js')
 
 //全局引入axios
 //需要npm两个包axios和vue-axios

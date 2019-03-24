@@ -126,7 +126,7 @@
           </div>
         </el-card>
       </el-form-item> -->
-      <el-form-item label="商品相册：">
+      <!-- <el-form-item label="商品相册：">
         <multi-upload v-model="selectProductPics"></multi-upload>
       </el-form-item>
       <el-form-item label="规格参数：">
@@ -138,7 +138,15 @@
             <tinymce :width="595" :height="300" v-model="value.detailMobileHtml"></tinymce>
           </el-tab-pane>
         </el-tabs>
-      </el-form-item>
+      </el-form-item> -->
+      <!-- <div class="edit_container">
+        	<quill-editor v-model="content"
+                ref="myQuillEditor"
+                class="editer"
+                :options="editorOption"
+                @ready="onEditorReady($event)">
+  			</quill-editor>
+        </div> -->
       <el-form-item style="text-align: center">
         <el-button size="medium" @click="handlePrev">上一步，填写商品信息</el-button>
         <!-- <el-button type="primary" size="medium" @click="handleNext">下一步，选择商品关联</el-button> -->
@@ -155,6 +163,7 @@
 //   import MultiUpload from '@/components/Upload/multiUpload'
 //   import Tinymce from '@/components/Tinymce'
 
+// import { quillEditor } from 'vue-quill-editor'
   export default {
     name: "ProductAttrDetail",
     // components: {SingleUpload, MultiUpload, Tinymce},

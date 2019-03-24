@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import '@/mock.js'
+// import '@/mock.js'
 
 //管理员查询
 export function fetchList(params) {  //params  

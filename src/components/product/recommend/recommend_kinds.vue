@@ -1,6 +1,6 @@
 <template><!--新品推荐、人气推荐、专题推荐（季节推荐）-->
     <div class="app-container">
-        <el-card shadow="never">
+        <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>条件搜索</span>
@@ -34,6 +34,7 @@
         <div class="table-container">
             <el-table ref="productTable"
                         highlight-current-row
+                        :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                         :data="list"
                         style="width: 100%"
                         @selection-change="handleSelectionChange"

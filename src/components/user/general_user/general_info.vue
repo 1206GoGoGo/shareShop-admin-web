@@ -60,6 +60,7 @@
 <!--信息的表头 S-->
         <el-table
         highlight-current-row
+        :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
         :data="list"
         style="width: 100%"
         @selection-change="handleSelectionChange">
@@ -145,8 +146,8 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 layout="total, sizes,prev, pager, next,jumper"
-                :current-page.sync="listQuery.pageNum"
-                :page-size="listQuery.pageSize"
+                :current-page.sync="listQuery.pageindex"
+                :page-size="listQuery.pagesize"
                 :page-sizes="[5,10,15]"
                 :total="total">
             </el-pagination>
@@ -175,11 +176,10 @@
                 <!-- <el-form-item label="用户级别:">
                     <el-input v-model="UserDetail.level" readonly class="input-width"></el-input>
                 </el-form-item> --><!--未改好！！！！！！！！！！！-->
-                <el-form-item label="用户级别:" :disabled="disabled">
+                <el-form-item label="用户级别:">
                     <el-select v-model="UserDetail.level" placeholder="请选择"  clearable class="input-width">
                         <el-option v-for="item in selectlevel"
                             readonly
-                            :disabled="disabled"
                             class="input-width"
                             :key="item.value"
                             :label="item.label"
@@ -289,10 +289,9 @@
 import {getLists,fetchList,getUserDetail,updateUser,fetchUserAddr,deleteUser} from '@/api/user'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
+    pageindex: 1,
+    pagesize: 10,
 
-    // userInfoId:null,  ？
     name:null,
     username:null,
     phoneNumber:null,
@@ -308,7 +307,7 @@ export default {
             listQuery: Object.assign({}, defaultListQuery),
             dialogFormVisible:false,
             dialogTableVisible:false,
-            //listLoading: true,
+            listLoading: true,
             IDCardType:[
                 {
                     label: "IDP",
@@ -467,16 +466,17 @@ export default {
             else {return 'Not claer'}
         },
     },
-    created(){
-        getList()
+    //初始化
+    created() {
+      this.getList();
     },
     methods:{
 
         //初始化列表
         getList(){
             this.status=1  //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？
-            // getLists(this.listQuery).then(response => {
-            getLists(this.status,{pageSize: 10, pageNum: 1,}).then(response => {
+            getLists(this.listQuery).then(response => {
+            // getLists(this.status,{pagesize: 10, pageindex: 1,}).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
@@ -503,8 +503,8 @@ export default {
         
         //获取搜索结果
         handleSearchList(val){
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
+            this.listQuery.pageindex = 1;
+            this.listQuery.pagesize = val;
             this.getSearchList();
         },
 
@@ -516,7 +516,7 @@ export default {
         //获取状态异常用户
         handleSearchException(){
             this.status=0
-            getLists(this.status,{pageSize: 10, pageNum: 1,}).then(response => {
+            getLists(this.status,{pagesize: 10, pageindex: 1,}).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
@@ -548,7 +548,7 @@ export default {
               type: 'success',
               duration:1000
               });
-            // this.getSearchList(); 
+            this.getList(); 
             });
         },
 
@@ -582,7 +582,7 @@ export default {
                     type: 'success',
                     duration: 1000
                 });
-                this.listQuery.pageNum=1;
+                this.listQuery.pageindex=1;
                 // this.getSearchList();     
                 });
             })
@@ -590,13 +590,13 @@ export default {
 
         //获取页码
         handleSizeChange(val){
-            this.listQuery.pageNum = 1;
-            this.listQuery.pageSize = val;
+            this.listQuery.pageindex = 1;
+            this.listQuery.pagesize = val;
             //this.getList();       
         },
         //获取当前页
         handleCurrentChange(val) {
-            this.listQuery.pageNum = val;
+            this.listQuery.pageindex = val;
             //this.getList();        
         },
 
