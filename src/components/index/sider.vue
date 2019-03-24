@@ -101,7 +101,7 @@
             <el-menu-item index="7-3">添加管理员</el-menu-item> <!--包括管理员状态-->
         </el-submenu>
 
-        <el-submenu index="8">
+        <!-- <el-submenu index="8">
             <template   slot="title"><i class="el-icon-view"></i>Page Settings</template>  
             <el-menu-item index="8-1">Home Section</el-menu-item>
             <el-submenu index="8-2">
@@ -109,7 +109,7 @@
                 <el-menu-item index="8-2-1">Each Section1</el-menu-item>
                 <el-menu-item index="8-2-2">Each Section2</el-menu-item>
             </el-submenu>    
-        </el-submenu>
+        </el-submenu> -->
 
    </el-menu>
     <!-- </div> -->
@@ -125,7 +125,6 @@ export default {
             
         }
     },
-
     methods:{
         //路由跳转处理
         handleSelect:function(index,indexpath){
@@ -194,11 +193,12 @@ export default {
         left:0px;
         bottom:0px;
         background-color:#5b6270;
-        height: 100%;
+        /* height: 100%; */
         /* width: 100%; */
         /* 添加 1!!!!!!!!!!!!!!!!!!!!!*/
         position: relative;
-        overflow: hidden;
+        /* position: absolute; */
+        /* overflow: hidden; */
     }
     /* .sider .title-area{20b2aa
         height:84px;

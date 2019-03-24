@@ -82,11 +82,6 @@ export default {
     sider,
     mainPanel,
   },
-  beforeCreate:function(){
-  //用来将html和body节点高度铺满整个屏幕
-  document.querySelector('html').setAttribute('style','height:100%;');
-  document.querySelector('body').setAttribute('style','height:100%; margin:0px;padding:0px;');
-}
 }
 </script>
 
@@ -104,6 +99,20 @@ export default {
   margin:0px;
   padding:0px;
 }
+
+.el-container{
+  height: 100%;
+}
+
+.el-aside{
+  /* display: block; */
+  /* position: absolute; */
+  /* left: 0;
+  top: 70px;
+  bottom: 0;
+  overflow-y: scroll; */
+}
+
 
 /* 
 .el-main{
