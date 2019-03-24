@@ -619,7 +619,7 @@ export default {
         width: 50%;
     }
     .input-width {
-        width: 203px;
+        width: 203px !important;
     }
 </style>
 

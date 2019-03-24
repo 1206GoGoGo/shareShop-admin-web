@@ -49,11 +49,6 @@ import sider from '@/components/index/sider'
 import mainPanel from '@/components/index/mainPanel'
 import { mapGetters } from 'vuex'
 export default {
-  // computed: {
-  //   routes() {
-  //     return this.$router.options.routes
-  //   },
-  // },
   computed: {
     ...mapGetters([
       'sider'
@@ -69,12 +64,17 @@ export default {
   data:function(){
     return {
       //count: 0
+      
     }
   },
+
   methods:{
      handleClick (e) {
       e.preventDefault()
       e.target.parentElement.classList.toggle('open')
+    },
+    hh(){
+      this.height.height=window.innerHeight-153+'px';
     }
   },
   components:{
@@ -100,19 +100,15 @@ export default {
   padding:0px;
 }
 
-.el-container{
+
+
+.el-container {
   height: 100%;
 }
-
-.el-aside{
-  /* display: block; */
-  /* position: absolute; */
-  /* left: 0;
-  top: 70px;
-  bottom: 0;
-  overflow-y: scroll; */
+.el-header {
+  background-color: #b3c0d1;
+  color: #333;
 }
-
 
 /* 
 .el-main{

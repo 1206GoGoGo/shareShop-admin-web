@@ -1,5 +1,5 @@
 <template>
-<div class="sider">
+<div class="sider sidebar-container">
     <div class="top">
         Share Shop Admin</div>
         <!-- class="title-area" <img class="whut-logo" src="../../assets/whut-logo.png"> -->
@@ -122,9 +122,9 @@ export default {
     name:"sider",
     data:function(){
         return {
-            
         }
     },
+
     methods:{
         //路由跳转处理
         handleSelect:function(index,indexpath){
@@ -186,48 +186,38 @@ export default {
 </script>
 
 <style scoped>
+.sidebar-container
+{
+    transition: width .28s;
+    height: 100%;
+    position: fixed;
+    font-size: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    overflow: hidden; 
+    /* width: 180px!important; */
+}
+
     .sider{
-        display: inline-block;
+        display: block;
         width:230px;
         top:0px;
         left:0px;
         bottom:0px;
         background-color:#5b6270;
-        /* height: 100%; */
-        /* width: 100%; */
-        /* 添加 1!!!!!!!!!!!!!!!!!!!!!*/
-        position: relative;
-        /* position: absolute; */
-        /* overflow: hidden; */
+        height: 100%;
+        position: fixed; 
+        z-index: 1001;
+        overflow: hidden;
     }
-    /* .sider .title-area{20b2aa
-        height:84px;
-    } */
-    /* .sider .bottom{
-        
-    } */
     .sider .top{
         color: azure;
         margin: 20px 20px;
         height: 30px;
         font-size: 16px;
     }
-    /* .whut-logo{
-        float:left;
-        height:60px;
-        margin-left:10px;
-    } */
-    /* .whut-title-area{
-        float:right;
-        width:160px;
-        margin-right:10px;
-    } */
-    /* .whut-title-logo{
-        display: inline-block;
-        margin-top:7px;
-        width:130px;
-
-    } */
     .el-menu{
         font-size: 16px;
         font-family:'Microsoft YaHei','Avenir', Helvetica, Arial, sans-serif;
@@ -242,9 +232,9 @@ export default {
         background-color:#494e5a !important;
     }
   
-   .el-submenu{
+    .el-submenu{
        position: relative;
-   }
+    }
     .el-menu .el-submenu:after{
         content:" ";
         z-index: 10;
@@ -253,8 +243,6 @@ export default {
         height:0px;
         bottom:0px;
         left:25px;
-        
-       
         /* border-bottom:1px groove #fff;      */
     }
     .el-submenu .el-menu-item:after{
@@ -270,7 +258,6 @@ export default {
     .el-menu-item:hover{
         background-color: #494e5a  !important;
     }
-
     .el-submenu__title i{  
         color:#ffE !important;
     }
