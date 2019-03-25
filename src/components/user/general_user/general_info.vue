@@ -44,7 +44,7 @@
                         <el-input style="width: 203px" v-model="listQuery.email" placeholder="邮箱" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="用户级别：">
-                        <el-select v-model="listQuery.level" placeholder="全部" clearable>
+                        <el-select v-model="listQuery.level" placeholder="全部" style="width: 203px" clearable>
                             <el-option
                                 v-for="item in selectlevel"
                                 :key="item.value"
