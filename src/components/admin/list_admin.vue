@@ -191,7 +191,7 @@
                     <el-date-picker
                         v-model="AdminDetail.registerTime"
                         class="input-width"
-                        
+                        style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
@@ -436,9 +436,9 @@ export default {
 </script>
 
 <style scoped>
-    .input-width {
+    /* .input-width {
     width: 203px;
-  }
+  } */
 </style>
 
 
