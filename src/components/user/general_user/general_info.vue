@@ -10,17 +10,17 @@
                     @click="handleSearchException()"
                     type="danger"
                     size="small">
-                    状态异常用户
+                    异常用户
                 </el-button>
                 <el-button
-                    style="float: right;margin-right: 15px"
+                    style="float: right;margin-right:15px"
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
                     查询
                 </el-button>
                 <!-- <el-button
-                    style="float: right;margin-right: 15px"
+                    style="float: right;margin-right:45px"
                     @click="handleResetSearch()"
                     size="small">
                     重置
@@ -385,6 +385,7 @@ export default {
             else if(value===2){return 'SSN'}  //社会安全号
             else {return 'Not clear'}
         },
+        //是否默认
         defaultFormatter(value)
         {
             if(value === 0){return 'UnDefault'} 
@@ -411,6 +412,7 @@ export default {
             })
         },
 
+        //没有用！！！！！！！！！！！
         Tellgender(value){
             if(value==='0') {return 'Male'}
             else if(value === '1'){return 'Female'}
@@ -505,8 +507,6 @@ export default {
         //获取用户地址  有问题???????????????????????
         getUserAddr(index, row){
             this.dialogTableVisible = true
-            this.listQuery.pageindex=null
-            this.listQuery.pagesize=null
             this.listQuery.status=null
             this.listQuery.id=row.userId
             fetchUserAddr(this.listQuery).then(response => {

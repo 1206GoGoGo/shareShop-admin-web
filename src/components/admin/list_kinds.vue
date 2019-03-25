@@ -27,35 +27,30 @@
             </div>
         </el-card> -->
         <!-- v-loading="listLoading" -->
-        <div class="table-container">
+        <!-- <div class="table-container"> -->
             <el-table ref="productTable"
                         highlight-current-row
                         :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                         :data="list"
                         style="width: 100%"
                         @selection-change="handleSelectionChange"
-                        
+                        v-loading="listLoading"
                         border>
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="编号" width="100" align="center">
+                <!-- <el-table-column type="selection" width="60" align="center"></el-table-column> -->
+                <el-table-column label="编号" width="60" align="center">
                     <template slot-scope="scope">{{scope.row.categoryId}}</template>
                 </el-table-column>
-                <el-table-column label="名称" width="120" align="center">
+                <el-table-column label="名称" width="150" align="center">
                     <template slot-scope="scope">{{scope.row.name}}</template>
                 </el-table-column>
-                <el-table-column label="级别" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.level}}</template>
+                <el-table-column label="级别" width="150" align="center">
+                    <template slot-scope="scope">{{scope.row.level | levelFormatter }}</template>
                 </el-table-column>
                 <el-table-column label="描述" align="center">
                     <template slot-scope="scope">{{scope.row.description}}</template>
                 </el-table-column>
-                <el-table-column label="操作" width="260" align="center">
+                <!-- <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        
-                        <!-- <el-button
-                            size="mini"
-                            @click="handleShowUser(scope.$index, scope.row)">查看
-                        </el-button> -->
                         <el-button
                             size="mini"
                             @click="handleUpdateUser(scope.$index, scope.row)">编辑
@@ -68,7 +63,7 @@
                         </el-button>
                         
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -80,7 +75,7 @@
                   :total="count">
                 </el-pagination>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -105,6 +100,23 @@ export default {
             count: 0,
             currentPage: 1,
         }
+    },
+
+    //过滤器
+    filters: {
+
+        //日期转变
+        dateFormatter(time) {
+            let date = new Date(time);
+            return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
+        },
+        //级别转换
+        levelFormatter(value){
+            if(value === 20){return 'Super Amin'} 
+            else if(value === 11){return 'Gneral Amin'}
+            else { return 'Not clear' }
+        },
+
     },
     created(){
         this.getAdminCate();
@@ -136,9 +148,9 @@ export default {
         },
 
         handleSelectionChange(){},
-        handleShowUser(){},
-        handleUpdateUser(){},
-        handleDelete(){}
+        // handleShowUser(){},
+        // handleUpdateUser(){},
+        // handleDelete(){}
     }
 }
 </script>

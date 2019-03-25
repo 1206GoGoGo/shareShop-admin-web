@@ -15,7 +15,7 @@
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="seller登陆名：">
-                        <el-input style="width: 203px" v-model="listQuery.username"  placeholder="seller登陆名"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.username"  placeholder="Login Name for Seller" clearable></el-input>
                     </el-form-item>
                     <!--预留 ！!!!!!!!!!!!!!!!!!!!!!!!!-->
                     <!-- <el-form-item label="查询时间：">

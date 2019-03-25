@@ -224,7 +224,7 @@
 import {fetchList,getAdminDetail,updateManager,deleteManager} from '@/api/admin'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
-    pageindex: 1,
+    pageindex: 0,
     pagesize: 10,
     status:1,
 
@@ -276,6 +276,7 @@ export default {
             listQuery: Object.assign({}, defaultListQuery),
             AdminDetail: Object.assign({}, defaultAdminDetail),
             list:null,
+            //分页
             total: null,
             offset: 0,
             limit: 20,
@@ -328,23 +329,20 @@ export default {
     methods:{
         //获取列表
         getList(){
-            // this.listLoading=true;
+            this.listLoading=true;
             //this.listQuery为空即为查询全部，有查询条件根据条件查询
             fetchList(this.listQuery).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 this.total = response.data.total;
-                // console.log(this.list)
-                // alert(this.list.gender)
             });
         },
+        
         //获取搜索结果?????????????????????????????????????有错
-        handleSearchList(val){
-            this.listQuery.pageindex = 1;
-            this.listQuery.pagesize = val;
+        handleSearchList(){
+            this.listQuery.pageindex = 0;
+            this.listQuery.pagesize = 20;
             this.getList();
-            // console.log(listQuery)
-            // alert(listQuery)
         },
         //重置
         handleResetSearch(){
@@ -357,18 +355,18 @@ export default {
 
         //获取页码
         handleSizeChange(val){
-            // console.log(`每页 ${val} 条`);
-            this.listQuery.pageindex = 1;
-            this.listQuery.pagesize = val;
+            console.log(`每页 ${val} 条`);
+            // this.listQuery.pageindex = 0;
+            // this.listQuery.pagesize = val;
             this.getList();
         },
         //获取当前页
         handleCurrentChange(val) {
-            // this.currentPage = val;
-            // this.offset = (val - 1)*this.limit;
+            this.currentPage = val;
+            this.offset = (val - 1)*this.limit;
             // this.getUsers()
 
-            this.listQuery.pageindex = val;
+            // this.listQuery.pageindex = val;
             this.getList();
         },
 
@@ -426,7 +424,7 @@ export default {
                 type: 'success',
                 duration: 1000
                 });
-                this.listQuery.pageindex=1;
+                this.listQuery.pageindex=0;
                 this.getList();
                 });
             })

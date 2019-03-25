@@ -22,19 +22,19 @@
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="登录名：">
-                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="Login Nmae" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="真实姓名：">
-                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="Real Name" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="手机号："> 
-                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="phone Number" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="证件号码：">
-                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="ID Number" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="邮箱：">
-                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="证件号码"></el-input>
+                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="Email" clearable></el-input>
                     </el-form-item>
                 </el-form> 
             </div>
@@ -42,12 +42,12 @@
 <!--条件搜索 E-->
 
 <!--信息的表头 S-->
-        <!-- v-loading="listLoading" -->
         <el-table
         :data="list"
         highlight-current-row
         :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
         style="width: 100%"
+        v-loading="listLoading"
         @selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template slot-scope="props">
@@ -68,6 +68,9 @@
                         <el-form-item label="证件类型:">
                             <span>{{ props.row.identityCardType | idFormatter}}</span>
                         </el-form-item>
+                        <el-form-item label="邮箱:">
+                            <span>{{ props.row.email }}</span>
+                        </el-form-item>
                         <el-form-item label="出生日期:">
                             <span>{{ props.row.birthday | dateFormatter}}</span>
                         </el-form-item>
@@ -81,41 +84,30 @@
                 type="selection"
                 width="55">
             </el-table-column> -->
-            <!-- <el-table-column
-                type="index"
-                label="编号"
-                align='center'
-                width="55">
-            </el-table-column> -->
             <el-table-column
                 label="编号" 
                 align='center'
+                width="60"
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 label="登录名"
                 align='center'
-                prop="username"
-                width="130">
+                prop="userLogin.username">
             </el-table-column>
             <el-table-column
                 label="真实姓名"
                 align='center'
                 prop="name"
-                width="130">
+                width="180">
             </el-table-column>
             <el-table-column
                 label="手机号"
                 align='center'
                 prop="phoneNumber"
-                width="160">
+                width="180">
             </el-table-column>
-            <el-table-column
-                label="邮箱"
-                align='center'
-                prop="email">
-            </el-table-column>
-            <el-table-column label="操作" width="260" align="center">
+            <el-table-column label="操作" width="300" align="center">
                 <template slot-scope="scope">
                     <el-button
                         size="mini"
@@ -232,7 +224,7 @@
 <!--地址弹出框 S-->
         <el-dialog                    
             title="Seller地址信息"
-            
+
             :visible.sync="dialogTableVisible" width="90%">
             <el-table ref="AddrTable"
                     highlight-current-row
@@ -278,8 +270,8 @@ import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageindex: 0,
     pagesize: 20,
-    
-    // userInfoId:null,
+    id:null,
+
     name:null,
     username:null,
     phoneNumber:null,
@@ -295,7 +287,7 @@ export default {
             listQuery: Object.assign({}, defaultListQuery),
             dialogFormVisible:false,
             dialogTableVisible:false,
-            //listLoading: true,
+            listLoading: true,
 
             //分页
             currentPage: 1,
@@ -427,7 +419,7 @@ export default {
 
         // //状态转变
         // statusFormatter(value){
-        //     if(value === "1"){return 'Normal'} else {return 'Female'}
+        //     if(value === "1"){return 'Normal'} else {return 'Abnormal'}
         // },
 
         //证件类型
@@ -437,7 +429,15 @@ export default {
             else if(value===1){return 'USP'} //护照
             else if(value===2){return 'SSN'}  //社会安全号
             else {return 'Not claer'}
-        }
+        },
+
+        //是否默认
+        defaultFormatter(value)
+        {
+            if(value === 0){return 'UnDefault'} 
+            else if(value === 1){return 'default'}
+            else {return 'Not clear'}
+        },
     },
     created(){
         this.getList();
@@ -465,9 +465,9 @@ export default {
         },
 
         //获取搜索结果
-        handleSearchList(val){
-            this.listQuery.pageindex = 1;
-            this.listQuery.pagesize = val;
+        handleSearchList(){
+            this.listQuery.pageindex = 0;
+            this.listQuery.pagesize = 20;
             this.getSearchList();
         },
 
@@ -476,20 +476,22 @@ export default {
             this.listQuery = Object.assign({}, defaultListQuery);
         },
 
-        // //获取seller详细信息
+        //获取seller详细信息
         // handleUpdateSeller(index, row){
         //     this.dialogFormVisible=true;
         //     this.userInfoId=row.userInfoId;    
         //     getSellerDetail(row.userInfoId).then(response=>{
         //         this.SellerDetail=response.data;
+        //         this.SellerDetail.username=response.data.userLogin.username
         //     });
         // },
 
-        //获取seller详细信息
+        //获取seller详细信息  与普通用户使用的方法不一样！！！
         handleUpdateSeller(index, row) {
             this.dialogFormVisible = true;
             // this.isEdit = true;
             this.SellerDetail = Object.assign({},row);
+            this.SellerDetail.username=row.userLogin.username
         },
 
         //修改用户信息  this.managerInfoId
@@ -501,15 +503,19 @@ export default {
               type: 'success',
               duration:1000
               });
-            // this.getSearchList(); ??????????????????
+            this.getList(); 
             });
         },
 
         //获取用户地址
         getSellerAddr(index, row){
-            this.dialogTableVisible = true;  //this.userInfoId???
-            fetchUserAddr(row.userLogin.userId).then(response => {
-                this.list = response.data;
+            this.dialogTableVisible = true;
+            this.listQuery.pageindex=null
+            this.listQuery.pagesize=null
+            this.listQuery.status=null
+            this.listQuery.id=row.userId
+            fetchUserAddr(this.listQuery).then(response => {
+                this.Addrlist = response.data;
             });
         },
 

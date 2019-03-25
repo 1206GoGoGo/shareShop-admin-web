@@ -90,6 +90,16 @@ export function deleteSeller(params) {
     params:params
   })
 }
+
+//根据seller登录名查询其会员信息
+export function fetchMemberList(params) {
+  return request({
+    url:'/member/info/getListBySeller',
+    method:'get', 
+    params:params
+  })
+}
+
 //---------------------------------------收入----------------------------------------
 //
 export function fetchListIncome(params) {  //没用
