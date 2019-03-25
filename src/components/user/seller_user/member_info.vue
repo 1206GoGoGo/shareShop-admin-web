@@ -170,35 +170,35 @@
             <el-form :model="UserDetail"  :inline="true"
                     ref="DetailForm" label-width="150px">
                 <el-form-item label="编号:">
-                    <el-input v-model="UserDetail.userInfoId" class="input-width" readonly></el-input>
+                    <el-input v-model="UserDetail.userInfoId" style="width: 203px" readonly></el-input>
                 </el-form-item>
                 <el-form-item label="登录名:">
-                    <el-input v-model="UserDetail.username" class="input-width" readonly></el-input>
+                    <el-input v-model="UserDetail.username" style="width: 203px" readonly></el-input>
                 </el-form-item>
                 <el-form-item label="姓名:">
-                    <el-input v-model="UserDetail.name" class="input-width"></el-input>
+                    <el-input v-model="UserDetail.name" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:">
-                    <el-input v-model="UserDetail.phoneNumber" class="input-width"></el-input>
+                    <el-input v-model="UserDetail.phoneNumber" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱:">
-                    <el-input v-model="UserDetail.email" class="input-width"></el-input>
+                    <el-input v-model="UserDetail.email" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="出生年月:">
                     <el-date-picker
                         v-model="UserDetail.birthday"
-                        class="input-width"
+                        style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="证件号码:">
-                    <el-input v-model="UserDetail.identityCardNo" class="input-width"></el-input>
+                    <el-input v-model="UserDetail.identityCardNo" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="证件类型:">
-                    <el-select v-model="UserDetail.identityCardType" placeholder="全部" clearable class="input-width">
+                    <el-select v-model="UserDetail.identityCardType" placeholder="全部" clearable style="width: 203px">
                         <el-option v-for="item in idCardType"
-                            class="input-width"
+                            style="width: 203px"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -206,9 +206,9 @@
                         </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="用户状态:">
-                    <el-select v-model="UserDetail.status" placeholder="全部" clearable class="input-width">
+                    <el-select v-model="UserDetail.status" placeholder="全部" clearable style="width: 203px">
                         <el-option v-for="item in UserDetail.status"
-                            class="input-width"
+                            style="width: 203px"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -216,19 +216,19 @@
                         </el-select>
                 </el-form-item> -->
                 <!-- <el-form-item label="用户状态:">
-                    <el-input v-model="UserDetail.status" class="input-width" readonly=""></el-input>
+                    <el-input v-model="UserDetail.status" style="width: 203px" readonly=""></el-input>
                 </el-form-item> -->
                 <el-form-item label="注册时间:">
                     <el-date-picker
                         readonly
                         v-model="UserDetail.registerTime"
-                        class="input-width"
+                        style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别:">
-                    <el-radio-group v-model="UserDetail.gender" class="input-width">
+                    <el-radio-group v-model="UserDetail.gender" style="width: 203px">
                         <el-radio :label="1">Male</el-radio>
                         <el-radio :label="0">Female</el-radio>
                     </el-radio-group>

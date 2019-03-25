@@ -158,41 +158,41 @@
             <el-form :model="SellerDetail" :inline="true"
                     ref="DetailForm" label-width="150px">
                 <!-- <el-form-item label="编号:">
-                    <el-input v-model="SellerDetail.userInfoId" class="input-width" readonly></el-input>
+                    <el-input v-model="SellerDetail.userInfoId" style="width: 203px" readonly></el-input>
                 </el-form-item> -->
                 <el-form-item label="登录名:"> 
-                    <el-input v-model="SellerDetail.username" class="input-width" readonly></el-input>
+                    <el-input v-model="SellerDetail.username" style="width: 203px" readonly></el-input>
                 </el-form-item>
                 <el-form-item label="姓名:">
-                    <el-input v-model="SellerDetail.name" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.name" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:">
-                    <el-input v-model="SellerDetail.phoneNumber" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.phoneNumber" style="width: 203px"></el-input>
                 </el-form-item>
                  <el-form-item label="邮箱:">
-                    <el-input v-model="SellerDetail.email" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.email" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="出生年月:">
                     <el-date-picker
                         v-model="SellerDetail.birthday"
-                        class="input-width"
+                        style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="性别:"><!--到显示框中就不可用！！！！！！！！！！！！！-->
-                    <el-radio-group v-model="SellerDetail.gender" class="input-width">
+                    <el-radio-group v-model="SellerDetail.gender" style="width: 203px">
                         <el-radio :label="0">Male</el-radio>
                         <el-radio :label="1">Female</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="证件号码:">
-                    <el-input v-model="SellerDetail.identityCardNo" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.identityCardNo" style="width: 203px"></el-input>
                 </el-form-item>
                 <el-form-item label="证件类型:">
-                    <el-select v-model="SellerDetail.identityCardType" placeholder="请选择" clearable class="input-width">
+                    <el-select v-model="SellerDetail.identityCardType" placeholder="请选择" clearable style="width: 203px">
                         <el-option v-for="item in IDCardType"
-                            class="input-width"
+                            style="width: 203px"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -203,16 +203,16 @@
                     <el-date-picker
                         readonly
                         v-model="SellerDetail.registerTime"
-                        class="input-width"
+                        style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="账户余额:">
-                    <el-input v-model="SellerDetail.userMoney" readonly class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.userMoney" readonly style="width: 203px"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="用户状态:">
-                    <el-input v-model="SellerDetail.status" class="input-width"></el-input>
+                    <el-input v-model="SellerDetail.status" style="width: 203px"></el-input>
                 </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">

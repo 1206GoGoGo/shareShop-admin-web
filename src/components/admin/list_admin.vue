@@ -22,7 +22,7 @@
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="Permission:">
-                        <el-select v-model="listQuery.level" style="width: 203px" placeholder="All" clearable class="input-width">
+                        <el-select v-model="listQuery.level" style="width: 203px" placeholder="All" clearable >
                         <el-option v-for="item in level"
                             :key="item.value"
                             :label="item.label"
@@ -152,10 +152,10 @@
             <el-form :model="AdminDetail" :inline="true"
                     ref="DetailForm" label-width="150px">
                 <el-form-item label="Number:">
-                    <el-input v-model="AdminDetail.managerInfoId" style="width: 203px" class="input-width" readonly></el-input>
+                    <el-input v-model="AdminDetail.managerInfoId" style="width: 203px"  readonly></el-input>
                 </el-form-item>
                 <el-form-item label="Permission:">
-                    <el-select v-model="AdminDetail.level" placeholder="All" style="width: 203px" clearable class="input-width">
+                    <el-select v-model="AdminDetail.level" placeholder="All" style="width: 203px" clearable >
                     <el-option v-for="item in level"
                         :key="item.value"
                         :label="item.label"
@@ -164,19 +164,19 @@
                     </el-select>
                 </el-form-item>   
                 <el-form-item label="Login Name:">
-                    <el-input v-model="AdminDetail.username" style="width: 203px" class="input-width"></el-input>
+                    <el-input v-model="AdminDetail.username" style="width: 203px" ></el-input>
                 </el-form-item>
                 <el-form-item label="Real Name:">
-                    <el-input v-model="AdminDetail.name" style="width: 203px" class="input-width"></el-input>
+                    <el-input v-model="AdminDetail.name" style="width: 203px" ></el-input>
                 </el-form-item>
                 <el-form-item label="Phone Number:">
-                    <el-input v-model="AdminDetail.phoneNumber" style="width: 203px" class="input-width"></el-input>
+                    <el-input v-model="AdminDetail.phoneNumber" style="width: 203px" ></el-input>
                 </el-form-item>            
                 <el-form-item label="Email:">
-                    <el-input v-model="AdminDetail.email" style="width: 203px" class="input-width"></el-input>
+                    <el-input v-model="AdminDetail.email" style="width: 203px" ></el-input>
                 </el-form-item>
                 <el-form-item label="Type of ID Card:">
-                    <el-select v-model="AdminDetail.identityCardType" placeholder="全部" style="width: 203px" clearable class="input-width">
+                    <el-select v-model="AdminDetail.identityCardType" placeholder="全部" style="width: 203px" clearable >
                         <el-option v-for="item in IDCardType"
                             :key="item.value"
                             :label="item.label"
@@ -185,19 +185,19 @@
                         </el-select>
                 </el-form-item>
                 <el-form-item label="ID Card:">
-                    <el-input v-model="AdminDetail.identityCardNo" style="width: 203px" class="input-width"></el-input>
+                    <el-input v-model="AdminDetail.identityCardNo" style="width: 203px" ></el-input>
                 </el-form-item>
                 <el-form-item label="Registration Time:">
                     <el-date-picker
                         v-model="AdminDetail.registerTime"
-                        class="input-width"
+                        
                         style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="Gender:">
-                    <el-radio-group v-model="AdminDetail.gender" style="width: 203px" class="input-width">
+                    <el-radio-group v-model="AdminDetail.gender" style="width: 203px" >
                         <el-radio :label="0">Male</el-radio>
                         <el-radio :label="1">Female</el-radio>
                     </el-radio-group>
@@ -205,7 +205,7 @@
                 <el-form-item label="Date of Birth:">
                     <el-date-picker
                         v-model="AdminDetail.birthday"
-                        class="input-width"
+                        
                         style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
@@ -436,9 +436,6 @@ export default {
 </script>
 
 <style scoped>
-    /* .input-width {
-    width: 203px;
-  } */
 </style>
 
 
