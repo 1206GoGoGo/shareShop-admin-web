@@ -15,7 +15,6 @@
 </template>
 
 <script>
-// import { headPanel, sider, mainPanel } from '@/components/layout/components'
 import headPanel from '@/components/layout/components/headPanel'
 import sider from '@/components/layout/components/sider'
 import mainPanel from '@/components/layout/components/mainPanel'
@@ -56,7 +55,6 @@ computed: {
 
 #app {
   font-family:'Microsoft YaHei','Avenir', Helvetica, Arial, sans-serif;
-  /* text-align: center; */
   color: #2c3e50;
   margin-top: 0px;
   height:100%;
@@ -75,9 +73,8 @@ computed: {
 .el-container {
   height: 100%;
 }
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
+.el-main{
+  padding:0px !important;
 }
 
 </style>
