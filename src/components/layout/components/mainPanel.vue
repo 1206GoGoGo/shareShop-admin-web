@@ -1,13 +1,11 @@
 <template>
-    <el-container class="main-panel"> 
-        <el-main>
-            <transition name="fade" mode="out-in">
-                <router-view>
-                    
-                </router-view>
-            </transition>
-        </el-main>
-    </el-container>
+    <!-- <el-container class="main-panel">  -->
+      <transition name="fade" mode="out-in">
+          <router-view>
+              
+          </router-view>
+      </transition>
+    <!-- </el-container> -->
 </template>
 
 <script>
