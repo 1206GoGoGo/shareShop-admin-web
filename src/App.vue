@@ -13,7 +13,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .fillcontain{
     height: 100%;
