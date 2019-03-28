@@ -4,7 +4,8 @@
         <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
-                <span>条件搜索</span>
+                <span>Conditional Search</span>
+                <el-button style="padding-left:30px;" type="text"  @click="handleClear()">Refresh</el-button>
                 <el-button
                     style="float: right"
                     @click="handleSearchException()"
@@ -24,26 +25,36 @@
                     @click="handleResetSearch()"
                     size="small">
                     重置
-                </el-button> -->
+                </el-button> v-model="listQuery.search" value-key="value"-->
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-                    <el-form-item label="登录名：">
-                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名" clearable></el-input>
+                    <el-form-item label="搜索条件：">
+                        <el-select v-model="listQuery.search" @change="changesearch" placeholder="Please select" clearable>
+                            <el-option
+                                v-for="item in selectSearch"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="真实姓名：">
+                    <el-form-item label="登录名：" v-if="flag1">
+                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"  clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="真实姓名：" v-if="flag2">
                         <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号："> 
-                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号" clearable></el-input>
+                    <el-form-item label="手机号：" v-if="flag3"> 
+                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"  clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="证件号码：">
-                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="证件号码" clearable></el-input>
+                    <el-form-item label="证件号码：" v-if="flag4">
+                        <el-input style="width: 203px"  v-model="listQuery.identityCardNo" placeholder="证件号码"  clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="邮箱：">
+                    <el-form-item label="邮箱：" v-if="flag5">
                         <el-input style="width: 203px" v-model="listQuery.email" placeholder="邮箱" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="用户级别：">
+                    <el-form-item label="用户级别：" v-if="flag6">
                         <el-select v-model="listQuery.level" placeholder="全部" style="width: 203px" clearable>
                             <el-option
                                 v-for="item in selectlevel"
@@ -86,9 +97,9 @@
                         <el-form-item label="注册时间：">
                             <span>{{ props.row.registerTime | dateFormatter}}</span>
                         </el-form-item>
-                        <el-form-item label="出生日期：">
+                        <!-- <el-form-item label="出生日期：">
                             <span>{{ props.row.birthday | dateFormatter}}</span>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="性别：">
                             <span>{{ props.row.gender | genderFormatter}}</span>
                         </el-form-item>
@@ -292,6 +303,7 @@ import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageindex: 0,
     pagesize: 20,
+    search:null,
 
     id:null,
     name:null,
@@ -310,6 +322,13 @@ export default {
             dialogFormVisible:false,
             dialogTableVisible:false,
             listLoading: true,
+            flag1:false,
+            flag2:false,
+            flag3:false,
+            flag4:false,
+            flag5:false,
+            flag6:false,
+            // value:null,
             //分页
             currentPage: 1,
             offset: 0,
@@ -339,6 +358,32 @@ export default {
                     label: "member",
                     value: 2
                 }
+            ],
+            selectSearch:[
+                {
+                    label: "登录名",
+                    value: 1
+                },
+                {
+                    label: "真实姓名",
+                    value: 2
+                },
+                {
+                    label: "手机号",
+                    value: 3
+                },
+                {
+                    label: "证件号码",
+                    value: 4
+                },
+                {
+                    label: "邮箱",
+                    value: 5
+                },
+                {
+                    label: "用户级别",
+                    value: 6
+                },
             ],
             list: null,
             Addrlist:null,
@@ -397,12 +442,45 @@ export default {
     created() {
       this.getList();
     },
+    // $watch(){
+    //     selectSearch:{
+    //         if(this.selectSearch.value===1)
+    //         {this.flag1=true;}
+    //         else if(this.selectSearch.value===2)
+    //         {this.flag2=true;}
+    //     }
+    // },
+    
     methods:{
-
+        changesearch(value){
+            if(value===1)
+                {this.flag1=true;}
+            if(value===2)
+                {this.flag2=true;}
+            if(value===3)
+                {this.flag3=true;}
+            if(value===4)
+                {this.flag4=true;}
+            if(value===5)
+                {this.flag5=true;}
+            if(value===6)
+                {this.flag6=true;}
+        },
+        handleClear(){
+            this.flag1=false
+            this.flag2=false
+            this.flag3=false
+            this.flag4=false
+            this.flag5=false
+            this.flag6=false
+            this.listQuery = Object.assign({}, defaultListQuery);
+            this.getList()
+        },
         //初始化列表
         getList(){
-            this.listQuery.status='1' 
+            this.listQuery.status=1 
             this.listQuery.id=null
+            this.listQuery.search=null
             this.listQuery.pageindex=0
             this.listQuery.pagesize=20
             getLists(this.listQuery).then(response => {
@@ -430,6 +508,7 @@ export default {
         //获取搜索列表
         getSearchList(){
             this.listLoading=true;
+            this.listQuery.search=null
             //this.listQuery即为搜索条件
             fetchList(this.listQuery).then(response => {
                 this.listLoading = false;
@@ -452,7 +531,8 @@ export default {
 
         //获取状态异常用户
         handleSearchException(){
-            this.listQuery.status='0'
+            this.listQuery.status=0
+            this.listQuery.search=null
             getLists(this.listQuery).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
@@ -466,6 +546,7 @@ export default {
             this.listQuery.pageindex=null
             this.listQuery.pagesize=null
             this.listQuery.status=null
+            this.listQuery.search=null
             this.listQuery.id=row.userId
             getUserDetail(this.listQuery).then(response=>{
                 this.UserDetail=response.data;
@@ -504,7 +585,7 @@ export default {
             });
         },
 
-        //获取用户地址  有问题???????????????????????
+        //获取用户地址 
         getUserAddr(index, row){
             this.dialogTableVisible = true
             this.listQuery.status=null
@@ -548,17 +629,17 @@ export default {
         //     this.listQuery.pagesize = val;
         //     //this.getList();       
         // },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-        },
-
-
+        
         //获取当前页
         // handleCurrentChange(val) {
         //     this.listQuery.pageindex = '0';
         //     //this.getList();        
         // },
 
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        
         handleCurrentChange(val) {
             this.currentPage = val;
             this.offset = (val - 1)*this.limit;

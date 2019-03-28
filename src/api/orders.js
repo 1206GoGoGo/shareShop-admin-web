@@ -1,13 +1,40 @@
 import request from '@/utils/request'
 
-export function fetchList(params) { //订单查询：根据条件查询 
-    return request({     //未改？？  多页面使用？？？？？？？？？？
-    url:'/pro/comment/list_admin',
+////订单查询：根据商品id查询 
+export function fetchListByproductId(params) { 
+    return request({
+    url:'/member/order/getListByPro',
     method:'get',
     params:params
     })
 }
 
+//订单查询：根据订单号查询 
+export function fetchListByorderNo(params) { 
+  return request({     
+  url:'/member/order/search',
+  method:'get',
+  params:params
+  })
+}
+
+//订单查询：根据用户登录名查询   /member/order /getListByStatus
+export function fetchListByuserName(params) { 
+  return request({     
+  url:'/member/order/getListByUserName',
+  method:'get',
+  params:params
+  })
+}
+
+//订单查询：根据订单状态查询  
+export function fetchListByStatus(params) { 
+  return request({     
+  url:'/member/order/getListByStatus',
+  method:'get',
+  params:params
+  })
+}
 
 export function deleteComment(params) {
     return request({
@@ -33,3 +60,12 @@ export function updateorderSetting(id,data) {
       data:data
     })
   }
+
+//
+  export function fetchList(params) { 
+    return request({
+    url:'/member/order/getListByPro',
+    method:'get',
+    params:params
+    })
+}

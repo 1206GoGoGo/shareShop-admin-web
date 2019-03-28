@@ -133,12 +133,13 @@ export default {
             this.getAdminCate();
         },
         handleSizeChange(val){
-                console.log(`每页 ${val} 条`);
+            console.log(`每页 ${val} 条`)
+            this.getAdminCate()
         },
         handleCurrentChange(val) {
             this.currentPage = val;
             this.offset = (val - 1)*this.limit;
-            //this.getUsers()
+            this.getAdminCate()
         },
         //获取信息
         getAdminCate(){
@@ -156,6 +157,9 @@ export default {
 </script>
 
 <style scoped>
+.el-table{
+    margin-top:0px !important; 
+}
 </style>
 
 

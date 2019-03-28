@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 <!--条件搜索 S-->
-        <el-card shadow="never" style="background:#f2f2f2;">
+        <!-- <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
                 <span>Conditional Search</span>
@@ -23,7 +23,7 @@
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="Permission:">
                         <el-select v-model="listQuery.level" style="width: 203px" placeholder="All" clearable >
-                        <el-option v-for="item in level"
+                        <el-option v-for="item in selectlevel"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -47,13 +47,13 @@
                     </el-form-item>
                 </el-form> 
             </div>
-        </el-card>
-<!--条件搜索 E-->
-        <el-card class="operate-container" shadow="never">
+        </el-card> -->
+<!--条件搜索 E class="operate-container"-->
+        <el-card  shadow="never">
             <i class="el-icon-tickets"></i>
             <span>Administrator List</span>
             <el-button
-                class="btn-add"
+                class="btn-add1"
                 @click="handleAddAdmin()"
                 size="mini">
                 Add
@@ -77,8 +77,8 @@
                 <el-table-column label="Login Name"  width="180"  align="center">
                     <template slot-scope="scope">{{scope.row.userLogin.username}}</template>
                 </el-table-column>
-                <el-table-column label="Permission"  width="100"  align="center">
-                    <template slot-scope="scope">{{scope.row.userLogin.level}}</template>
+                <el-table-column label="Permission"  width="160"  align="center">
+                    <template slot-scope="scope">{{scope.row.userLogin.level |levelFormatter}}</template>
                 </el-table-column>
                 <el-table-column label="Real Name" width="180" align="center">
                     <template slot-scope="scope">{{scope.row.name}}</template>
@@ -87,7 +87,7 @@
                     <template slot-scope="scope">{{scope.row.gender | genderFormatter}}</template>
                 </el-table-column>
                 <el-table-column label="Registration Time" width="200" align="center">
-                    <template slot-scope="scope">{{scope.row.registerTime | dateFormatter}}</template>
+                    <template slot-scope="scope">{{scope.row.registerTime | date1Formatter}}</template>
                 </el-table-column>
                 <el-table-column label="Phone Number" width="160" align="center">
                     <template slot-scope="scope">{{scope.row.phoneNumber}}</template>
@@ -101,8 +101,8 @@
                 <el-table-column label="Email" width="260" align="center">
                     <template slot-scope="scope">{{scope.row.email}}</template>
                 </el-table-column>
-                <el-table-column label="Date of Birth" width="200" align="center">
-                    <template slot-scope="scope">{{scope.row.birthday | dateFormatter}}</template>
+                <el-table-column label="Date of Birth" width="140" align="center">
+                    <template slot-scope="scope">{{scope.row.birthday | date2Formatter}}</template>
                 </el-table-column>
                 <el-table-column label="Operate" width="160" align="center" fixed="right">
                     <template slot-scope="scope"> 
@@ -155,16 +155,10 @@
                     <el-input v-model="AdminDetail.managerInfoId" style="width: 203px"  readonly></el-input>
                 </el-form-item>
                 <el-form-item label="Permission:">
-                    <el-select v-model="AdminDetail.level" placeholder="All" style="width: 203px" clearable >
-                    <el-option v-for="item in level"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                    </el-select>
-                </el-form-item>   
+                    <el-input v-model="AdminDetail.level" style="width: 203px" readonly></el-input>
+                </el-form-item> 
                 <el-form-item label="Login Name:">
-                    <el-input v-model="AdminDetail.username" style="width: 203px" ></el-input>
+                    <el-input v-model="AdminDetail.username" style="width: 203px" readonly></el-input>
                 </el-form-item>
                 <el-form-item label="Real Name:">
                     <el-input v-model="AdminDetail.name" style="width: 203px" ></el-input>
@@ -190,7 +184,7 @@
                 <el-form-item label="Registration Time:">
                     <el-date-picker
                         v-model="AdminDetail.registerTime"
-                        
+                        readonly
                         style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
@@ -204,8 +198,7 @@
                 </el-form-item>
                 <el-form-item label="Date of Birth:">
                     <el-date-picker
-                        v-model="AdminDetail.birthday"
-                        
+                        v-model="AdminDetail.birthday"            
                         style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
@@ -226,7 +219,7 @@ import {fetchList,getAdminDetail,updateManager,deleteManager} from '@/api/admin'
 import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageindex: 0,
-    pagesize: 10,
+    pagesize: 20,
     status:1,
 
     level:null,
@@ -258,19 +251,34 @@ export default {
 
     //过滤器 格式化
     filters: {
-        dateFormatter(time) {
+        //注册日期格式
+        date1Formatter(time) {
             let date = new Date(time);
             return formatDate(date, 'MM.dd.yyyy hh:mm:ss')
         },
+        //出生日期格式
+        date2Formatter(time) {
+            let date = new Date(time);
+            return formatDate(date, 'MM.dd.yyyy')
+        },
+        //性别
         genderFormatter(value){
             if(value === "0"){return 'Male'} else {return 'Female'}
         },
+        //身份验证
         idFormatter(value)
         {
             if(value===0){return 'IDP'} //驾照
-            else if(value===1){return 'USP'} //护照
-            else {return 'SSN'}  //社会安全号
-        }
+            else if(value===1){return 'SSN'} //社会安全号
+            else {return 'Not Clear'}  //不清楚
+        },
+        //级别
+        levelFormatter(value)
+        {
+            if(value===11){return 'General Admin'} //一般管理员
+            else if(value===20){return 'Super Admin'} //超级管理员
+            else {return 'Not Clear'}  //不清楚
+        },
     },
     data(){
         return{
@@ -283,48 +291,26 @@ export default {
             limit: 20,
             count: 0,
             currentPage: 1,
+
             listLoading: false,
             IDCardType:[
                 {
-                    label: "IDP",
+                    label: "IDP", //驾照
                     value: 0
                 },
                 {
-                    label: "USP",
+                    label: "SSN", //社会安全码
                     value: 1
-                },
-                {
-                    label: "SSN",
-                    value: 2
                 }
             ],
-            level: [{
-                value: 0,
-                label: '超级管理员'
+            selectlevel: [{
+                value: 11,
+                label: 'General Admin'
                 },{
-                value: 1,
-                label: '客服管理员'
-                },{
-                value: 2,
-                label: '商品管理员'
-                },{
-                value: 3,
-                label: '订单管理员'
+                value: 20,
+                label: 'Super Admin'
             }],
             dialogVisible:false,
-            // AdminDetail:{
-            //     managerInfoId:null,
-            //     name:'',
-            //     username:'',
-            //     gender:'',
-            //     phoneNumber:'',
-            //     identityCardNo:'',
-            //     identityCardType:'',
-            //     registerTime:'',
-            //     email:'',
-            //     birthday:'',
-            //     level:[],
-            // },
         }
     },
     methods:{
@@ -339,16 +325,18 @@ export default {
             });
         },
         
-        //获取搜索结果?????????????????????????????????????有错
+        //获取搜索结果
         handleSearchList(){
             this.listQuery.pageindex = 0;
             this.listQuery.pagesize = 20;
             this.getList();
         },
+
         //重置
         handleResetSearch(){
             this.listQuery = Object.assign({}, defaultListQuery);
         },
+
         //添加管理员
         handleAddAdmin(){
             this.$router.push({path: '/admin/add_admin'})
@@ -361,6 +349,7 @@ export default {
             // this.listQuery.pagesize = val;
             this.getList();
         },
+
         //获取当前页
         handleCurrentChange(val) {
             this.currentPage = val;
@@ -387,7 +376,12 @@ export default {
         handleUpdateAdmin(index, row) {
             this.dialogVisible = true;
             // this.isEdit = true;
-            this.AdminDetail = Object.assign({},row);
+            this.AdminDetail = Object.assign({},row)
+            this.AdminDetail.username=row.userLogin.username
+            this.AdminDetail.level=row.userLogin.level
+            if(this.AdminDetail.level===11){ this.AdminDetail.level='General Admin' }
+            else if(this.AdminDetail.level===20){ this.AdminDetail.level='Super Admin' }
+            else { this.AdminDetail.level='Not Clear' }
         },
     
         //修改管理员操作  this.managerInfoId
@@ -417,7 +411,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
                 }).then(() => {
-            //let params = new URLSearchParams(); //?????????????post 还是get??????
+            //let params = new URLSearchParams(); 
             //params.append("ids",ids);
             deleteManager(this.managerInfoId).then(response=>{
                 this.$message({
@@ -436,6 +430,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-add1{
+    float:right;
+    padding-right: 20px;
+}
 </style>
 
 

@@ -1,30 +1,9 @@
 <template v-model="isCollapse">
     <div class="header_container" >
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/mainPanel' }"><span class="Index">Index</span></el-breadcrumb-item>
-            <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index"><span class="Index">{{item}}</span></el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/home' }"><span class="Index">Index</span></el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item, layout) in $route.meta" :key="layout"><span class="Index">{{item}}</span></el-breadcrumb-item>
         </el-breadcrumb>
-
-        <!-- @command="handleCommand" -->
-        <!-- <el-dropdown       menu-align='start'>
-            <img src="@/assets/images/girl.png" class="avator">
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="home">首页</el-dropdown-item>
-                <el-dropdown-item command="signout">退出</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown> -->
-    <!-- <template v-for="item in routes">
-        <router-link tag="li"  class="nav-item nav-dropdown"  v-if="!item.hidden&&item.children&&item.children.length>0" :to="item.path+''+item.children[0].path"  disabled>
-            <div class="nav-link nav-dropdown-toggle" @click="handleClick"><Icon :type="item.icon" color="red"/>{{ item.name}}  </div>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item" v-for="child in item.children" :key="child" v-if='!child.hidden' @click="addActive">
-                    
-                    <router-link :to="item.path+'/'+child.path+'/'+child.children[0].path" class="nav-link" v-if="!child.hidden&&child.children" ><Icon :type="child.icon" color="red" />{{ child.name}} </router-link> 
-                    <router-link :to="item.path+'/'+child.path" class="nav-link" v-else="!child.children" ><Icon :type="child.icon"  color="red" /> {{ child.name}} </router-link> 
-                </li>
-            </ul>
-        </router-link>
-    </template> -->
 
         <el-popover
             placement="top-start"
@@ -130,20 +109,6 @@ export default {
         margin-left:0px;
     }
     
-    /* .wh(36px, 36px); */
-	/* .avator{
-        
-        width: 36px;
-        height:36px;
-		border-radius: 50%;
-		margin-right: 37px;
-	}
-	.el-dropdown-menu__item{
-        text-align: center;
-    } */
-
-
-
 .user-info-item{
     height:30px;
     padding:3px 7px;

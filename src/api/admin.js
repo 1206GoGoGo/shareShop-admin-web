@@ -1,7 +1,7 @@
 import request from '@/utils/request'
-// import '@/mock.js'
 
-//管理员查询
+
+//管理员查询(根据状态)
 export function fetchList(params) {  //params  
   return request({
     url:'/manager/info/getList',

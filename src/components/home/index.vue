@@ -2,14 +2,14 @@
   <div class="dashboard-editor-container">
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <echart ></echart>
+      <echart></echart>
     </el-row>
   </div>
 </template>
 
 <script>
-import PanelGroup from './Panel/panelGroup'
-import echart from './Panel/echart'
+import PanelGroup from './components/panelGroup'
+import echart from './components/echart'
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],

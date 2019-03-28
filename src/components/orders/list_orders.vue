@@ -21,13 +21,13 @@
         <div style="margin-top: 15px">
           <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
             <el-form-item label="订单号：">
-                <el-input v-model="listQuery.orderNumber" style="width: 203px" class="input-width" placeholder="订单编号"></el-input>
+                <el-input v-model="listQuery.orderNumber" style="width: 203px" class="input-width" placeholder="Order Number" clearable></el-input>
             </el-form-item>
-            <el-form-item label="收货人：">
-                <el-input v-model="listQuery.consigneeName" style="width: 203px" class="input-width" placeholder="收货人姓名/手机号码"></el-input>
+            <el-form-item label="用户登录名：">
+                <el-input v-model="listQuery.username" style="width: 203px" class="input-width" placeholder="Login Name" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单状态：">
-                <el-select v-model="listQuery.orderStatus" style="width: 203px" class="input-width" placeholder="全部" clearable>
+                <el-select v-model="listQuery.orderStatus" style="width: 203px" class="input-width" placeholder="All" clearable>
                     <el-option v-for="item in statusOptions"
                         :key="item.value"
                         :label="item.label"
@@ -35,7 +35,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="查询时间：">
+            <!-- <el-form-item label="查询时间：">
                 <el-date-picker
                   style="width: 363px"
                   v-model="listQuery.selectTime"
@@ -44,44 +44,47 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期">
                 </el-date-picker>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
         </div>
     </el-card>
     <!-- show-overflow-tooltip 当内容过长被隐藏时显示 tooltip!!!!!!!!!!!!!!!!!!!!!!!!!height="250"-->
+    <!--调整排序！！！！！！！！！！！！！！！！！！！！！-->
     <div class="table-container">
       <el-table ref="orderTable"    
           highlight-current-row
           :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
           show-overflow-tooltip
-          
+          :default-sort = "{prop: 'scope.row.createTime', order: 'descending'}"
+
           :data="list"
           style="width: 100%;"
           @selection-change="handleSelectionChange"
-          v-loading="listLoading" border>
+          v-loading="listLoading"
+          border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.orderId}}</template>
         </el-table-column>
-        <el-table-column label="用户姓名" width="130" align="center">
+        <el-table-column label="收货人" width="130" align="center">
           <template slot-scope="scope">{{scope.row.consigneeName}}</template>
         </el-table-column>
         <el-table-column label="订单号" width="180" align="center">
           <template slot-scope="scope">{{scope.row.orderNumber}}</template>
         </el-table-column>
-        <el-table-column label="订单金额" width="120" align="center">
-          <template slot-scope="scope">￥{{scope.row.paymentMoney}}</template>
+        <el-table-column label="支付金额" width="120" align="center">
+          <template slot-scope="scope">${{scope.row.paymentMoney}}</template>
         </el-table-column>
-        <el-table-column label="提交时间" width="180" align="center">
+        <el-table-column label="下单时间" sortable width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | dateFormatter}}</template>
         </el-table-column>
         <el-table-column label="支付方式" width="120" align="center">
           <template slot-scope="scope">{{scope.row.paymentMode | typeFormatter}}</template>
         </el-table-column>
-        <el-table-column label="订单状态" width="120" align="center">
+        <el-table-column label="订单状态" width="200" align="center">
           <template slot-scope="scope">{{scope.row.orderStatus | statusFormatter}}</template>
         </el-table-column>
-        <el-table-column  label="操作" width="200" align="center">
+        <el-table-column  label="操作" width="220" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -108,7 +111,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="batch-operate-container">
+    <!-- <div class="batch-operate-container">
       <el-select
         size="small"
         v-model="operateType" placeholder="批量操作">
@@ -127,20 +130,30 @@
         size="small">
         确定
       </el-button>
-    </div>
-    <div class="pagination-container">
+    </div> -->
+    <!-- <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
-        :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :current-page.sync="listQuery.pageindex"
+        :page-size="listQuery.pagesize"
         :page-sizes="[5,10,15]"
         :total="total">
       </el-pagination>
+    </div> -->
+    <div class="Pagination">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-size="20"
+            layout="total, prev, pager, next"
+            :total="count">
+        </el-pagination>
     </div>
-   <el-dialog
+   <!-- <el-dialog
       title="关闭订单"
       :visible.sync="closeOrder.dialogVisible" width="30%">
       <span style="vertical-align: top">操作备注：</span>
@@ -155,21 +168,21 @@
         <el-button @click="closeOrder.dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleCloseOrderConfirm">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <!-- <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog> -->
 
   </div> 
 </template>
 <script>
-import {fetchList} from '@/api/orders'
-import {formatDate} from '@/utils/date';
+import {fetchListByorderNo,fetchListByproductId,fetchListByuserName,fetchListByStatus} from '@/api/orders'
+import {formatDate} from '@/utils/date'
 const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
+    pageindex: 0,
+    pagesize: 20,
     orderNumber: null,
-    consigneeName:null,
+    username:null,
     orderStatus:null,
-    selectTime:null,
+    // selectTime:null,
   };
 export default {
     data(){
@@ -181,12 +194,16 @@ export default {
               content:null,
             }
           ],
-
           //改为true
           listLoading: false,
           list: null,
           total: null,
           operateType:null,
+          //分页
+          currentPage: 1,
+          offset: 0,
+          limit: 20,
+          count: 0,
 
           //数字还是字符串？？？？？？？？？？？？？？？？？？
           statusOptions:[
@@ -229,84 +246,83 @@ export default {
               value:'1',
             },
           ],
-          list:[
-            {
-              orderId:'1231',
-              orderNumber:'2323434',
-              consigneeName:'张三张三张三张三张三张三张三张三张三张三张三',
-              createTime:'2019-2-2',
-              paymentMoney:'2000',
-              paymentMode:'',
-              orderStatus:0,
+          // list:[
+          //   {
+          //     orderId:'1231',
+          //     orderNumber:'2323434',
+          //     consigneeName:'张三张三张三张三张三张三张三张三张三张三张三',
+          //     createTime:'2019-2-2',
+          //     paymentMoney:'2000',
+          //     paymentMode:'',
+          //     orderStatus:0,
 
-            },
-            {
-              orderId:'1231',
-              orderNumber:'2323434',
-              consigneeName:'张三',
-              createTime:'2019-2-2',
-              paymentMoney:'2000',
-              paymentMode:'1',
-              orderStatus:1,
-            },
-            {
-              orderId:'1231',
-              orderNumber:'2323434',
-              consigneeName:'张三',
-              createTime:'2019-2-2',
-              paymentMoney:'2000',
-              paymentMode:'0',
-              orderStatus:2,
-            },
-            {
-              orderId:'1231',
-              orderNumber:'2323434',
-              consigneeName:'张三',
-              createTime:'2019-2-2',
-              paymentMoney:'2000',
-              paymentMode:'0',
-              orderStatus:3,
-            },
-            {
-              orderId:'1231',
-              orderNumber:'2323434',
-              consigneeName:'张三',
-              createTime:'2019-2-2',
-              paymentMoney:'2000',
-              paymentMode:'1',
-              orderStatus:4,
-            },
+          //   },
+          //   {
+          //     orderId:'1231',
+          //     orderNumber:'2323434',
+          //     consigneeName:'张三',
+          //     createTime:'2017-2-2',
+          //     paymentMoney:'2000',
+          //     paymentMode:'1',
+          //     orderStatus:1,
+          //   },
+          //   {
+          //     orderId:'1231',
+          //     orderNumber:'2323434',
+          //     consigneeName:'张三',
+          //     createTime:'2018-2-2',
+          //     paymentMoney:'2000',
+          //     paymentMode:'0',
+          //     orderStatus:2,
+          //   },
+          //   {
+          //     orderId:'1231',
+          //     orderNumber:'2323434',
+          //     consigneeName:'张三',
+          //     createTime:'2015-2-2',
+          //     paymentMoney:'2000',
+          //     paymentMode:'0',
+          //     orderStatus:3,
+          //   },
+          //   {
+          //     orderId:'1231',
+          //     orderNumber:'2323434',
+          //     consigneeName:'张三',
+          //     createTime:'2019-2-2',
+          //     paymentMoney:'2000',
+          //     paymentMode:'1',
+          //     orderStatus:4,
+          //   },
+          // ],
 
-          ],
-
-          pickerOptions2: {
-          shortcuts: [{
-              text: '最近一周',
-              onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-              }
-          }, {
-              text: '最近一个月',
-              onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-              }
-          }, {
-              text: '最近三个月',
-              onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-              }
-          }]
-          },
-          selectTime:'',
+          // pickerOptions2: {
+          // shortcuts: [{
+          //     text: '最近一周',
+          //     onClick(picker) {
+          //     const end = new Date();
+          //     const start = new Date();
+          //     start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+          //     picker.$emit('pick', [start, end]);
+          //     }
+          //     }, {
+          //     text: '最近一个月',
+          //     onClick(picker) {
+          //     const end = new Date();
+          //     const start = new Date();
+          //     start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+          //     picker.$emit('pick', [start, end]);
+          //     }
+          //     }, {
+          //     text: '最近三个月',
+          //     onClick(picker) {
+          //     const end = new Date();
+          //     const start = new Date();
+          //     start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          //     picker.$emit('pick', [start, end]);
+          //     }
+          // }]
+          // },
+          // selectTime:'',
         }
     },
 
@@ -346,21 +362,41 @@ export default {
 
     methods:{
 
-      //获取搜索列表
+      //获取搜索列表     有问题！！！！！！！！！！！！！
       getSearchList(){
           this.listLoading=true;
-          //this.listQuery即为搜索条件
-          fetchList(this.listQuery).then(response => {
+          
+          //根据订单编号查询订单详情
+          // if(this.listQuery)
+          // {
+              this.listQuery.pageindex=null,
+              this.listQuery.pagesize=null,
+              fetchListByorderNo(this.listQuery).then(response => {
+                this.listLoading = false;
+                this.list = response.data;
+                this.total = response.data.total;
+              });
+          // }
+
+          //根据用户登录名查询订单详情
+          fetchListByuserName(this.listQuery).then(response => {
             this.listLoading = false;
-            this.list = response.data.list;
+            this.list = response.data;
+            this.total = response.data.total;
+          });
+
+          //根据订单状态查询订单详情
+          fetchListByStatus(this.listQuery).then(response => {
+            this.listLoading = false;
+            this.list = response.data;
             this.total = response.data.total;
           });
       },
 
       //获取搜索结果
-      handleSearchList(val){
-          this.listQuery.pageNum = 1;
-          this.listQuery.pageSize = val;
+      handleSearchList(){
+          // this.listQuery.pageindex = 0;
+          // this.listQuery.pagesize = 20;
           this.getSearchList();
       },
 
@@ -375,13 +411,22 @@ export default {
         this.closeOrder.dialogVisible=true;
 
       },
+
+      handleSizeChange(val){
+        console.log(`每页 ${val} 条`);
+      },
+        
+      handleCurrentChange(val){
+          this.currentPage = val;
+          this.offset = (val - 1)*this.limit;
+          // this.getList()
+      },
+
       handleSelectionChange(){},
       handleDeleteOrder(){},
       handleViewLogistics(){},
       handleDeliveryOrder(){},
       handleCloseOrderConfirm(){},
-      handleCurrentChange(){},
-      handleSizeChange(){},
     }
 }
 </script>

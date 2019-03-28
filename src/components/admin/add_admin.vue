@@ -7,9 +7,7 @@
             </div>
             <div class="text item" v-if="showInfo">
                 <p>1、超级管理员可以管理所有功能</p>
-                <p>2、客服管理员可以管理消息模块</p>
-                <p>3、订单管理员可以处理用户订单</p>
-                <p>4、商品管理员可以管理商品动态</p>
+                <p>2、普通管理员可以管理部分模块</p>
             </div>
         </el-card>
 <!--添加须知 E-->      
@@ -36,8 +34,13 @@
                 </el-form-item>
                 <el-form-item label="证件类型:" prop="identityCardType">
                     <el-select v-model="AddManagerForm.identityCardType" placeholder="请选择" style="width:203px">
-                    <el-option label="身份证" value="IDcard"></el-option>
-                    <el-option label="通行证" value="Passcard"></el-option>
+                      <el-option v-for="item in selectCardType"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                      </el-option>
+                    <!-- <el-option label="身份证" value="IDcard"></el-option>
+                    <el-option label="通行证" value="Passcard"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item label="证件号码:" prop="identityCardNo">
@@ -45,8 +48,13 @@
                 </el-form-item>
                 <el-form-item label="权限:" prop="level">
                     <el-select v-model="AddManagerForm.level" placeholder="请选择" style="width:203px">
-                    <el-option label="权限一" value="shanghai"></el-option>
-                    <el-option label="权限二" value="beijing"></el-option>
+                      <el-option v-for="item in selectlevel"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                      </el-option>
+                    <!-- <el-option label="权限一" value="shanghai"></el-option>
+                    <el-option label="权限二" value="beijing"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item label="出生日期:">
@@ -93,7 +101,6 @@ const defaultAddManagerForm = {
   };
 export default {
     data(){
-
       //验证密码
       var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -168,6 +175,23 @@ export default {
       return {
         showInfo: false,  
         AddManagerForm: Object.assign({}, defaultAddManagerForm),
+        selectCardType:[
+            {
+              label: "IDP", //驾照
+              value: 0
+            },
+            {
+                label: "SSN", //社会安全码
+                value: 1
+            }
+        ],
+        selectlevel: [{
+            value: 11,
+            label: 'General Admin'
+            },{
+            value: 20,
+            label: 'Super Admin'
+        }],
         Vrules: {
           username: [
             { required: true, message: '请输入登录名', trigger: 'blur' },
@@ -186,21 +210,21 @@ export default {
           phoneNumber:[
             { validator: checkphoneNumber, trigger: 'blur' },
           ],
-          identityCardNo:[
-            { required: true, message: '请输入证件号码', trigger: 'blur' }
-          ],
-          identityCardType:[
-            { required: true, message: '请选择证件类型', trigger: 'change' }
-          ],
+          // identityCardNo:[
+          //   { required: true, message: '请输入证件号码', trigger: 'blur' }
+          // ],
+          // identityCardType:[
+          //   { required: true, message: '请选择证件类型', trigger: 'change' }
+          // ],
           level:[
             { required: true, message: '请选择权限', trigger: 'change' }
           ],
-          gender:[
-            { required: true, message: '请选择性别', trigger: 'change' }
-          ],
-          birthday:[
-            { type: 'array', required: true, message: '请选择出生日期', trigger: 'change' },
-          ],
+          // gender:[
+          //   { required: true, message: '请选择性别', trigger: 'change' }
+          // ],
+          // birthday:[
+          //   { type: 'array', required: true, message: '请选择出生日期', trigger: 'change' },
+          // ],
           email:[
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }         
@@ -276,10 +300,10 @@ export default {
         clear: both
     }
     .box-card {
-        width: 990px;
+        width: 950px;
     }
     .show{
-		height: 220px;
+		height: 160px;
 	}
     .hide{
         height: 59px;

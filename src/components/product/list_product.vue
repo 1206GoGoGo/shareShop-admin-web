@@ -163,6 +163,7 @@
         </el-table-column>
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
+            <!--需要设置查询商品收藏、商品被加购物车的情况-->
             <p>
               <el-button
                 size="mini"

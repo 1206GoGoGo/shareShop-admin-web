@@ -2,17 +2,23 @@
     margin-left: 0px !important;
     padding: 0px !important;
 }
+.el-container{
+    padding: 0px !important;
+    margin: 0px !important;
+}
 .el-submenu__title i{  
     color:#fff !important;
 }
 
 element.style{
     background: #1f2d3d !important;
-    // width: 100px !important;
-    // padding-left:10px !important;
 }
 a:-webkit-any-link{
     cursor: pointer !important;
+}
+
+.dashboard-editor-container[data-v-67f3a69c]{
+    background-color: #f2f2f2 !important;
 }
 
 //搜索框
@@ -33,7 +39,7 @@ a:-webkit-any-link{
 }
 
 //
-el-form-item--small.el-form-item {
+.el-form-item--small .el-form-item {
     margin-bottom: 18px;
 }
 

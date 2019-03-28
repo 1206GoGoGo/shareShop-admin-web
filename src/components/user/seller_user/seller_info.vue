@@ -277,7 +277,7 @@ const defaultListQuery = {
     phoneNumber:null,
     identityCardNo:null,
     email:null,
-    level:null,//seller的级别！！！！！！！！！！！！！！！！！
+    level:3,//seller的级别
     status:null,
   };
 
@@ -308,6 +308,8 @@ export default {
                     value: 2
                 }
             ],
+
+            // list:null,
             list: [
                 {
                     userInfoId:'12323324',
@@ -456,7 +458,7 @@ export default {
 
         //获取搜索列表
         getSearchList(){
-            this.listLoading=true;
+            //this.listLoading=true;
             fetchListSeller(this.listQuery).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
@@ -494,7 +496,7 @@ export default {
             this.SellerDetail.username=row.userLogin.username
         },
 
-        //修改用户信息  this.managerInfoId
+        //修改用户信息 
         handleConfirm(){ 
           updateSeller(this.SellerDetail).then(response=>{
             this.dialogFormVisible=false;
@@ -507,12 +509,11 @@ export default {
             });
         },
 
-        //获取用户地址
+        //获取用户地址  注意：为查找不到的信息写提示！！！！！！！！！！！！！！！！！！！！
         getSellerAddr(index, row){
             this.dialogTableVisible = true;
-            this.listQuery.pageindex=null
-            this.listQuery.pagesize=null
             this.listQuery.status=null
+            this.listQuery.level=null,
             this.listQuery.id=row.userId
             fetchUserAddr(this.listQuery).then(response => {
                 this.Addrlist = response.data;

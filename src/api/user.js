@@ -4,7 +4,8 @@ import request from '@/utils/request'
 //初始化得到列表/查询状态异常用户 （状态=1：正常；状态=0：异常）
 export function getLists(params) {   //seller也在用这个表，level='3'
   return request({
-    url:'/member/info/getList',
+    // url:'/member/info/getList',
+    url:'/member/info/search',    //初始化和条件查询现在用的是一个接口！！！！！！！！！
     method:'get',
     params:params
   })

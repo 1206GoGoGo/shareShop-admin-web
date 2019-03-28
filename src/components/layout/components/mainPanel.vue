@@ -1,9 +1,9 @@
 <template>
     <el-container class="main-panel"> 
-        <el-main  >
-            <transition name="fade">
+        <el-main>
+            <transition name="fade" mode="out-in">
                 <router-view>
-
+                    
                 </router-view>
             </transition>
         </el-main>
@@ -24,21 +24,24 @@ export default {
 </script>
 
 <style scoped>
-.el-main{
+
+/* 第二次 */
+/*.el-main{
     padding: 0px !important;
     position: relative;
     height: 100%;
 }
 .main-panel{
     padding: 0px !important;
-    /* position: absolute; */
+     position: absolute; 
     top:60px;
     bottom:0px;
     right:0px;
     left:200px;
     overflow: auto;
-}  
+}  */
 
+/* 第一次 */
 /*.header-ceiling{
      border: 1px solid #d7dde4;
     background: #f5f7f9;
@@ -63,6 +66,32 @@ export default {
     color: #ffffff;
 } */
 
+/* 第三次 */
+/* .fade-enter {
+  opacity:0;
+}
+.fade-leave{
+  opacity:1;
+}
+.fade-enter-active{
+  transition:opacity .2s;
+}
+.fade-leave-active{
+  opacity:0;
+  transition:opacity .2s;
+} */
+
+
+ 
+/* .main-panel{
+    position: relative;
+    top:0px;
+    bottom:0px;
+    right:0px;
+    left:0px;
+    overflow: auto;
+} */
+/*
 .fade-enter {
   opacity:0;
 }
@@ -75,5 +104,5 @@ export default {
 .fade-leave-active{
   opacity:0;
   transition:opacity .2s;
-}
+} */
 </style>

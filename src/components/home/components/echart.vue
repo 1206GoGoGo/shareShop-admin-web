@@ -64,7 +64,7 @@ export default {
           }
         },
         legend: {
-          data: ['蒸发量', '降水量', '平均温度']
+          data: ['订单数', '加购物车数', '金额']
         },
         xAxis: [
           {
@@ -77,40 +77,40 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '水量',
+            name: '单价',
             min: 0,
             max: 250,
             interval: 50,
             axisLabel: {
-              formatter: '{value} ml'
+              formatter: '{value} dollars'
             }
           },
           {
             type: 'value',
-            name: '温度',
+            name: '比数',
             min: 0,
             max: 25,
             interval: 5,
             axisLabel: {
-              formatter: '{value} °C'
+              formatter: '{value}'
             }
           }],
         series: [
           {
-            name: '蒸发量',
+            name: '订单数',
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 6.4, 3.3, 76.7, 32.6, 20.0, 135.6, 162.2]
           },
           {
-            name: '降水量',
+            name: '加购物车数',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            data: [2.6, 5.9, 9.0, 26.4, 28.7,6.0, 2.3, 48.7, 18.8, 70.7,182.2, 195.6]
           },
           {
-            name: '平均温度',
+            name: '金额',
             type: 'line',
             yAxisIndex: 1,
-            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+            data: [2.0, 2.2, 3.3, 4.5, 6.3,5.0, 6.2, 10.0, 10.2,16.5, 20.3, 23.4]
           }]
       })
     }
