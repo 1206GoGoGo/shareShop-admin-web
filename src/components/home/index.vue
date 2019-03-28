@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<!---<style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);
@@ -57,4 +57,16 @@ export default {
     margin-bottom: 32px;
   }
 }
+</style>-->
+
+<style scoped>
+  .dashboard-editor-container{
+    padding: 32px;
+    background-color: #f2f2f2;
+  }
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
 </style>
