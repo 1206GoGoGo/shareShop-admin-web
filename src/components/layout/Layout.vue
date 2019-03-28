@@ -32,21 +32,7 @@ export default {
     mainPanel
   },
   mixins: [ResizeMixin],
-//   computed: {
-//     sidebar() {
-//       return this.$store.state.app.sidebar
-//     },
-//     device() {
-//       return this.$store.state.app.device
-//     },
-//     classObj() {
-//       return {
-//         hideSidebar: !this.sidebar.opened,
-//         withoutAnimation: this.sidebar.withoutAnimation,
-//         mobile: this.device === 'mobile'
-//       }
-//     }
-//   }
+
 data:function(){
     return {
     }
@@ -67,13 +53,6 @@ computed: {
 </script>
 
 <style scoped>
-/* //   @import "src/styles/mixin.scss";  rel="stylesheet/scss" lang="scss"
-//   .app-wrapper {
-//     @include clearfix;
-//     position: relative;
-//     height: 100%;
-//     width: 100%;
-//   } */
 
 #app {
   font-family:'Microsoft YaHei','Avenir', Helvetica, Arial, sans-serif;
@@ -101,22 +80,4 @@ computed: {
   color: #333;
 }
 
-
 </style>
-
-
-<!--
-<el-container>
-        <el-aside width="230px" class="aside">
-            <sider :routes="routes"></sider>
-        </el-aside>
-        <el-container>
-            <el-header>
-                <headPanel style="margin-left=200px;"></headPanel>
-            </el-header>
-            <el-main>
-                <mainPanel></mainPanel>
-            </el-main>
-        </el-container>
-    </el-container>
--->
