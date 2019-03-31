@@ -11,24 +11,28 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/mycss/mycss.scss' ; //全局修改样式
 
-// import '@/icons'
+import '@/icons'
 
+//引入图表
 import Vuex from 'vuex'
+import VCharts from 'v-charts'
+// import ECharts from 'vue-echarts/components/ECharts.vue'
+// Vue.component('chart', ECharts)
+
+
 Vue.use(Vuex)
 Vue.use(VueAxios,axios);
 import store from './store'
-// import VCharts from 'v-charts'
+
 
 Vue.config.productionTip = false
-
-// require('./mock.js')
 
 //全局引入axios
 //需要npm两个包axios和vue-axios
 Vue.use(ElementUI);
 // Vue.use(VueAxios,axios);
 
-// Vue.use(VCharts);
+Vue.use(VCharts);
 
 
 // Vue.use(VueRouter);  
@@ -36,38 +40,11 @@ Vue.use(ElementUI);
 
 axios.defaults.baseURL = process.env.BASE_API;
 
-
 Vue.prototype.storage=window.localStorage;    
 
 
 // import '@/permission' // permission control
 Vue.config.productionTip = false
-
-
-// Vue.filter('UserRoleFilter', function (value) {
-//   if (value===1)
-//       value = "管理员";
-//   else{
-//       value ="一般用户";
-//   };
-//   return value;
-// })
-
-// router.beforeEach(function(to,from,next){
-//   console.log("aaaaaaaaaaa"+to.path+"------"+store.state.isLogined);
-//   if(to.meta.loginRequired)
-//   {
-//     if(store.state.isLogined)
-//         next();
-//     else
-//       next({path:'/login'});
-//   }
-//   else
-//     {
-//         next();
-//     }
-
-// })
 
 /* eslint-disable no-new */
 new Vue({

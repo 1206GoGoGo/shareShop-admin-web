@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 import Layout from '@/components/layout/Layout'
 
-//const login = r => require.ensure([], () => r(require('@/components/login')), 'login');
+//const login = r => require.ensure([], () => r(require('@/components/login/login')), 'login');
 
 //管理员路由
 const list_kinds = r => require.ensure([], () => r(require('@/components/admin/list_kinds')), 'list_kinds');
@@ -44,7 +44,7 @@ const home = r => require.ensure([], () => r(require('@/components/home')), 'hom
 
 const routes = [
 	// {
-	// 	path: '/',
+	// 	path: '/login',
 	// 	component: login
 	// },
 	{

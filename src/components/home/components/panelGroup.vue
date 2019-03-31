@@ -1,47 +1,39 @@
 <template>
-  <el-row class="panel-group" :gutter="40">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+  <el-row class="panel-group" :gutter="35">
+    <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
       <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
-          <!-- <svg-icon icon-class="peoples" class-name="card-panel-icon" /> -->
-          <img src="../../../assets/images/clients2.jpg" />
+        <div class="card-panel-icon-wrapper icon-deliver">
+          <!-- <svg-icon icon-class="people" class-name="card-panel-icon" /> -->
+          <!-- <svg-icon icon-class="deliver" class-name="card-panel-icon"></svg-icon> -->
+          <svg-icon icon-class="deliver" class-name="card-panel-icon"></svg-icon>
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">访问量</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="2600"></count-to>
+          <div class="card-panel-text">To Be Delivered</div>
+          <count-to class="card-panel-num" :startVal="0" :endVal="1020" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <!-- <svg-icon icon-class="message" class-name="card-panel-icon" /> -->
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">信息</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <!-- <svg-icon icon-class="money" class-name="card-panel-icon" /> -->
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">购买</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="9280" :duration="3200"></count-to>
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+
+    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shoppingCard">
-          <!-- <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" /> -->
+        <div class="card-panel-icon-wrapper icon-Refund">
+          <svg-icon icon-class="Refund" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">订单</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="13600" :duration="3600"></count-to>
+          <div class="card-panel-text">Pending Refund</div>
+          <count-to class="card-panel-num" :startVal="0" :endVal="130" :duration="3600"></count-to>
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+        <div class="card-panel-icon-wrapper icon-tight">
+          <svg-icon icon-class="tight" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Tight Inventory</div>
+          <count-to class="card-panel-num" :startVal="0" :endVal="90" :duration="3200"></count-to>
         </div>
       </div>
     </el-col>
@@ -65,7 +57,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
+  margin-top: 30px;
   .card-panel-col{
     margin-bottom: 32px;
   }
@@ -80,33 +72,35 @@ export default {
     box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
     border-color: rgba(0, 0, 0, .05);
     &:hover {
-      .card-panel-icon-wrapper {
-        color: #fff;
-      }
-      .icon-people {
+      // .card-panel-icon-wrapper {
+      //   color: #fff;
+      // }
+      .icon-deliver {
         //  background: #40c9c6;
-        background: #4e8dee;
+        background: #f2f2f2;
       }
-      .icon-message {
-        background: #36a3f7;
+      // .icon-message {
+      //   background: #36a3f7;
+      // }
+      .icon-tight {
+        // background: #f4516c;
+        background: #f2f2f2;
       }
-      .icon-money {
-        background: #f4516c;
-      }
-      .icon-shoppingCard {
-        background: #34bfa3
+      .icon-Refund {
+        // background: #34bfa3
+        background: #f2f2f2;
       }
     }
-    .icon-people {
-      color: #40c9c6;
-    }
-    .icon-message {
+    .icon-deliver {
       color: #36a3f7;
     }
-    .icon-money {
+    // .icon-message {#40c9c6;
+    //   color: #36a3f7;
+    // }
+    .icon-tight {
       color: #f4516c;
     }
-    .icon-shoppingCard {
+    .icon-Refund {
       color: #34bfa3
     }
     .card-panel-icon-wrapper {

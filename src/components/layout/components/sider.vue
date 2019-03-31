@@ -3,28 +3,28 @@
     <div class="top">
         Share Shop Admin
     </div>
-    <!--  @select="handleSelect"选择路由跳转:default-active="defaultActive" :default-active="defaultActive"  router-->
+    <!--<i class="el-icon-menu"></i>  @select="handleSelect"选择路由跳转:default-active="defaultActive" :default-active="defaultActive"  router-->
     <el-menu :unique-opened='true'  background-color="#5b6270" text-color="#fff" active-text-color="#ffd04b" router>
         <el-submenu index="1">
-            <template slot="title"><i class="el-icon-menu"></i>User</template>   
+            <template slot="title"><svg-icon icon-class="userside" class="side-icon"></svg-icon>User</template>   
             
-            <el-menu-item index="/user/general_user/general_info">用户信息</el-menu-item>
-            <el-menu-item index="/user/general_user/general_record">消费记录</el-menu-item>
-            <el-menu-item index="/user/seller_user/seller_setting">优惠设置</el-menu-item>
+            <el-menu-item index="/user/general_user/general_info"><svg-icon icon-class="usermsgside" class="side-icon"></svg-icon>用户信息</el-menu-item>
+            <el-menu-item index="/user/general_user/general_record"><svg-icon icon-class="recordside" class="side-icon"></svg-icon>消费记录</el-menu-item>
+            <el-menu-item index="/user/seller_user/seller_setting"><svg-icon icon-class="couponside" class="side-icon"></svg-icon>优惠设置</el-menu-item>
             <el-submenu index="1-4">
-                <template slot="title">seller管理</template> 
-                <el-menu-item index="/user/seller_user/seller_info">基本信息</el-menu-item><!--搜索表里面有其特殊的信息-->
+                <template slot="title"><svg-icon icon-class="sellerside" class="side-icon"></svg-icon>seller管理</template> 
+                <el-menu-item index="/user/seller_user/seller_info"><svg-icon icon-class="usermsgside" class="side-icon"></svg-icon>基本信息</el-menu-item><!--搜索表里面有其特殊的信息-->
                 <!-- <el-menu-item index="1-3-2">优惠设置</el-menu-item>
                 <el-menu-item index="1-3-3">消费记录</el-menu-item> -->
-                <el-menu-item index="/user/seller_user/seller_income">收入明细</el-menu-item>
-                <el-menu-item index="/user/seller_user/member_info">会员查询</el-menu-item>
+                <el-menu-item index="/user/seller_user/seller_income"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>收入明细</el-menu-item>
+                <el-menu-item index="/user/seller_user/member_info"><svg-icon icon-class="memberside" class="side-icon"></svg-icon>会员查询</el-menu-item>
             </el-submenu>
         </el-submenu>
 
         <el-submenu index="2">
-            <template slot="title"><i class="el-icon-goods"></i>Commodity</template>  
+            <template slot="title"><svg-icon icon-class="productside" class="side-icon"></svg-icon>Commodity</template>  
             <el-submenu index="2-1">
-                <template slot="title">推荐商品管理</template> 
+                <template slot="title"><svg-icon icon-class="recommendside" class="side-icon"></svg-icon>推荐商品管理</template> 
                 <el-menu-item index="/product/recommend/list_recommend">推荐商品列表</el-menu-item><!--包括新增、删除-->
                 <!-- <el-menu-item index="2-1-2">增加推荐商品</el-menu-item> -->
                 <el-menu-item index="/product/recommend/recommend_kinds">推荐商品分类</el-menu-item>
@@ -40,7 +40,7 @@
         </el-submenu>
 
         <el-submenu index="3">
-            <template   slot="title"><i class="el-icon-sold-out"></i>Order</template>  
+            <template   slot="title"><svg-icon icon-class="orderside" class="side-icon"></svg-icon>Order</template>  
             <el-menu-item index="/orders/list_orders">订单列表</el-menu-item><!--包括订单状态-->
             <!-- <el-menu-item index="3-2">订单设置</el-menu-item> -->
             <el-menu-item index="/orders/return_orders">退货处理</el-menu-item>
@@ -48,26 +48,26 @@
         </el-submenu>
 
         <el-submenu index="4">
-            <template  slot="title"><i class="el-icon-tickets"></i>Coupon</template>  
+            <template  slot="title"><svg-icon icon-class="couponside" class="side-icon"></svg-icon>Coupon</template>  
             <el-menu-item index="/coupon/list_coupon">优惠券列表</el-menu-item><!--包括数量、使用条件、有效期……-->
             <el-menu-item index="/coupon/info_coupon">优惠券添加</el-menu-item><!--使用情况-->
         </el-submenu>
 
         <el-submenu index="5">
-            <template  slot="title"><i class="el-icon-message"></i>News</template>  
+            <template  slot="title"><svg-icon icon-class="msgside" class="side-icon"></svg-icon>News</template>  
             <!-- <el-menu-item index="5-1">seller申请</el-menu-item> -->
             <el-menu-item index="/news/view_user">买前留言</el-menu-item>
             <el-menu-item index="/news/comment_user">买后评价</el-menu-item>
         </el-submenu>
 
         <el-submenu index="6">
-            <template   slot="title"><i class="el-icon-news"></i>Income</template>  
+            <template   slot="title"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>Income</template>  
             <el-menu-item index="/income/list_income">收入查询</el-menu-item><!--导出表-->
             <!-- <el-menu-item index="6-2">> 导出表</el-menu-item> -->
         </el-submenu>
 
         <el-submenu index="7">
-            <template   slot="title"><i class="el-icon-setting"></i>Administrator</template>  
+            <template   slot="title"><svg-icon icon-class="adminside" class="side-icon"></svg-icon>Administrator</template>  
             <el-menu-item index="/admin/list_kinds">管理员分类</el-menu-item>
             <el-menu-item index="/admin/list_admin">管理员列表</el-menu-item>
             <el-menu-item index="/admin/add_admin">添加管理员</el-menu-item> <!--包括管理员状态-->
@@ -93,7 +93,6 @@
 </template>
 
 <script>
-//首页侧边栏模块
 export default {
     name:"sider",
     data:function(){
@@ -106,61 +105,6 @@ export default {
         // }
     },
     methods:{
-        //路由跳转处理
-        handleSelect:function(index,indexpath){
-            var locthis=this;
-            switch(index)
-            {
-                //通过index来控制路由跳转
-                // case "1-1-1":locthis.$router.push({path:'/user/general_user/general_info'});break;
-                // case "1-1-2":locthis.$router.push({path:'/user/general_user/general_record'});break;
-
-                // case "1-2-1":locthis.$router.push({path:'/user/member_user/member_info'});break;
-                // case "1-2-2":locthis.$router.push({path:'/user/member_user/member_record'});break;
-                // case "1-2-3":locthis.$router.push({path:'/user/member_user/member_setting'});break;
-
-                case "1-1":locthis.$router.push({path:'/user/general_user/general_info'});break;
-                case "1-2":locthis.$router.push({path:'/user/general_user/general_record'});break;
-                case "1-3":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
-
-                case "1-4-1":locthis.$router.push({path:'/user/seller_user/seller_info'});break;
-                // case "1-3-2":locthis.$router.push({path:'/user/seller_user/seller_setting'});break;
-                // case "1-3-3":locthis.$router.push({path:'/user/seller_user/seller_record'});break;
-                case "1-4-2":locthis.$router.push({path:'/user/seller_user/seller_income'});break;
-                case "1-4-3":locthis.$router.push({path:'/user/seller_user/member_info'});break;
-
-                case "2-1-1":locthis.$router.push({path:'/product/recommend/list_recommend'});break;
-                case "2-1-2":locthis.$router.push({path:'/product/recommend/add_recommend'});break;
-                case "2-1-3":locthis.$router.push({path:'/product/recommend/recommend_kinds'});break;
-
-                case "2-2":locthis.$router.push({path:'/product/product_cate/add_cate'});break;
-                case "2-3":locthis.$router.push({path:'/product/attr_product'});break;
-
-                case "2-4":locthis.$router.push({path:'/product/list_product'});break;
-                case "2-5":locthis.$router.push({path:'/product/add_product'});break;
-                case "2-6":locthis.$router.push({path:'/product/collect_product'});break;
-                // case "2-7":locthis.$router.push({path:'/product/review_product'});break; 
-
-                case "3-1":locthis.$router.push({path:'/orders/list_orders'});break;
-                // case "3-2":locthis.$router.push({path:'/orders/setting_orders'});break;
-                case "3-3":locthis.$router.push({path:'/orders/return_orders'});break;
-
-                case "4-1":locthis.$router.push({path:'/coupon/list_coupon'});break;
-                case "4-2":locthis.$router.push({path:'/coupon/add_coupon'});break;
-
-                // case "5-1":locthis.$router.push({path:'/news/apply_seller'});break;
-                case "5-2":locthis.$router.push({path:'/news/view_user'});break;
-                case "5-3":locthis.$router.push({path:'/news/comment_user'});break;
-
-                case "6-1":locthis.$router.push({path:'/income/list_income'});break;
-
-                case "7-1":locthis.$router.push({path:'/admin/list_kinds'});break;
-                case "7-2":locthis.$router.push({path:'/admin/list_admin'});break;
-                case "7-3":locthis.$router.push({path:'/admin/add_admin'});break;
-
-                default:console.log("跳转错误");
-            }
-        }
     }
 }
 </script>
@@ -227,6 +171,10 @@ export default {
     }
     .el-submenu__title i{  
         color:#ffE !important;
+    }
+    .side-icon{
+        font-size: 18px;
+        padding-right:10px;
     }
 </style>
 

@@ -1,6 +1,22 @@
 <template>
   <div class="dashboard-editor-container">
+      <el-row :gutter="35">
+        <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
+          <calendar></calendar>
+        </el-col>
+        <el-col :xs="14" :sm="14" :lg="16" class="card-panel-col">
+          <process></process>
+        </el-col>
+      </el-row>
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+    <el-row :gutter="35">
+        <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
+          <register></register>
+        </el-col>
+        <el-col :xs="14" :sm="14" :lg="16" class="card-panel-col">
+          <onsale></onsale>
+        </el-col>
+    </el-row>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <echart></echart>
     </el-row>
@@ -10,6 +26,11 @@
 <script>
 import PanelGroup from './components/panelGroup'
 import echart from './components/echart'
+import calendar from './components/calendar'
+import process from './components/process'
+import register from './components/register'
+import onsale from './components/onsale'
+
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -29,10 +50,14 @@ const lineChartData = {
   }
 }
 export default {
-  name: 'dashboard-admin',
+  name: 'home',
   components: {
     PanelGroup,
-    echart
+    echart,
+    calendar,
+    process,
+    register,
+    onsale
   },
   data() {
     return {
@@ -64,9 +89,9 @@ export default {
     padding: 32px;
     background-color: #f2f2f2;
   }
-  .chart-wrapper {
+  /* .chart-wrapper {
     background: #fff;
     padding: 16px 16px 0;
-    margin-bottom: 32px;
-  }
+    margin-bottom: 32px; 
+  } */
 </style>
