@@ -1,6 +1,6 @@
 <template>
   <el-row class="panel-group" :gutter="35">
-    <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
+    <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-deliver">
           <!-- <svg-icon icon-class="people" class-name="card-panel-icon" /> -->
@@ -14,7 +14,7 @@
       </div>
     </el-col>
 
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-Refund">
           <svg-icon icon-class="Refund" class-name="card-panel-icon" />
@@ -26,7 +26,7 @@
       </div>
     </el-col>
 
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-tight">
           <svg-icon icon-class="tight" class-name="card-panel-icon" />
@@ -37,6 +37,19 @@
         </div>
       </div>
     </el-col>
+
+    <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('system')">
+        <div class="card-panel-icon-wrapper icon-system">
+          <svg-icon icon-class="system" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">System Error</div>
+          <count-to class="card-panel-num" :startVal="0" :endVal="3" :duration="3600"></count-to>
+        </div>
+      </div>
+    </el-col>
+
   </el-row>
 </template>
 
@@ -90,6 +103,9 @@ export default {
         // background: #34bfa3
         background: #f2f2f2;
       }
+      .icon-system{
+        background: #f2f2f2;
+      }
     }
     .icon-deliver {
       color: #36a3f7;
@@ -97,6 +113,9 @@ export default {
     // .icon-message {#40c9c6;
     //   color: #36a3f7;
     // }
+    .icon-system{
+      color: #808080;
+    }
     .icon-tight {
       color: #f4516c;
     }
@@ -105,19 +124,21 @@ export default {
     }
     .card-panel-icon-wrapper {
       float: left;
-      margin: 14px 0 0 14px;
-      padding: 16px;
+      margin: 30px 0 0 10px;
+      padding: 8px;
       transition: all 0.38s ease-out;
       border-radius: 6px;
     }
     .card-panel-icon {
       float: left;
-      font-size: 48px;
+      font-size: 28px;
     }
     .card-panel-description {
+      margin-top:30px;
+      margin-right:10px;
       float: right;
       font-weight: bold;
-      margin: 26px;
+      //margin: 10px;
       margin-left: 0px;
       .card-panel-text {
         line-height: 18px;

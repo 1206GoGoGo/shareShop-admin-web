@@ -23,9 +23,14 @@
             <li style="color:red">日</li>
         </ul>
         <!-- 日期 -->
-        <ul class="days">
+        <el-popover
+            placement="top"
+            width="250"
+            visible-arrow="true"
+            trigger="hover">
+        <ul class="days" slot="reference">
             <!-- 核心 v-for循环 每一次循环用<li>标签创建一天 -->
-            <li  v-for="dayobject in days" :key="dayobject.item">
+            <li  v-for="dayobject in days" :key="dayobject.item" >
                 <!--本月-->
                 <!--如果不是本月  改变类名加灰色-->
 
@@ -40,7 +45,23 @@
 
             </li>
         </ul>
+        
+                <div class="box icon-visitor">
+                    <svg-icon icon-class="visitorcard" class-name="card-panel-icon"></svg-icon>
+                    访问量：{{visitor}}
+                </div>
+                <div class="box icon-visitor">
+                    <svg-icon icon-class="ordercard" class-name="card-panel-icon"></svg-icon>
+                    订单数：{{order}}
+                </div>
+                <div class="box icon-visitor">
+                    <svg-icon icon-class="moneycard" class-name="card-panel-icon"></svg-icon>
+                    总金额：{{money}}
+                </div>
+
+        </el-popover>
     </div>
+
 </template>
 
 <style scoped>
@@ -136,7 +157,7 @@
             /* height: 18px; 00B8EC原来色（蓝色） 64d9d6（绿色）*/
             text-align: center;
             padding-bottom: 10px;
-            padding-top: 5px;
+            padding-top: 10px;
             font-size: 1rem;
             color: #000;
             text-align: center;
@@ -158,6 +179,28 @@
             background: #e1e1e1;
         }
 
+        /* .icon-visitor{
+            color: #36a3f7;
+        } */
+        .card-panel-icon {
+            margin-left:15px; 
+            float: left;
+            font-size: 18px;
+            padding-right:4px;
+            padding-top:2px;
+            color: #36a3f7;
+            position: relative;
+        }
+        .box{
+            position: relative;        
+            height:30px;
+            padding:3px 7px;
+            padding-left:5px;
+            margin-bottom: 8px;
+            line-height: 20px; 
+            border-bottom:0px solid #f5f5f5;
+        }
+
 </style>
 
 <script>
@@ -169,15 +212,18 @@ export default {
   data: function () {
    
     return {
-             currentDay: 1,
+            currentDay: 1,
             currentMonth: 1,
             currentYear: 1970,
             currentWeek: 1,
             days: [],
-
+            visitor:'10378',
+            order:'10378',
+            money:'236284',
     }
   },
           methods: {
+
             initData: function(cur) {
                 var leftcount=0; //存放剩余数量
                 var date;
@@ -237,7 +283,7 @@ export default {
                 this.initData(this.formatDate(d.getFullYear(),d.getMonth() + 1,1));
             },
             pickYear: function(year, month) {
-                alert(year + "," + month);
+                //alert(year + "," + month);
             },
 
             // 返回 类似 2016-01-02 格式的字符串
@@ -246,11 +292,11 @@ export default {
                 var m = month;
                 if(m<10) m = "0" + m;
                 var d = day;
+                //美国的日期格式m+'/'+d+'/'+y----------------y+"-"+m+"-"+d（中国的）-------------------
+                var date=m+'/'+d+'/'+y;
                 if(d<10) d = "0" + d;
-                return y+"-"+m+"-"+d
+                return date
             },
-
-
         },
 
 }

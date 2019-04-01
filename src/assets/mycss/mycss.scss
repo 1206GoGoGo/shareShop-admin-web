@@ -96,3 +96,11 @@ a:-webkit-any-link{
 element .style{
     height: 170px;
 }
+
+.el-popper[x-placement^=top] .popper__arrow{
+    bottom:0px !important;
+}
+
+.el-popper[x-placement^=bottom] .popper__arrow{
+    top:0px !important;
+}
