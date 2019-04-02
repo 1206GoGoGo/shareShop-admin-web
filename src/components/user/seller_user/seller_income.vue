@@ -3,7 +3,7 @@
         <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
-                <span>条件查询</span>
+                <span>Conditional Search</span>
                 <el-button
                     style="float: right"
                     @click="getSearchList()"
@@ -41,16 +41,16 @@
                         @selection-change="handleSelectionChange"
                         
                         border>
-                <el-table-column label="交易时间" align="center">
+                <el-table-column label="交易时间" align="center" sortable>
                     <template slot-scope="scope">{{scope.row.createTime | dateFormatter}}</template>
                 </el-table-column>
-                <el-table-column label="交易类型" width="180" align="center">
+                <el-table-column label="交易类型" width="180" align="center" sortable>
                     <template slot-scope="scope">{{scope.row.type | typeFormatter}}</template>
                 </el-table-column>
-                <el-table-column label="交易金额" width="160" align="center">
+                <el-table-column label="交易金额" width="160" align="center" sortable>
                     <template slot-scope="scope">￥{{scope.row.money}}</template>
                 </el-table-column>
-                <el-table-column label="余额" width="160" align="center"><!--从哪里获得？？？？？？？？？？？？？-->
+                <el-table-column label="余额" width="160" align="center" sortable><!--从哪里获得？？？？？？？？？？？？？-->
                     <template slot-scope="scope">￥{{scope.row.userMoney}}</template>
                 </el-table-column>
                 <el-table-column label="操作" width="160" align="center">

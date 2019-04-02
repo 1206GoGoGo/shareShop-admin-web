@@ -27,37 +27,37 @@
             placement="top"
             width="250"
             visible-arrow="true"
-            trigger="hover">
-        <ul class="days" slot="reference">
-            <!-- 核心 v-for循环 每一次循环用<li>标签创建一天 -->
-            <li  v-for="dayobject in days" :key="dayobject.item" >
-                <!--本月-->
-                <!--如果不是本月  改变类名加灰色-->
+            trigger="click">
+            <ul class="days" slot="reference">
+                <!-- 核心 v-for循环 每一次循环用<li>标签创建一天 -->
+                <li  v-for="dayobject in days" :key="dayobject.item" >
+                    <!--本月-->
+                    <!--如果不是本月  改变类名加灰色-->
 
-                <span v-if="dayobject.day.getMonth()+1 != currentMonth" class="other-month">{{ dayobject.day.getDate() }}</span>
+                    <span v-if="dayobject.day.getMonth()+1 != currentMonth" class="other-month">{{ dayobject.day.getDate() }}</span>
 
-                <!--如果是本月  还需要判断是不是这一天-->
-                <span v-else>
-            <!--今天  同年同月同日-->
-                    <span v-if="dayobject.day.getFullYear() == new Date().getFullYear() && dayobject.day.getMonth() == new Date().getMonth() && dayobject.day.getDate() == new Date().getDate()" class="active">{{ dayobject.day.getDate() }}</span>
-                    <span v-else>{{ dayobject.day.getDate() }}</span>
-                </span>
+                    <!--如果是本月  还需要判断是不是这一天-->
+                    <span v-else>
+                <!--今天  同年同月同日-->
+                        <span v-if="dayobject.day.getFullYear() == new Date().getFullYear() && dayobject.day.getMonth() == new Date().getMonth() && dayobject.day.getDate() == new Date().getDate()" class="active">{{ dayobject.day.getDate() }}</span>
+                        <span v-else>{{ dayobject.day.getDate() }}</span>
+                    </span>
 
-            </li>
-        </ul>
+                </li>
+            </ul>
         
-                <div class="box icon-visitor">
-                    <svg-icon icon-class="visitorcard" class-name="card-panel-icon"></svg-icon>
-                    访问量：{{visitor}}
-                </div>
-                <div class="box icon-visitor">
-                    <svg-icon icon-class="ordercard" class-name="card-panel-icon"></svg-icon>
-                    订单数：{{order}}
-                </div>
-                <div class="box icon-visitor">
-                    <svg-icon icon-class="moneycard" class-name="card-panel-icon"></svg-icon>
-                    总金额：{{money}}
-                </div>
+            <div class="box icon-visitor">
+                <svg-icon icon-class="visitorcard" class-name="card-panel-icon"></svg-icon>
+                访问量：{{visitor}}
+            </div>
+            <div class="box icon-visitor">
+                <svg-icon icon-class="ordercard" class-name="card-panel-icon"></svg-icon>
+                订单数：{{order}}
+            </div>
+            <div class="box icon-visitor">
+                <svg-icon icon-class="moneycard" class-name="card-panel-icon"></svg-icon>
+                总金额：{{money}}
+            </div>
 
         </el-popover>
     </div>

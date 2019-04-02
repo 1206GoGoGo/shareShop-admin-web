@@ -94,17 +94,20 @@
             <el-table-column
                 align='center'
                 label="编号"
-                width="60"
+                width="80"
+                sortable
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="登录名"
+                sortable
                 prop="userLogin.username">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="真实姓名"
+                sortable
                 prop="name">
             </el-table-column>
             <!-- <el-table-column
@@ -115,6 +118,7 @@
             <el-table-column
                 align='center'
                 label="手机号"
+                sortable
                 prop="phoneNumber">
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
@@ -169,33 +173,34 @@
             :visible.sync="dialogFormVisible" width="70%">
             <el-form :model="UserDetail"  :inline="true"
                     ref="DetailForm" label-width="150px">
-                <el-form-item label="编号:">
+                <el-form-item label="编号:" >
                     <el-input v-model="UserDetail.userInfoId" style="width: 203px" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="登录名:">
+                <el-form-item label="登录名:" >
                     <el-input v-model="UserDetail.username" style="width: 203px" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="姓名:">
+                <el-form-item label="姓名:" >
                     <el-input v-model="UserDetail.name" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号:">
+                <el-form-item label="手机号:" >
                     <el-input v-model="UserDetail.phoneNumber" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱:">
+                <el-form-item label="邮箱:" >
                     <el-input v-model="UserDetail.email" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="出生年月:">
+                <!--是否需要做？？？？？？？？？？？-->
+                <!-- <el-form-item label="出生年月:" >
                     <el-date-picker
                         v-model="UserDetail.birthday"
                         style="width: 203px"
                         type="date"
                         placeholder="Please Select Time">
                     </el-date-picker>
-                </el-form-item>
-                <el-form-item label="证件号码:">
+                </el-form-item> -->
+                <el-form-item label="证件号码:" >
                     <el-input v-model="UserDetail.identityCardNo" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="证件类型:">
+                <el-form-item label="证件类型:" >
                     <el-select v-model="UserDetail.identityCardType" placeholder="全部" clearable style="width: 203px">
                         <el-option v-for="item in idCardType"
                             style="width: 203px"
@@ -218,7 +223,7 @@
                 <!-- <el-form-item label="用户状态:">
                     <el-input v-model="UserDetail.status" style="width: 203px" readonly=""></el-input>
                 </el-form-item> -->
-                <el-form-item label="注册时间:">
+                <el-form-item label="注册时间:" >
                     <el-date-picker
                         readonly
                         v-model="UserDetail.registerTime"

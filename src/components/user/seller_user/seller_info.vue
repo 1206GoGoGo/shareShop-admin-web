@@ -4,37 +4,55 @@
         <el-card shadow="never" style="background:#f2f2f2;">
             <div>
                 <i class="el-icon-search"></i>
-                <span>条件搜索</span>
+                <span>Conditional Search</span>
+                <el-button style="padding-left:30px;" type="text"  @click="handleClear()">Refresh</el-button>
                 <el-button
                     style="float: right"
+                    @click="handleSearchException()"
+                    type="danger"
+                    size="small">
+                    异常用户
+                </el-button>
+                <el-button
+                    style="float: right;margin-right:15px"
                     @click="handleSearchList()"
                     type="primary"
                     size="small">
                     查询
                 </el-button>
-                <el-button
-                    style="float: right;margin-right: 15px"
+                <!-- <el-button
+                    style="float: right;margin-right:45px"
                     @click="handleResetSearch()"
                     size="small">
                     重置
-                </el-button>
+                </el-button> v-model="listQuery.search" value-key="value"-->
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-                    <el-form-item label="登录名：">
-                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="Login Nmae" clearable></el-input>
+                    <el-form-item label="搜索条件：">
+                        <el-select v-model="listQuery.search" style="width: 203px" @change="changesearch" placeholder="Please select one or more" clearable>
+                            <el-option
+                                v-for="item in selectSearch"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="真实姓名：">
-                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="Real Name" clearable></el-input>
+                    <el-form-item label="登录名：" v-if="flag1">
+                        <el-input style="width: 203px" v-model="listQuery.username" placeholder="登陆名"  clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号："> 
-                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="phone Number" clearable></el-input>
+                    <el-form-item label="真实姓名：" v-if="flag2">
+                        <el-input style="width: 203px" v-model="listQuery.name" placeholder="真实姓名" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="证件号码：">
-                        <el-input style="width: 203px" v-model="listQuery.identityCardNo" placeholder="ID Number" clearable></el-input>
+                    <el-form-item label="手机号：" v-if="flag3"> 
+                        <el-input style="width: 203px" v-model="listQuery.phoneNumber" placeholder="手机号"  clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="邮箱：">
-                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="Email" clearable></el-input>
+                    <el-form-item label="证件号码：" v-if="flag4">
+                        <el-input style="width: 203px"  v-model="listQuery.identityCardNo" placeholder="证件号码"  clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱：" v-if="flag5">
+                        <el-input style="width: 203px" v-model="listQuery.email" placeholder="邮箱" clearable></el-input>
                     </el-form-item>
                 </el-form> 
             </div>
@@ -87,24 +105,28 @@
             <el-table-column
                 label="编号" 
                 align='center'
-                width="60"
+                width="80"
+                sortable
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 label="登录名"
                 align='center'
+                sortable
                 prop="userLogin.username">
             </el-table-column>
             <el-table-column
                 label="真实姓名"
                 align='center'
                 prop="name"
+                sortable
                 width="180">
             </el-table-column>
             <el-table-column
                 label="手机号"
                 align='center'
                 prop="phoneNumber"
+                sortable
                 width="180">
             </el-table-column>
             <el-table-column label="操作" width="300" align="center">
@@ -180,7 +202,7 @@
                         placeholder="Please Select Time">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="性别:"><!--到显示框中就不可用！！！！！！！！！！！！！-->
+                <el-form-item label="性别:"><!--到显示框中不可用！！！！！！！！！！！！！-->
                     <el-radio-group v-model="SellerDetail.gender" style="width: 203px">
                         <el-radio :label="0">Male</el-radio>
                         <el-radio :label="1">Female</el-radio>
@@ -354,6 +376,30 @@ export default {
                     gender:'0',
                 }
             ],
+
+            selectSearch:[
+                {
+                    label: "登录名",
+                    value: 1
+                },
+                {
+                    label: "真实姓名",
+                    value: 2
+                },
+                {
+                    label: "手机号",
+                    value: 3
+                },
+                {
+                    label: "证件号码",
+                    value: 4
+                },
+                {
+                    label: "邮箱",
+                    value: 5
+                },
+            ],
+
             // Addrlist:null,
             Addrlist:
             [
@@ -445,6 +491,34 @@ export default {
         this.getList();
     },
     methods:{
+
+        //搜索条件
+        changesearch(value){
+            if(value===1)
+                {this.flag1=true; this.listQuery.search=""}
+            if(value===2)
+                {this.flag2=true; this.listQuery.search=""}
+            if(value===3)
+                {this.flag3=true; this.listQuery.search=""}
+            if(value===4)
+                {this.flag4=true; this.listQuery.search=""}
+            if(value===5)
+                {this.flag5=true; this.listQuery.search=""}
+            if(value===6)
+                {this.flag6=true; this.listQuery.search=""}
+        },
+
+        handleClear(){
+            this.flag1=false
+            this.flag2=false
+            this.flag3=false
+            this.flag4=false
+            this.flag5=false
+            this.flag6=false
+            this.listQuery = Object.assign({}, defaultListQuery);
+            this.getList()
+        },
+
         //初始化列表
         getList(){
             this.listQuery.status=1 //这样写可以吗？？？？？？？？？？？？？？？？？？？？？？？？

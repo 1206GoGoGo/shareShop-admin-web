@@ -30,7 +30,7 @@
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="搜索条件：">
-                        <el-select v-model="listQuery.search" @change="changesearch" placeholder="Please select" clearable>
+                        <el-select v-model="listQuery.search" style="width: 203px" @change="changesearch" placeholder="Please select one or more" clearable>
                             <el-option
                                 v-for="item in selectSearch"
                                 :key="item.value"
@@ -114,22 +114,26 @@
                 align='center'
                 label="编号"
                 width="90"
+                sortable
                 prop="userInfoId">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="登录名"
+                sortable
                 prop="userLogin.username">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="用户级别"
+                sortable
                 :formatter="levelFormatter"
                 prop="userLogin.level">
             </el-table-column>
             <el-table-column
                 align='center'
                 label="手机号"
+                sortable
                 prop="phoneNumber">
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
@@ -442,29 +446,20 @@ export default {
     created() {
       this.getList();
     },
-    // $watch(){
-    //     selectSearch:{
-    //         if(this.selectSearch.value===1)
-    //         {this.flag1=true;}
-    //         else if(this.selectSearch.value===2)
-    //         {this.flag2=true;}
-    //     }
-    // },
-    
     methods:{
         changesearch(value){
             if(value===1)
-                {this.flag1=true;}
+                {this.flag1=true; this.listQuery.search=""}
             if(value===2)
-                {this.flag2=true;}
+                {this.flag2=true; this.listQuery.search=""}
             if(value===3)
-                {this.flag3=true;}
+                {this.flag3=true; this.listQuery.search=""}
             if(value===4)
-                {this.flag4=true;}
+                {this.flag4=true; this.listQuery.search=""}
             if(value===5)
-                {this.flag5=true;}
+                {this.flag5=true; this.listQuery.search=""}
             if(value===6)
-                {this.flag6=true;}
+                {this.flag6=true; this.listQuery.search=""}
         },
         handleClear(){
             this.flag1=false

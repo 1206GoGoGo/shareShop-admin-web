@@ -16,6 +16,7 @@ const general_record = r => require.ensure([], () => r(require('@/components/use
 const seller_setting = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_setting')), 'seller_setting');
 const seller_info = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_info')), 'seller_info');
 const seller_income = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_income')), 'seller_income');
+const seller_profit = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_profit')), 'seller_profit');
 const member_info = r => require.ensure([], () => r(require('@/components/user/seller_user/member_info')), 'member_info');
 //商品
 const add_product = r => require.ensure([], () => r(require('@/components/product/add_product')), 'add_product');
@@ -121,6 +122,12 @@ const routes = [
 					path: '/user/seller_user/seller_income',
 					component: seller_income,
 					meta: ['User', 'Seller','Income'],
+				},
+				{
+					path: '/user/seller_user/seller_profit',
+					component: seller_profit,
+					meta: ['User', 'Seller','Profit'],
+					hidden:true
 				},
 				{
 					path: '/user/seller_user/member_info',

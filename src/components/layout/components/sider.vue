@@ -4,7 +4,7 @@
         Share Shop Admin
     </div>
     <!--<i class="el-icon-menu"></i>  @select="handleSelect"选择路由跳转:default-active="defaultActive" :default-active="defaultActive"  router-->
-    <el-menu :unique-opened='true'  background-color="#5b6270" text-color="#fff" active-text-color="#ffd04b" router>
+    <el-menu :unique-opened='true' background-color="#5b6270" text-color="#fff" active-text-color="#ffd04b" router>
         <el-submenu index="1">
             <template slot="title"><svg-icon icon-class="userside" class="side-icon"></svg-icon>User</template>   
             
@@ -70,7 +70,7 @@
             <template   slot="title"><svg-icon icon-class="adminside" class="side-icon"></svg-icon>Administrator</template>  
             <el-menu-item index="/admin/list_kinds">管理员分类</el-menu-item>
             <el-menu-item index="/admin/list_admin">管理员列表</el-menu-item>
-            <el-menu-item index="/admin/add_admin">添加管理员</el-menu-item> <!--包括管理员状态-->
+            <!-- <el-menu-item index="/admin/add_admin">添加管理员</el-menu-item> 包括管理员状态 -->
         </el-submenu>
 
         <!-- <el-submenu index="8">
