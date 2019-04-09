@@ -23,8 +23,11 @@
             <el-form-item label="订单号：">
                 <el-input v-model="listQuery.orderNumber" style="width: 203px" class="input-width" placeholder="Order Number" clearable></el-input>
             </el-form-item>
-            <el-form-item label="用户登录名：">
+            <el-form-item label="用户名称：">
                 <el-input v-model="listQuery.username" style="width: 203px" class="input-width" placeholder="Login Name" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="收货人：">
+                <el-input v-model="listQuery.consigneeName" style="width: 203px" class="input-width" placeholder="consignee Name" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单状态：">
                 <el-select v-model="listQuery.orderStatus" style="width: 203px" class="input-width" placeholder="All" clearable>
@@ -369,13 +372,13 @@ export default {
           //根据订单编号查询订单详情
           // if(this.listQuery)
           // {
-              this.listQuery.pageindex=null,
-              this.listQuery.pagesize=null,
-              fetchListByorderNo(this.listQuery).then(response => {
-                this.listLoading = false;
-                this.list = response.data;
-                this.total = response.data.total;
-              });
+              // this.listQuery.pageindex=null,
+              // this.listQuery.pagesize=null,
+              // fetchListByorderNo(this.listQuery).then(response => {
+              //   this.listLoading = false;
+              //   this.list = response.data;
+              //   this.total = response.data.total;
+              // });
           // }
 
           //根据用户登录名查询订单详情
@@ -386,17 +389,17 @@ export default {
           });
 
           //根据订单状态查询订单详情
-          fetchListByStatus(this.listQuery).then(response => {
-            this.listLoading = false;
-            this.list = response.data;
-            this.total = response.data.total;
-          });
+          // fetchListByStatus(this.listQuery).then(response => {
+          //   this.listLoading = false;
+          //   this.list = response.data;
+          //   this.total = response.data.total;
+          // });
       },
 
       //获取搜索结果
       handleSearchList(){
-          // this.listQuery.pageindex = 0;
-          // this.listQuery.pagesize = 20;
+          this.listQuery.pageindex = 0;
+          this.listQuery.pagesize = 20;
           this.getSearchList();
       },
 

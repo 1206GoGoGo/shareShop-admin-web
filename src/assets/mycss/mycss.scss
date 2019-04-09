@@ -97,10 +97,19 @@ element .style{
     height: 170px;
 }
 
-.el-popper[x-placement^=top] .popper__arrow{
-    bottom:0px !important;
+//级联选择器的箭头
+// .el-popper[x-placement^=top] .popper__arrow{
+//     bottom:0px !important;
+// }
+
+// .el-popper[x-placement^=bottom] .popper__arrow{
+//     top:0px !important;
+// }
+
+.el-cascader-menu{
+    height:100% !important;     
 }
 
-.el-popper[x-placement^=bottom] .popper__arrow{
-    top:0px !important;
-}
+// element .style {
+//     left: 35px !important;
+// }

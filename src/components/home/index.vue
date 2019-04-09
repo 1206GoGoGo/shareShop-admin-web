@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="home-container">
       <el-row :gutter="35">
         <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
           <calendar></calendar>
@@ -73,7 +73,7 @@ export default {
 </script>
 
 <!---<style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard-editor-container {
+.home-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);
   .chart-wrapper {
@@ -85,7 +85,7 @@ export default {
 </style>-->
 
 <style scoped>
-  .dashboard-editor-container{
+  .home-container{
     padding: 32px;
     background-color: #f2f2f2;
   }

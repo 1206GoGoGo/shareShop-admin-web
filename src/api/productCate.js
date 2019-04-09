@@ -26,6 +26,23 @@ export function getProductCate(id) {
   })
 }
 
+//获得第一层级的商品分类
+export function fetchListLevel() {
+  return request({
+    url:'/pro/category/getList',
+    method:'get',
+  })
+}
+
+//根据上级id获取子分类
+export function fetchListChildrenLevel(id) {
+  return request({
+    url:'/pro/category/getListByParentId?id='+id,
+    method:'get',
+    // params:params
+  })
+}
+
 //删除
 export function deleteProductCate(id) {
   return request({

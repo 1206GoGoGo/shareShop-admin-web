@@ -32,20 +32,18 @@
                 <el-form-item label="邮箱:" prop="email">
                     <el-input clearable  v-model="AddManagerForm.email" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="证件类型:" prop="identityCardType">
+                <!-- <el-form-item label="证件类型:" prop="identityCardType">
                     <el-select v-model="AddManagerForm.identityCardType" placeholder="请选择" style="width:203px">
                       <el-option v-for="item in selectCardType"
                               :key="item.value"
                               :label="item.label"
                               :value="item.value">
                       </el-option>
-                    <!-- <el-option label="身份证" value="IDcard"></el-option>
-                    <el-option label="通行证" value="Passcard"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item label="证件号码:" prop="identityCardNo">
                     <el-input clearable v-model="AddManagerForm.identityCardNo" autocomplete="off" style="width:203px"></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="权限:" prop="level">
                     <el-select v-model="AddManagerForm.level" placeholder="请选择" style="width:203px">
                       <el-option v-for="item in selectlevel"

@@ -49,10 +49,10 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="编号" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.id}}</template>
+        <el-table-column label="编号" width="60" align="center">
+          <template slot-scope="scope">{{scope.row.couponId}}</template>
         </el-table-column>
-        <el-table-column label="优惠劵名称" align="center">
+        <el-table-column label="优惠劵名称" width="130" align="center">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="优惠券类型" width="100" align="center">
@@ -62,19 +62,25 @@
           <template slot-scope="scope">{{scope.row.useType | formatUseType}}</template>
         </el-table-column>
         <el-table-column label="使用门槛" width="140" align="center">
-          <template slot-scope="scope">满{{scope.row.minPoint}}元可用</template>
+          <template slot-scope="scope">满{{scope.row.useCondition}}元可用</template>
         </el-table-column>
-        <el-table-column label="面值" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.amount}}元</template>
+        <el-table-column label="发行量" width="80" align="center">
+          <template slot-scope="scope">{{scope.row.amount}}</template>
         </el-table-column>
-        <el-table-column label="适用平台" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.platform | formatPlatform}}</template>
+        <el-table-column label="剩余量" width="80" align="center">
+          <template slot-scope="scope">{{scope.row.remainingQuantity}}</template>
         </el-table-column>
-        <el-table-column label="有效期" width="180" align="center">
+        <el-table-column label="面值" width="80" align="center">
+          <template slot-scope="scope">{{scope.row.faceValue}}元</template>
+        </el-table-column>
+        <el-table-column label="图片" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.imageUrl | formatPlatform}}</template>
+        </el-table-column>
+        <el-table-column label="有效期" width="200" align="center">
           <template slot-scope="scope">{{scope.row.startTime|formatDate}}至{{scope.row.endTime|formatDate}}</template>
         </el-table-column>
         <el-table-column label="状态" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.endTime | formatStatus}}</template>
+          <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
@@ -92,17 +98,27 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination-container">
+    <!-- <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
-        :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :current-page.sync="listQuery.pageindex"
+        :page-size="listQuery.pagesize"
         :page-sizes="[5,10,15]"
         :total="total">
       </el-pagination>
+    </div> -->
+    <div class="Pagination" style="text-align: left;margin-top: 10px;">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="20"
+          layout=" prev, pager, next"
+          :total="count">
+        </el-pagination>
     </div>
   </div>
 </template>
@@ -110,8 +126,8 @@
   import {fetchList,deleteCoupon} from '@/api/coupon';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
+    pageindex: 0,
+    pagesize: 20,
     name: null,
     type: null
   };
@@ -166,15 +182,15 @@
           return '指定商品';
         }
       },
-      formatPlatform(platform){
-        if(platform===1){
-          return '移动平台';
-        }else if(platform===2){
-          return 'PC平台';
-        }else{
-          return '全平台';
-        }
-      },
+      // formatPlatform(platform){
+      //   if(platform===1){
+      //     return '移动平台';
+      //   }else if(platform===2){
+      //     return 'PC平台';
+      //   }else{
+      //     return '全平台';
+      //   }
+      // },
       formatDate(time){
         if(time==null||time===''){
           return 'N/A';
@@ -187,7 +203,7 @@
         if(endTime>now){
           return '未过期'
         }else{
-          return '已过期';
+          return '已过期'
         }
       }
     },
@@ -196,19 +212,20 @@
         this.listQuery = Object.assign({}, defaultListQuery);
       },
       handleSearchList() {
-        this.listQuery.pageNum = 1;
+        this.listQuery.pageindex = 0;
+        this.listQuery.pagesize = 20;
         this.getList();
       },
       handleSelectionChange(val){
         this.multipleSelection = val;
       },
       handleSizeChange(val) {
-        this.listQuery.pageNum = 1;
-        this.listQuery.pageSize = val;
+        this.listQuery.pageindex = 0;
+        this.listQuery.pagesize = val;
         this.getList();
       },
       handleCurrentChange(val) {
-        this.listQuery.pageNum = val;
+        this.listQuery.pageindex = val;
         this.getList();
       },
       handleAdd(){

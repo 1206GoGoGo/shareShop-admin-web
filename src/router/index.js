@@ -12,7 +12,7 @@ const list_admin = r => require.ensure([], () => r(require('@/components/admin/l
 const add_admin = r => require.ensure([], () => r(require('@/components/admin/add_admin')), 'add_admin');
 //用户路由
 const general_info = r => require.ensure([], () => r(require('@/components/user/general_user/general_info')), 'general_info');
-const general_record = r => require.ensure([], () => r(require('@/components/user/general_user/general_record')), 'general_record');
+// const general_record = r => require.ensure([], () => r(require('@/components/user/general_user/general_record')), 'general_record');
 const seller_setting = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_setting')), 'seller_setting');
 const seller_info = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_info')), 'seller_info');
 const seller_income = r => require.ensure([], () => r(require('@/components/user/seller_user/seller_income')), 'seller_income');
@@ -37,8 +37,9 @@ const info_coupon = r => require.ensure([], () => r(require('@/components/coupon
 //评价
 const view_user = r => require.ensure([], () => r(require('@/components/news/view_user')), 'view_user');
 const comment_user = r => require.ensure([], () => r(require('@/components/news/comment_user')), 'comment_user');
-//收入
-const list_income = r => require.ensure([], () => r(require('@/components/income/list_income')), 'list_income');
+//统计
+const list_income = r => require.ensure([], () => r(require('@/components/statistics/list_income')), 'list_income');
+const list_user = r => require.ensure([], () => r(require('@/components/statistics/list_user')), 'list_user');
 
 const home = r => require.ensure([], () => r(require('@/components/home')), 'home');
 
@@ -103,11 +104,11 @@ const routes = [
 					component: general_info,
 					meta: ['User', 'Information'],		
 				},
-				{
-					path: '/user/general_user/general_record',
-					component: general_record,
-					meta: ['User', 'Record'],
-				},
+				// {
+				// 	path: '/user/general_user/general_record',
+				// 	component: general_record,
+				// 	meta: ['User', 'Record'],
+				// },
 				{
 					path: '/user/seller_user/seller_setting',
 					component: seller_setting,
@@ -254,17 +255,22 @@ const routes = [
 		},
 //----------------------------收入---------------------------------------------------
 		{
-			path: '/income',
+			path: '/statistics',
 			component: Layout,
-			redirect: '/income',
-			name: 'income',
-			meta: {title: 'Income'},
+			redirect: '/statistics',
+			name: 'statistics',
+			meta: {title: 'Statistics'},
 			children:
 			[
 				{
-					path: '/income/list_income',
+					path: '/statistics/list_income',
 					component: list_income,
-					meta: ['Income','List'],
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/list_user',
+					component: list_user,
+					meta: ['Statistics','User'],
 				},
 			]
 		},	

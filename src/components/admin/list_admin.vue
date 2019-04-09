@@ -92,12 +92,12 @@
                 <el-table-column label="Phone Number" width="160" align="center">
                     <template slot-scope="scope">{{scope.row.phoneNumber}}</template>
                 </el-table-column>
-                <el-table-column label="ID Card" width="230" align="center">
+                <!-- <el-table-column label="ID Card" width="230" align="center">
                     <template slot-scope="scope">{{scope.row.identityCardNo}}</template>
                 </el-table-column>
                 <el-table-column label="Type of ID Card" width="180" align="center">
                     <template slot-scope="scope">{{scope.row.identityCardType | idFormatter}}</template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="Email" width="260" align="center">
                     <template slot-scope="scope">{{scope.row.email}}</template>
                 </el-table-column>
@@ -108,6 +108,7 @@
                     <template slot-scope="scope"> 
                         <el-button
                             size="mini"
+                            type="primary"
                             @click="handleUpdateAdmin(scope.$index, scope.row)">Edit
                         </el-button>
                         <el-button

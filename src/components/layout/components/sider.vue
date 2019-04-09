@@ -9,7 +9,7 @@
             <template slot="title"><svg-icon icon-class="userside" class="side-icon"></svg-icon>User</template>   
             
             <el-menu-item index="/user/general_user/general_info"><svg-icon icon-class="usermsgside" class="side-icon"></svg-icon>用户信息</el-menu-item>
-            <el-menu-item index="/user/general_user/general_record"><svg-icon icon-class="recordside" class="side-icon"></svg-icon>消费记录</el-menu-item>
+            <!-- <el-menu-item index="/user/general_user/general_record"><svg-icon icon-class="recordside" class="side-icon"></svg-icon>消费记录</el-menu-item> -->
             <el-menu-item index="/user/seller_user/seller_setting"><svg-icon icon-class="couponside" class="side-icon"></svg-icon>优惠设置</el-menu-item>
             <el-submenu index="1-4">
                 <template slot="title"><svg-icon icon-class="sellerside" class="side-icon"></svg-icon>seller管理</template> 
@@ -56,13 +56,14 @@
         <el-submenu index="5">
             <template  slot="title"><svg-icon icon-class="msgside" class="side-icon"></svg-icon>News</template>  
             <!-- <el-menu-item index="5-1">seller申请</el-menu-item> -->
-            <el-menu-item index="/news/view_user">买前留言</el-menu-item>
-            <el-menu-item index="/news/comment_user">买后评价</el-menu-item>
+            <!-- <el-menu-item index="/news/view_user">买前留言</el-menu-item> -->
+            <el-menu-item index="/news/comment_user">留言回复</el-menu-item>
         </el-submenu>
 
         <el-submenu index="6">
-            <template   slot="title"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>Income</template>  
-            <el-menu-item index="/income/list_income">收入查询</el-menu-item><!--导出表-->
+            <template   slot="title"><svg-icon icon-class="statistics" class="side-icon"></svg-icon>Statistics</template>  
+            <el-menu-item index="/statistics/list_income"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>收入统计</el-menu-item><!--导出表-->
+            <el-menu-item index="/statistics/list_user"><svg-icon icon-class="Suserside" class="side-icon"></svg-icon>用户统计</el-menu-item>
             <!-- <el-menu-item index="6-2">> 导出表</el-menu-item> -->
         </el-submenu>
 

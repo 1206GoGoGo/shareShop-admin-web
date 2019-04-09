@@ -41,15 +41,21 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
-          <el-form-item label="标题:">
-            <span>{{ props.row.title }}</span>
+          <el-form-item label="商品货号:">
+            <span>{{ props.row.productCode }}</span>
           </el-form-item>
-          <el-form-item label="评论内容:">
+          <el-form-item label="评价用户:">
+            <span>{{ props.row.userName }}</span>
+          </el-form-item>
+          <!-- <el-form-item label="评论内容:">
             <span>{{ props.row.content }}</span>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="重复评论内容:">
             <span>{{ props.row.secondContent }}</span>
           </el-form-item>
+          <!-- <el-form-item label="评论回复:">
+            <span>{{ props.row.title }}</span>
+          </el-form-item> -->
           <el-form-item label="评论时间:">
             <span>{{ props.row.commentTime }}</span>
           </el-form-item>
@@ -57,39 +63,37 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="商品货号"
-      align='center'
-      prop="productCode">
-    </el-table-column>
-    <el-table-column
       label="商品名称"
       align='center'
       prop="productName">
     </el-table-column>
     <el-table-column
-      label="评价用户"
+      label="评价内容"
       align='center'
-      prop="userName">
+      prop="content">
+      </el-table-column>
+      <el-table-column
+      label="评价回复"
+      align='center'
+      prop="title">
     </el-table-column>
-    <el-table-column label="操作" width="160" align="center">
+    <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-            <!-- <p>
             <el-button
                 size="mini"
-                @click="handleShowUser(scope.$index, scope.row)">查看
+                type="primary"
+                @click="handleShowUser(scope.$index, scope.row)">回复
             </el-button>
-            <el-button
+          <!--  <el-button
                 size="mini"
                 @click="handleUpdateUser(scope.$index, scope.row)">编辑
             </el-button>
-            </p> -->
-            <p>
+            </p> <p></p>-->
             <el-button
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
-            </p>
         </template>
     </el-table-column>
   </el-table>
@@ -131,9 +135,9 @@ export default {
             productCode: '12987122',
             userName:'张三',
             productName:'帽子',
-            title:'评论帽子',
-            content: '荷兰优质淡奶，奶香浓而不腻',
-            secondContent: '好滋好味鸡蛋仔',
+            title:'评论帽子荷兰优质淡奶，评论帽子荷兰优质淡奶评论帽子荷兰优质淡奶评论帽子荷兰优质淡奶评论帽子荷兰优质淡奶评论帽子荷兰优质',
+            content: '荷兰优质淡奶，奶香荷兰优质淡奶，奶香荷兰优质淡奶，奶香荷兰优质淡奶，奶香荷兰优质淡奶，奶香荷兰优质淡奶，奶香荷兰优',
+            secondContent: '好滋好味鸡',
             commentTime: '2010-9-9',
           },
           {
@@ -141,7 +145,7 @@ export default {
             userName:'张三',
             productName:'帽子',
             title:'评论帽子',
-            content: '荷兰优质淡奶，奶香浓而不腻',
+            content: '荷兰优质淡奶，奶香',
             secondContent: '好滋好味鸡蛋仔',
             commentTime: '2010-9-9',
           }
