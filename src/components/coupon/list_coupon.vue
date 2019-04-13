@@ -133,16 +133,28 @@
   };
   const defaultTypeOptions=[
     {
-      label: '全场赠券',
+      label: '现金券',
       value: 0
     },
     {
-      label: '会员赠券',
+      label: '满减券',
       value: 1
     },
     {
-      label: '购物赠券',
+      label: '折扣券',
       value: 2
+    },
+    {
+      label: '全场赠券',
+      value: 3
+    },
+    {
+      label: '会员赠券',
+      value: 4
+    },
+    {
+      label: '购物赠券',
+      value: 5
     },
     {
       label: '注册赠券',
@@ -229,7 +241,7 @@
         this.getList();
       },
       handleAdd(){
-        this.$router.push({path: '/sms/addCoupon'})
+        this.$router.push({path: '/Coupon/info_Coupon'})
       },
       handleView(index, row) {
         this.$router.push({path: '/sms/couponHistory', query: {id: row.id}})

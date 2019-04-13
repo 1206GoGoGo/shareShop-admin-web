@@ -2,24 +2,32 @@
     <div class="home-container">
         <div>
             <svg-icon icon-class="Smoney" class="S-icon"></svg-icon>
-            <span class="title-font">一年内商城的销售额-成本-支出统计</span>
+            <span class="title-font">一年内商城总的销售额-成本-支出统计</span>
         </div>
         <Mechart></Mechart>
         <div>
             <svg-icon icon-class="Smoney" class="S-icon"></svg-icon>
             <span class="title-font">一年内商城的商品分类统计</span>
             <div class="pro-form">
+                <!-- :model="productCate" -->
                 <el-form :inline="true"  size="small" label-width="140px" ref="productCateFrom">
                     <el-form-item label="商品分类：">
                         <el-cascader
                             placeholder="please selete"
                             expand-trigger="click"
                             clearable
-                            v-model="id"
+                            v-model="CateId"
                             :options="productCateOptions"
                             change-on-select>
                         </el-cascader>
                     </el-form-item>
+                    <el-button
+                        style="float:right; margin-right:450px"
+                        type="primary"
+                        @click="handleSearchList()"
+                        size="small">
+                        查询
+                    </el-button>
                 </el-form> 
             </div>
             <!-- <productCate></productCate> -->
@@ -33,7 +41,11 @@
 import Mechart from './components/Mechart'
 // import productCate from '@/components/Common/productCate'
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
+import {fetchListBycategoryId} from '@/api/statistics'
 
+// const defaultproductCate = {
+//     CateId:null,
+//   };
 export default{
     name:'income',
     components:{
@@ -42,14 +54,30 @@ export default{
     },
 
     created() {
-    //this.getList();
-      
+      //this.getList();
       this.getProductCateList();
+    },
+
+    watch: {
+        CateId (newValue) {
+            if (newValue != null && newValue.length == 2) {
+                this.CateId = newValue[1];
+            } else {
+                this.CateId = 0;
+            }
+        }
     },
 
     data(){
         return{
             productCateOptions:[],
+            CateId:null,
+            //productCate: Object.assign({}, defaultproductCate),
+            // productCate:[
+            //     {
+            //         CateId:null,
+            //     }
+            // ],
         }
     },
     methods:{
@@ -72,7 +100,16 @@ export default{
                     })
                 }
             });
-        }
+        },
+
+        //获取搜索结果
+        handleSearchList(){
+            //根据用户登录名查询订单详情
+            fetchListBycategoryId(this.CateId).then(response => {
+                //这里写的有问题！！！！！！！！！！！！
+                var list= response.data;
+            });
+        },
     },
 }
 </script>

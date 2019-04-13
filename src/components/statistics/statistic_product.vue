@@ -20,6 +20,13 @@
                             change-on-select>
                         </el-cascader>
                     </el-form-item>
+                    <el-button
+                        style="float:right"
+                        type="primary"
+                        @click="handleSearchList()"
+                        size="small">
+                        查询
+                    </el-button>
                 </el-form> 
             </div>
             <!-- <productCate></productCate> -->

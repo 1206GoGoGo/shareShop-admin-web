@@ -29,6 +29,15 @@
           <el-form-item label="用户名称：">
             <el-input v-model="listQuery.userName" class="input-width" placeholder="评论用户名称"></el-input>
           </el-form-item>
+          <el-form-item label="用户评分：">
+              <el-select v-model="listQuery.status" placeholder="All"  style="width:203px" clearable class="input-width">
+              <el-option v-for="item in RateOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+              </el-select>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -131,6 +140,28 @@ export default {
         count: 0,
         currentPage: 1,
         listQuery: Object.assign({}, defaultListQuery),
+        RateOptions:[
+          {
+            value:1,
+            label:'5星好评'
+          },
+          {
+            value:2,
+            label:'4星好评以上'
+          },
+          {
+            value:3,
+            label:'3星好评以上'
+          },
+          {
+            value:4,
+            label:'2星好评以下'
+          },
+          {
+            value:5,
+            label:'差评'
+          },
+        ],
         list: [{
             productCode: '12987122',
             userName:'张三',

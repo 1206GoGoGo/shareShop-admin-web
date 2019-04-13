@@ -1,17 +1,50 @@
 <template>
-    <div style="width: 600px;height:400px;" ref="myEchart"></div>
+  <div  ref="myEchart"></div>
 </template>
 <script>
 import echarts from 'echarts'
 export default {
-    mounted() {
-        this.initChart()
+  props: {
+    className: {
+      type: String,
+      default: 'chart'
     },
-    data:{
-        initChart() {
-            // this.chart = echarts.init(this.$refs.myEchart)
+    width: {
+      type: String,
+      default: '100%'
+    },
+    height: {
+      type: String,
+      default: '350px'
+    },
+    autoResize: {
+      type: Boolean,
+      default: true
+    },
+    chartData: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      chart: null
+    }
+  },
+  mounted() {
+    this.initChart()
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
+  methods: {
+    initChart() {
+            this.chart = echarts.init(this.$refs.myEchart)
             this.chart.setOption({
-        // option = {
+            // option = {
             title : {
                 text: '某站点用户访问来源',
                 subtext: '纯属虚构',
@@ -46,12 +79,8 @@ export default {
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
                     }
-                }
-            ]
-        })
-    },
-    methods:{
-
-    },
-}
+                }]  
+            })
+        },
+    }
 }

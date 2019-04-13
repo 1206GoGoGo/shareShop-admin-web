@@ -9,6 +9,23 @@ export function fetchList(parentId,params) {
   })
 }
 
+//--------------------------------查询商品属性（无条件）-----------------------------------------
+export function fetchAttrList(params) {
+  return request({
+    url:'/pro/attribute/getProductAttributeKeyList',
+    method:'get',
+    params:params
+  })
+}
+
+//--------------------------------根据条件查询商品属性-----------------------------------------
+export function fetchSearchingList(id) {
+  return request({
+    url:'/pro/attribute/getProductAttributeKeyByCategoryID?id='+id,
+    method:'get',
+  })
+}
+
 //添加商品分类
 export function createProductCate(data) {
     return request({
@@ -26,7 +43,7 @@ export function getProductCate(id) {
   })
 }
 
-//获得第一层级的商品分类
+//------------------------------------------获得第一层级的商品分类-------------------------
 export function fetchListLevel() {
   return request({
     url:'/pro/category/getList',
@@ -34,12 +51,11 @@ export function fetchListLevel() {
   })
 }
 
-//根据上级id获取子分类
+//------------------------------------------根据上级id获取子分类-------------------------------------
 export function fetchListChildrenLevel(id) {
   return request({
     url:'/pro/category/getListByParentId?id='+id,
     method:'get',
-    // params:params
   })
 }
 

@@ -79,8 +79,8 @@
                 <el-table-column label="申请时间" width="180" align="center">
                 <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
                 </el-table-column>
-                <el-table-column label="换货商品" width="180" align="center">
-                <template slot-scope="scope">{{scope.row.productName}}</template>
+                <el-table-column label="退款金额" width="180" align="center">
+                <template slot-scope="scope">￥{{scope.row.money | formatReturnAmount}}</template>
                 </el-table-column>
                 <el-table-column label="申请状态" width="180" align="center">
                 <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
@@ -96,8 +96,7 @@
                     <el-button
                     size="mini"
                     @click="handleViewDetail(scope.$index, scope.row)">查看详情</el-button>
-                </template>
-                <!--需要退货详情页面-->
+                </template><!--需要退货详情页面-->
                 </el-table-column>
             </el-table>
         </div>
@@ -145,7 +144,7 @@ const defaultListQuery = {
     pageSize: 10,
     status:null,
     createTime:null,
-    productName:null,
+    money:null,
     handleMan:null,
     handleTime:null,
   };
@@ -168,7 +167,7 @@ export default {
                     id:12323,
                     memberUsername:'zhahghan',
                     createTime:'2018-8-7',
-                    productName:'外套',
+                    money:1213,
                     status:'已退货',
                     handleTime:'2018-9-9',
                     handleman:'张安',                   
@@ -177,7 +176,7 @@ export default {
                     id:12323,
                     memberUsername:'zhahghan',
                     createTime:'2018-8-7',
-                    productName:'哈伦帽',
+                    money:1213,
                     status:'已退货',
                     handleTime:'2018-9-9',
                     handleman:'张安',
@@ -186,7 +185,7 @@ export default {
                     id:12323,
                     memberUsername:'zhahghan',
                     createTime:'2018-8-7',
-                    productName:'遮阳帽',
+                    money:1213,
                     status:'已退货',
                     handleTime:'2018-9-9',
                     handleman:'张安',

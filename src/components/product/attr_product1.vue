@@ -9,25 +9,26 @@
                     @click="handleSaveList('productCateFrom')"
                     type="primary"
                     size="small">
-                    保存
+                    Add
                 </el-button>
                 <el-button
                     style="float: right;margin-right: 15px"
                     @click="handleResetSearch()"
                     size="small">
-                    重置
+                    Reset
                 </el-button>
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true"  size="small" label-width="140px" :model="productCate" :rules="rules" ref="productCateFrom">
-                    <el-form-item label="商品分类："><!--这里绑定的对吗？？？？？？？？？-->
-                        <el-select style="width: 203px" v-model="productCate.categoryId" placeholder="全部" clearable >
-                        <el-option v-for="item in selectProductCateList"
-                            :key="item.id"
-                            :label="item.label"
-                            :value="item.id">
-                        </el-option>
-                        </el-select>
+                    <el-form-item label="商品分类：">
+                        <el-cascader
+                            placeholder="please selete"
+                            expand-trigger="click"
+                            clearable
+                            v-model="CateId"
+                            :options="productCateOptions"
+                            change-on-select>
+                        </el-cascader>
                     </el-form-item>
                     <el-form-item label="属性名称：">
                         <el-input style="width: 203px" v-model="productCate.categoryName" placeholder="属性名称"></el-input>
@@ -107,6 +108,8 @@
 
 <script>
 import {fetchList,createProductCate,getProductCate} from '@/api/productCate';
+import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
+import {fetchListBycategoryId} from '@/api/statistics'
 import {formatDate} from '@/utils/date';
 const defaultProductCate = {
     categoryName:'',
@@ -126,6 +129,9 @@ export default {
     },
     data(){
         return{
+            productCateOptions:[],
+            CateId:null,
+
             productCate: Object.assign({}, defaultProductCate),
             selectProductCateList: [],
             rules: {
@@ -168,18 +174,25 @@ export default {
         } else {
             this.productCate = Object.assign({}, defaultProductCate);
         }
-        this.getSelectProductCateList();
+        //this.getSelectProductCateList();
         // this.getProductAttrCateList();
+        this.getProductCateList();
 
-
-        this.resetcategoryId();//????????????????????????????????????
+        ///this.resetcategoryId();
         this.getList();
     },
     watch: {
-      $route(route) {
-        this.resetcategoryId();
-        this.getList();
-      }
+        $route(route) {
+            this.resetcategoryId();
+            this.getList();
+        },
+        CateId (newValue) {
+            if (newValue != null && newValue.length == 2) {
+                this.CateId = newValue[1];
+            } else {
+                this.CateId = 0;
+            }
+        },
     },
     filters:{
         dateFormatter(time){
@@ -205,6 +218,27 @@ export default {
         },
 
         //显示商品分类
+        getProductCateList()
+        {
+            fetchListLevel().then(response => {                
+                let list = response.data;
+                for (let i = 0; i < list.length; i++) {
+                    fetchListChildrenLevel(list[i].categoryId).then(response => {
+                        //注意级联！！！
+                        list[i].children = response.data;
+                        let children = [];
+                        if (list[i].children != null && list[i].children.length > 0) {
+                            for (let j = 0; j < list[i].children.length; j++) {
+                                children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+                            }
+                        }
+                        this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId, children: children});
+                    })
+                }
+            });
+        },
+
+        //显示商品分类
         resetcategoryId(){
             if (this.$route.query.categoryId != null) {
             this.categoryId = this.$route.query.categoryId;
@@ -212,17 +246,17 @@ export default {
             this.categoryId = 0;
             }
         },
-        getProductAttributeIdList() {
-            //获取选中的筛选商品属性
-            let productAttributeIdList = [];
-            for (let i = 0; i < this.filterProductAttrList.length; i++) {
-            let item = this.filterProductAttrList[i];
-            if (item.value !== null && item.value.length === 2) {
-                productAttributeIdList.push(item.value[1]);
-            }
-            }
-            return productAttributeIdList;
-        },
+        // getProductAttributeIdList() {
+        //     //获取选中的筛选商品属性
+        //     let productAttributeIdList = [];
+        //     for (let i = 0; i < this.filterProductAttrList.length; i++) {
+        //     let item = this.filterProductAttrList[i];
+        //     if (item.value !== null && item.value.length === 2) {
+        //         productAttributeIdList.push(item.value[1]);
+        //     }
+        //     }
+        //     return productAttributeIdList;
+        // },
 
         //查看下级
         handleShowNextLevel(index, row) {

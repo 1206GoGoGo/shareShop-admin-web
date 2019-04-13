@@ -1,8 +1,7 @@
 <template>
   <div style="margin-top: 50px">
     <el-form :model="value" :rules="rules" ref="productInfoForm" label-width="120px" style="width: 600px" size="small">
-      <!-- prop="productCategoryId" -->
-      <el-form-item label="商品分类：" >
+      <el-form-item label="商品分类：" prop="productCategoryId">
         <el-cascader
           v-model="CateId"
           expand-trigger="click"
@@ -17,6 +16,30 @@
       <el-form-item label="商品编号：" prop="productSn">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>
+      <!-- <el-form-item label="商品描述：" prop="description">
+        <el-input
+          :autoSize="true"
+          v-model="value.description"
+          type="textarea"
+          placeholder="请输入内容"></el-input>
+      </el-form-item> -->
+      
+      <!-- <el-form-item label="副标题：" prop="subTitle">
+        <el-input v-model="value.subTitle"></el-input>
+      </el-form-item> -->
+      <!-- <el-form-item label="商品品牌：" prop="brandId">
+        <el-select
+          v-model="value.brandId"
+          @change="handleBrandChange"
+          placeholder="请选择品牌">
+          <el-option
+            v-for="item in brandOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item> -->
       <el-form-item label="成本：">
         <el-input v-model="value.originalPrice"></el-input>
       </el-form-item>
@@ -36,6 +59,9 @@
         <el-input v-model="value.weight" style="width: 300px"></el-input>
         <span style="margin-left: 20px">克</span>
       </el-form-item>
+      <!-- <el-form-item label="排序">
+        <el-input v-model="value.sort"></el-input>
+      </el-form-item> -->
       <el-form-item style="text-align: center">
         <el-button type="primary" size="medium" @click="handleNext('productInfoForm')">下一步，填写商品属性</el-button>
       </el-form-item>
@@ -44,9 +70,12 @@
 </template>
 
 <script>
+  // import {fetchListWithChildren} from '@/api/productCate'
+  // import {fetchList as fetchBrandList} from '@/api/brand'
+  // import {getProduct} from '@/api/product';
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
 
-export default {
+  export default {
     name: "ProductInfoDetail",
     props: {
       value: Object,
@@ -94,12 +123,12 @@ export default {
       }
     },
     watch: {
-    //   productId:function(newValue){
-    //     if(!this.isEdit)return;
-    //     if(this.hasEditCreated)return;
-    //     if(newValue===undefined||newValue==null||newValue===0)return;
-    //     this.handleEditCreated();
-    //   },
+      productId:function(newValue){
+        if(!this.isEdit)return;
+        if(this.hasEditCreated)return;
+        if(newValue===undefined||newValue==null||newValue===0)return;
+        this.handleEditCreated();
+      },
 
       CateId (newValue) {
           if (newValue != null && newValue.length == 2) {
@@ -120,59 +149,57 @@ export default {
     },
     methods: {
       //处理编辑逻辑
-    //   handleEditCreated(){
-    //     if(this.value.productCategoryId!=null){
-    //       this.selectProductCateValue.push(this.value.cateParentId);
-    //       this.selectProductCateValue.push(this.value.productCategoryId);
-    //     }
-    //     this.hasEditCreated=true;
-    //   },
-
-    // getProductCateList() {
-    //   fetchListWithChildren().then(response => {
-    //     let list = response.data;
-    //     this.productCateOptions = [];
-    //     for (let i = 0; i < list.length; i++) {
-    //       let children = [];
-    //       if (list[i].children != null && list[i].children.length > 0) {
-    //         for (let j = 0; j < list[i].children.length; j++) {
-    //           children.push({label: list[i].children[j].name, value: list[i].children[j].id});
-    //         }
-    //       }
-    //       this.productCateOptions.push({label: list[i].name, value: list[i].id, children: children});
-    //     }
-    //   });
-    // },
-
-    //获得商品分类
-    getProductCateList()
-    {
-        fetchListLevel().then(response => {                
-            let list = response.data;
-            for (let i = 0; i < list.length; i++) {
-                fetchListChildrenLevel(list[i].categoryId).then(response => {
-                    //注意级联！！！
-                    list[i].children = response.data;
-                    let children = [];
-                    if (list[i].children != null && list[i].children.length > 0) {
-                        for (let j = 0; j < list[i].children.length; j++) {
-                            children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
-                        }
-                    }
-                    this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId, children: children});
-                })
-            }
+      handleEditCreated(){
+        if(this.value.productCategoryId!=null){
+          this.selectProductCateValue.push(this.value.cateParentId);
+          this.selectProductCateValue.push(this.value.productCategoryId);
+        }
+        this.hasEditCreated=true;
+      },
+      // getProductCateList() {
+      //   fetchListWithChildren().then(response => {
+      //     let list = response.data;
+      //     this.productCateOptions = [];
+      //     for (let i = 0; i < list.length; i++) {
+      //       let children = [];
+      //       if (list[i].children != null && list[i].children.length > 0) {
+      //         for (let j = 0; j < list[i].children.length; j++) {
+      //           children.push({label: list[i].children[j].name, value: list[i].children[j].id});
+      //         }
+      //       }
+      //       this.productCateOptions.push({label: list[i].name, value: list[i].id, children: children});
+      //     }
+      //   });
+      // },
+      //获得商品分类
+      getProductCateList()
+      {
+          fetchListLevel().then(response => {                
+              let list = response.data;
+              for (let i = 0; i < list.length; i++) {
+                  fetchListChildrenLevel(list[i].categoryId).then(response => {
+                      //注意级联！！！
+                      list[i].children = response.data;
+                      let children = [];
+                      if (list[i].children != null && list[i].children.length > 0) {
+                          for (let j = 0; j < list[i].children.length; j++) {
+                              children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+                          }
+                      }
+                      this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId, children: children});
+                  })
+              }
+          });
+      },
+      getBrandList() {
+        fetchBrandList({pageNum: 1, pageSize: 100}).then(response => {
+          this.brandOptions = [];
+          let brandList = response.data.list;
+          for (let i = 0; i < brandList.length; i++) {
+            this.brandOptions.push({label: brandList[i].name, value: brandList[i].id});
+          }
         });
-    },
-    // getBrandList() {
-    // fetchBrandList({pageNum: 1, pageSize: 100}).then(response => {
-    //     this.brandOptions = [];
-    //     let brandList = response.data.list;
-    //     for (let i = 0; i < brandList.length; i++) {
-    //     this.brandOptions.push({label: brandList[i].name, value: brandList[i].id});
-    //     }
-    // });
-    // },
+      },
       // getCateNameById(id){
       //   let name=null;
       //   for(let i=0;i<this.productCateOptions.length;i++){
@@ -199,17 +226,16 @@ export default {
           }
         });
       },
-    
-    // handleBrandChange(val) {
-    // let brandName = '';
-    // for (let i = 0; i < this.brandOptions.length; i++) {
-    //     if (this.brandOptions[i].value === val) {
-    //     brandName = this.brandOptions[i].label;
-    //     break;
-    //     }
-    // }
-    // this.value.brandName = brandName;
-    // },
+      handleBrandChange(val) {
+        let brandName = '';
+        for (let i = 0; i < this.brandOptions.length; i++) {
+          if (this.brandOptions[i].value === val) {
+            brandName = this.brandOptions[i].label;
+            break;
+          }
+        }
+        this.value.brandName = brandName;
+      }
     }
   }
 </script>
