@@ -1,10 +1,9 @@
 <template>
   <el-row class="panel-group" :gutter="35">
+    <!--第一个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-deliver">
-          <!-- <svg-icon icon-class="people" class-name="card-panel-icon" /> -->
-          <!-- <svg-icon icon-class="deliver" class-name="card-panel-icon"></svg-icon> -->
           <svg-icon icon-class="deliver" class-name="card-panel-icon"></svg-icon>
         </div>
         <div class="card-panel-description">
@@ -13,7 +12,7 @@
         </div>
       </div>
     </el-col>
-
+    <!--第二个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-Refund">
@@ -25,7 +24,7 @@
         </div>
       </div>
     </el-col>
-
+    <!--第三个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-tight">
@@ -37,7 +36,7 @@
         </div>
       </div>
     </el-col>
-
+    <!--第四个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('system')">
         <div class="card-panel-icon-wrapper icon-system">
@@ -49,7 +48,6 @@
         </div>
       </div>
     </el-col>
-
   </el-row>
 </template>
 
@@ -70,7 +68,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .panel-group {
-  // margin-top: 10px;
+  //margin-top: 10px;
   .card-panel-col{
     margin-bottom: 25px;
   }

@@ -6,29 +6,28 @@
         </el-col>
         <el-col :xs="14" :sm="14" :lg="16" class="card-panel-col">
           <el-card class="box-card">
-            <process></process>
+            <onsale></onsale>
           </el-card>
         </el-col>
       </el-row>
-    <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
-    <el-row :gutter="25">
-        <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
-          <el-card class="box-card">
-            <register></register>
-          </el-card>
-        </el-col>
-        <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
-          <!-- <onsale>style="background:#fff;padding:16px 16px 0;margin-bottom:25px;"</onsale> -->
-          <el-card class="box-card">
-            <UserVechart></UserVechart>
-          </el-card>
-        </el-col>
-    </el-row>
-    <el-row >
-      <el-card class="box-card">
-        <echart></echart>
-      </el-card>
-    </el-row>
+      <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+      <el-row :gutter="25">
+          <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
+            <el-card class="box-card">
+              <register></register>
+            </el-card>
+          </el-col>
+          <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
+            <el-card class="box-card">
+              <userVechart></userVechart>
+            </el-card>
+          </el-col>
+      </el-row>
+      <el-row >
+        <el-card class="box-card">
+          <echart></echart>
+        </el-card>
+      </el-row>
   </div>
 </template>
 
@@ -36,10 +35,10 @@
 import PanelGroup from './components/panelGroup'
 import echart from './components/echart'
 import calendar from './components/calendar'
-import process from './components/process'
+// import process from './components/process'
 import register from './components/register'
-// import onsale from './components/onsale'
-import UserVechart from './components/UserVechart'
+import onsale from './components/onsale'
+import userVechart from './components/userVechart'
 
 const lineChartData = {
   newVisitis: {
@@ -65,10 +64,9 @@ export default {
     PanelGroup,
     echart,
     calendar,
-    process,
     register,
-    // onsale
-    UserVechart
+    onsale,
+    userVechart
   },
   data() {
     return {
@@ -76,33 +74,49 @@ export default {
     }
   },
   methods: {
+    //方法未知！！！
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
-    }
+    },
+    
+     /**
+     * 按APP版本分布统计
+     */
+    appVersionlStat(beginTime = null, endTime = null, statInterval) {
+        let params = appVersion;
+        if (null != beginTime && null != endTime) {
+            params = Object.assign({'starttime': beginTime, 'endtime': endTime}, params)
+        }
+        if (this.mock) {
+            params = Object.assign({'statFunc': 'appVersionlStat', 'type': 0}, params)
+        }
+        aggregate(params).then(data => {                    
+            this.app_version.title.text = 'APP 注册版本统计' + statInterval;
+            for (let i = 0; i < data.length; i++) {
+                let value = data[i].num;
+                let bluVer = data[i]._id.bluVer;
+                let deviceType = data[i]._id.deviceType;
+                if (1 == deviceType) {
+                    deviceType = 'android';
+                    this.app_version.series[0].data.push({value: value, name: deviceType + ' ' + bluVer});
+                } else if (2 == deviceType) {
+                    deviceType = 'ios'
+                    this.app_version.series[1].data.push({value: value, name: deviceType + ' ' + bluVer})
+                }
+                this.app_version.legend.data.push(deviceType + ' ' + bluVer);
+            }
+        });
+    },
+
+
+
   }
 }
 </script>
-
-<!---<style rel="stylesheet/scss" lang="scss" scoped>
-.home-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
-  .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
-  }
-}
-</style>-->
 
 <style scoped>
   .home-container{
     padding: 25px;
     background-color: #f2f2f2;
   }
-  /* .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px; 
-  } */
 </style>

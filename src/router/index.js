@@ -28,7 +28,7 @@ const attr_product = r => require.ensure([], () => r(require('@/components/produ
 const add_attr = r => require.ensure([], () => r(require('@/components/product/Attributes_product/add_attr')), 'add_attr');
 
 const add_cate = r => require.ensure([], () => r(require('@/components/product/product_cate/add_cate')), 'add_cate');
-const collect_product = r => require.ensure([], () => r(require('@/components/product/collect_product')), 'collect_product');
+//const collect_product = r => require.ensure([], () => r(require('@/components/product/collect_product')), 'collect_product');
 //推荐商品
 const list_recommend = r => require.ensure([], () => r(require('@/components/product/recommend/list_recommend')), 'list_recommend');
 const recommend_kinds = r => require.ensure([], () => r(require('@/components/product/recommend/recommend_kinds')), 'recommend_kinds');
@@ -185,11 +185,11 @@ const routes = [
 					component: add_cate,
 					meta: ['Product','Category','Add'],
 				},
-				{
-					path: '/product/collect_product',
-					component: collect_product,
-					meta: ['Product', 'Collect'],
-				},
+				// {
+				// 	path: '/product/collect_product',
+				// 	component: collect_product,
+				// 	meta: ['Product', 'Collect'],
+				// },
 				//推荐商品
 				{
 					path: '/product/recommend/list_recommend',

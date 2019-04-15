@@ -35,7 +35,7 @@
             <!-- <el-menu-item index="2-3">商品级别</el-menu-item> -->
             <el-menu-item index="/product/list_product">商品查询</el-menu-item><!--包括销售量、库存、总金额-->
             <el-menu-item index="/product/add_product">新增商品</el-menu-item>    
-            <el-menu-item index="/product/collect_product">商品收藏</el-menu-item>
+            <!-- <el-menu-item index="/product/collect_product">商品收藏</el-menu-item> -->
             <!-- <el-menu-item index="2-7">商品评价</el-menu-item>回复、删除 -->
         </el-submenu>
 

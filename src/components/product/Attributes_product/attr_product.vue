@@ -12,7 +12,7 @@
                     Search
                 </el-button>
                 <el-button
-                    style="float: right;margin-right: 15px"
+                    style="float: right; margin-right: 15px"
                     @click="handleResetSearch()"
                     size="small">
                     Reset
@@ -22,6 +22,7 @@
                 <el-form :inline="true"  size="small" label-width="140px" :model="productCate" :rules="rules" ref="productCateFrom">
                     <el-form-item label="商品分类：">
                         <el-cascader
+                            style="width:203px"
                             placeholder="please selete"
                             expand-trigger="click"
                             clearable
@@ -30,15 +31,6 @@
                             change-on-select>
                         </el-cascader>
                     </el-form-item>
-                    <!-- <el-form-item label="属性名称：">
-                        <el-input style="width: 203px" v-model="productCate.attrName" placeholder="属性名称"></el-input>
-                    </el-form-item> -->
-                    <!-- <el-form-item label="是否显示：">
-                        <el-radio-group  v-model="productCate.navStatus">
-                        <el-radio :label="1">是</el-radio>
-                        <el-radio :label="0">否</el-radio>
-                        </el-radio-group>
-                    </el-form-item> -->
                 </el-form> 
             </div>
         </el-card>
@@ -47,18 +39,18 @@
         <el-card class="operate-container" shadow="never">
             <i class="el-icon-tickets"></i>
             <span>数据列表</span>
-            <el-button size="mini" class="btn-add" @click="handleAdd()">添加</el-button>
+            <el-button size="mini" type="primary" class="btn-add" @click="handleAdd()">添加</el-button>
         </el-card>
 
         <!-- v-loading="listLoading"  @selection-change="handleSelectionChange"-->
         <div class="table-container">
             <el-table ref="productTable"
-                        highlight-current-row
-                        :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
-                        :data="list"
-                        style="width: 100%"
-                        
-                        border>
+                highlight-current-row
+                :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
+                :data="list"
+                style="width: 100%"
+                
+                border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
                 <el-table-column label="编号" width="60" align="center">
                     <template slot-scope="scope">{{scope.row.keyId}}</template>
@@ -111,94 +103,57 @@
             </div>
         </div>
         
-<!--修改信息的弹出框 S   AddAttr没有改！！！！！！！！！！！！！！！！！！！！！-->
+<!--修改信息的弹出框 S！！！！！！！！！！！！！！！！！！！！！-->
         <el-dialog                    
             title="添加属性信息"
             
-            :visible.sync="dialogFormVisible" width="70%">
-            <el-form :model="AddAttr" :inline="true"
-                ref="DetailForm" label-width="150px">
-                <el-form-item label="商品分类：">
-                        <el-cascader
-                            placeholder="please selete"
-                            expand-trigger="click"
-                            clearable
-                            v-model="productCateValue"
-                            :options="productCateOptions"
-                            change-on-select>
-                        </el-cascader>
+            :visible.sync="dialogFormVisible"  width="35%" height="100%">
+            <el-form :model="AddAttr" :inline="true" size="small"
+                ref="DetailForm" label-width="100px">
+                <el-form-item label="商品分类：" >
+                    <el-cascader
+                        style="width:203px"
+                        placeholder="please selete"
+                        expand-trigger="click"
+                        clearable
+                        v-model="productCateValue"
+                        :options="productCateOptions"
+                        change-on-select>
+                    </el-cascader>
                 </el-form-item>
-
-                <el-form-item label="登录名:">
-                    <el-input v-model="AddAttr.username" style="width: 203px" readonly></el-input>
+                <el-form-item label="属性名称：">
+                    <el-input v-model="AddAttr.Attrname" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名:">
-                    <el-input v-model="AddAttr.name" style="width: 203px"></el-input>
+                <el-form-item label="属性值：">
+                    <el-input v-model="AddAttr.AttrValue" style="width: 203px"></el-input>
+                    <el-button type="primary" size="mini" style="margin-left:10px;" @click="handleAddProductAttrValue">添加</el-button>
+                    <el-checkbox-group v-model="AddAttr.values">
+                        <div style="display: none" class="littleMarginLeft">
+                            <el-checkbox :label="item" :key="item"></el-checkbox>
+                            <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx,index)">删除</el-button>
+                        </div>
+                    </el-checkbox-group>
                 </el-form-item>
-                <el-form-item label="手机号:">
-                    <el-input v-model="AddAttr.phoneNumber" style="width: 203px"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱:">
-                    <el-input v-model="AddAttr.email" style="width: 203px"></el-input>
-                </el-form-item>
-                <el-form-item label="用户级别:">
-                    <el-input v-model="AddAttr.level" readonly style="width: 203px"></el-input>
-                </el-form-item>
-                <el-form-item label="性别:"><!--"到显示框中不可用！！！！！！！！！！！！！-->
-                    <el-radio-group v-model="AddAttr.gender" @change="Tellgender" style="width: 203px">
-                        <el-radio :label="0">Male</el-radio>
-                        <el-radio :label="1">Female</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="证件号码:">
-                    <el-input v-model="AddAttr.identityCardNo" style="width: 203px"></el-input>
-                </el-form-item>
-                <el-form-item label="证件类型:">
-                    <el-select v-model="AddAttr.identityCardType" placeholder="请选择" clearable style="width: 203px">
-                        <el-option v-for="item in IDCardType"
-                            style="width: 203px"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                        </el-select>
-                </el-form-item>
-                <!-- <el-form-item label="用户状态:">
-                    <el-select v-model="AddAttr.status" placeholder="全部" clearable style="width: 203px">
-                        <el-option v-for="item in AddAttr.status"
-                            style="width: 203px"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                        </el-select>
-                </el-form-item> -->
-                <el-form-item label="注册时间:">
-                    <el-date-picker
-                        readonly
-                        v-model="AddAttr.registerTime"
-                        style="width: 203px"
-                        type="date"
-                        placeholder="Please Select Time">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="出生年月:">
-                    <el-date-picker
-                        v-model="AddAttr.birthday"
-                        style="width: 203px"
-                        type="date"
-                        placeholder="Please Select Time">
-                    </el-date-picker>
-                </el-form-item>
+                <!-- 
+                    <el-checkbox-group v-model="selectProductAttr[idx].values">
+                <div v-for="(item,index) in selectProductAttr[idx].options" style="display: inline-block"
+                     class="littleMarginLeft">
+                  <el-checkbox :label="item" :key="item"></el-checkbox>
+                  <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx,index)">删除
+                  </el-button>
+                </div>
+              </el-checkbox-group>
+              <el-input v-model="addProductAttrValue" style="width: 160px;margin-left: 10px" clearable></el-input>
+              <el-button class="littleMarginLeft" @click="handleAddProductAttrValue(idx)">增加</el-button>
+            
+                 -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleConfirm">确 定</el-button>
+                <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="handleConfirm" size="mini">确 定</el-button>
             </span>
         </el-dialog>
 <!--修改信息的弹出框 E-->
-
-
     </div>
 </template>
 
@@ -216,7 +171,13 @@ const defaultProductCate = {
     keyId: null,
     updateTime: null,
     productAttributeIdList: [],
-  };
+};
+
+const defaultAddAttr = {
+    managerInfoId:null,
+    Attrname:'',
+    AttrValue:'',
+};
 export default {
     props: {
       isEdit: {
@@ -227,24 +188,11 @@ export default {
     data(){
         return{
             dialogFormVisible:false,
-            UserDetail:{
-                userInfoId:null,
-                name:null,
-                username:null,
-                level:null,
-                phoneNumber:null,
-                identityCardNo:null,
-                email:null,
-                registerTime:null,
-                identityCardType:null,
-                birthday:null,
-                gender:0,               
-            },
-
             productCateOptions:[],
             productCateValue:null,
 
             productCate: Object.assign({}, defaultProductCate),
+            AddAttr: Object.assign({}, defaultAddAttr),
             selectProductCateList: [],
             rules: {
             attrName: [
@@ -320,6 +268,8 @@ export default {
             this.productCate = Object.assign({}, defaultProductCate);
         },
 
+        handleSearchList(){},
+
         //初始化 显示列表内容
         getList(){
             this.listLoading = true;
@@ -369,6 +319,28 @@ export default {
             this.dialogFormVisible=true
             
             // this.$router.push({path: '/product/Attributes_product/add_attr'})
+        },
+
+        handleAddProductAttrValue(idx) {
+            let options = this.selectProductAttr[idx].options;
+            if (this.addProductAttrValue == null || this.addProductAttrValue == '') {
+            this.$message({
+                message: '属性值不能为空',
+                type: 'warning',
+                duration: 1000
+            });
+            return
+            }
+            if (options.indexOf(this.addProductAttrValue) !== -1) {
+            this.$message({
+                message: '属性值不能重复',
+                type: 'warning',
+                duration: 1000
+            });
+            return;
+            }
+            this.selectProductAttr[idx].options.push(this.addProductAttrValue);
+            this.addProductAttrValue = null;
         },
 
         //显示商品分类
@@ -470,4 +442,7 @@ export default {
 </script>
 
 <style scoped>
+.littleMarginLeft {
+    margin-left: 10px;
+}
 </style>

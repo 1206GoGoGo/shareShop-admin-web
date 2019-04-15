@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      
       chart: null
     }
   },
@@ -44,6 +45,7 @@ export default {
   },
   methods: {
     initChart() {
+        //改变主题颜色
         this.chart = echarts.init(this.$refs.myEchart)
         // 把配置和数据放这里
         this.chart.setOption({
@@ -62,7 +64,6 @@ export default {
                     }
                 },
             },
-            //显示保存或者更新、刷新
             // toolbox: {
             //     feature: {
             //         dataView: { show: true, readOnly: false },
@@ -72,15 +73,13 @@ export default {
             //     }
             // },
             legend: {
-                data: ['普通用户', '会员','seller'],
-                //data:[],
+                data: ['普通用户', '会员','seller']
             },
             xAxis: [
             {
                 type: 'category',
                 name: '时间',
                 data: ['4/8','4/9','4/10','4/11','4/12','4/13','4/14'],
-                //data:[],
                 axisPointer: {
                     type: 'shadow'
                 }
@@ -100,20 +99,17 @@ export default {
                 {
                     name: '普通用户',
                     type: 'bar',
-                     data: [182, 239, 234, 1970, 1344, 630, 234]
-                    //data:[],
+                    data: [182, 239, 234, 1970, 1344, 630, 234]
                 },
                 {
                     name: '会员',
                     type: 'bar',
                     data: [125, 238, 310, 1594, 1341, 681, 234]
-                   // data:[],
                 },
                 {
                     name: 'seller',
                     type: 'bar',
-                    data: [195, 238, 310, 594, 141, 607, 1231],
-                    //data:[],
+                    data: [195, 238, 310, 594, 141, 607, 1231]
                 }
             ],  
         })

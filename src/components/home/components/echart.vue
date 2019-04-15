@@ -1,3 +1,5 @@
+<!--销售额统计-------------------------------------------------------------------->
+
 <template>
   <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
 </template>
