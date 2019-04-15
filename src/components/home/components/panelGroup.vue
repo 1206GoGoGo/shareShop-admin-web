@@ -70,9 +70,9 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .panel-group {
-  margin-top: 30px;
+  // margin-top: 10px;
   .card-panel-col{
-    margin-bottom: 32px;
+    margin-bottom: 25px;
   }
   .card-panel {
     height: 108px;

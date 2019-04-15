@@ -5,20 +5,29 @@
           <calendar></calendar>
         </el-col>
         <el-col :xs="14" :sm="14" :lg="16" class="card-panel-col">
-          <process></process>
+          <el-card class="box-card">
+            <process></process>
+          </el-card>
         </el-col>
       </el-row>
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
-    <el-row :gutter="35">
-        <el-col :xs="10" :sm="10" :lg="8" class="card-panel-col">
-          <register></register>
+    <el-row :gutter="25">
+        <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
+          <el-card class="box-card">
+            <register></register>
+          </el-card>
         </el-col>
-        <el-col :xs="14" :sm="14" :lg="16" class="card-panel-col">
-          <onsale></onsale>
+        <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
+          <!-- <onsale>style="background:#fff;padding:16px 16px 0;margin-bottom:25px;"</onsale> -->
+          <el-card class="box-card">
+            <UserVechart></UserVechart>
+          </el-card>
         </el-col>
     </el-row>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <echart></echart>
+    <el-row >
+      <el-card class="box-card">
+        <echart></echart>
+      </el-card>
     </el-row>
   </div>
 </template>
@@ -29,7 +38,8 @@ import echart from './components/echart'
 import calendar from './components/calendar'
 import process from './components/process'
 import register from './components/register'
-import onsale from './components/onsale'
+// import onsale from './components/onsale'
+import UserVechart from './components/UserVechart'
 
 const lineChartData = {
   newVisitis: {
@@ -57,7 +67,8 @@ export default {
     calendar,
     process,
     register,
-    onsale
+    // onsale
+    UserVechart
   },
   data() {
     return {
@@ -86,7 +97,7 @@ export default {
 
 <style scoped>
   .home-container{
-    padding: 32px;
+    padding: 25px;
     background-color: #f2f2f2;
   }
   /* .chart-wrapper {

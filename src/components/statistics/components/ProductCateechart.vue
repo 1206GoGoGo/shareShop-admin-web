@@ -1,5 +1,3 @@
-<!--商品按分类的销量-------------------------------------------------------------->
-
 <template>
   <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
 </template>
@@ -17,7 +15,7 @@ export default {
     },
     height: {
       type: String,
-      default: '284px'
+      default: '350px'
     },
     autoResize: {
       type: Boolean,

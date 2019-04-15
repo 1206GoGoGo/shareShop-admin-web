@@ -21,17 +21,18 @@
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="商品名称：">
-            <el-input v-model="listQuery.productName" class="input-width" placeholder="商品名称"></el-input>
+            <el-input v-model="listQuery.productName" class="input-width" style="width:203px" placeholder="商品名称"></el-input>
           </el-form-item>
           <el-form-item label="商品货号：">
-            <el-input v-model="listQuery.productCode" class="input-width" placeholder="商品货号"></el-input>
+            <el-input v-model="listQuery.productCode" class="input-width" style="width:203px" placeholder="商品货号"></el-input>
           </el-form-item>
           <el-form-item label="用户名称：">
-            <el-input v-model="listQuery.userName" class="input-width" placeholder="评论用户名称"></el-input>
+            <el-input v-model="listQuery.userName" class="input-width" style="width:203px" placeholder="评论用户名称"></el-input>
           </el-form-item>
           <el-form-item label="用户评分：">
               <el-select v-model="listQuery.status" placeholder="All"  style="width:203px" clearable class="input-width">
               <el-option v-for="item in RateOptions"
+                  
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">

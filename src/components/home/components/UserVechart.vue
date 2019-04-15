@@ -1,4 +1,4 @@
-<!--商品按分类的销量-------------------------------------------------------------->
+<!--网站近7天的访问量、球状图-------------------------------------------------------->
 
 <template>
   <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
@@ -17,7 +17,7 @@ export default {
     },
     height: {
       type: String,
-      default: '284px'
+      default: '350px'
     },
     autoResize: {
       type: Boolean,
@@ -49,8 +49,8 @@ export default {
       this.chart.setOption({        
         color: ["#19d4ae", "#5ab1ef", "#fa6e86","#ffb980","#c4b4e4","#d87a80","#0067a6"],
         title : {
-            text: '商品分类销量',
-            subtext: '按分类显示',
+            text: '网站访问量',
+            subtext: '显示近7天数据',
             x:'center'
         },
         tooltip : {
@@ -60,20 +60,22 @@ export default {
         legend: {
             orient: 'vertical',
             left: 'left',
-            data: ['外套','帽子','围巾','袜子','裤子']
+            data: ['4/8','4/9','4/10','4/11','4/12','4/13','4/14']
         },
         series : [
             {
-                name: '商品分类销量',
+                name: '网站访问量',
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
                 data:[
-                    {value:335, name:'外套'},
-                    {value:310, name:'帽子'},
-                    {value:234, name:'围巾'},
-                    {value:135, name:'袜子'},
-                    {value:1548, name:'裤子'}
+                    {value:335, name:'4/8'},
+                    {value:310, name:'4/9'},
+                    {value:234, name:'4/10'},
+                    {value:135, name:'4/11'},
+                    {value:1548, name:'4/12'},
+                    {value:334, name:'4/13'},
+                    {value:1035, name:'4/14'}
                 ],
                 itemStyle: {
                     emphasis: {

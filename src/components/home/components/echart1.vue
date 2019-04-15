@@ -1,5 +1,6 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
+  <div :class="className" :style="{height:height,width:width}" ref="myEchart">
+  </div>
 </template>
 <script>
 import echarts from 'echarts'
@@ -27,7 +28,6 @@ export default {
   },
   data() {
     return {
-      
       chart: null
     }
   },
@@ -43,15 +43,9 @@ export default {
   },
   methods: {
     initChart() {
-      //改变主题颜色
       this.chart = echarts.init(this.$refs.myEchart)
       // 把配置和数据放这里
       this.chart.setOption({
-        color: ["#13CE66", "#20a0ff", "#F7BA2A"],
-        title: {
-            text: "Users Statistics",
-            x: 'left'
-        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -70,12 +64,11 @@ export default {
           }
         },
         legend: {
-          data: ['用户注册量', 'seller注册量','网站访问量']
+          data: ['订单数', '加购物车数', '金额']
         },
         xAxis: [
           {
             type: 'category',
-            //name: '月份',
             data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             axisPointer: {
               type: 'shadow'
@@ -84,32 +77,41 @@ export default {
         yAxis: [
           {
             type: 'value',
-            //name: '金额',
+            name: '单价',
             min: 0,
-            max: 2500,
-            interval: 500,
+            max: 250,
+            interval: 50,
             axisLabel: {
               formatter: '{value} dollars'
             }
           },
-          ],
+          {
+            type: 'value',
+            name: '比数',
+            min: 0,
+            max: 25,
+            interval: 5,
+            axisLabel: {
+              formatter: '{value}'
+            }
+          }],
         series: [
           {
-            name: '用户注册量',
+            name: '订单数',
             type: 'bar',
-            data: [200, 490, 700, 232, 256, 345, 344, 767, 326, 1200, 1356, 1622]
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 6.4, 3.3, 76.7, 32.6, 20.0, 135.6, 162.2]
           },
           {
-            name: 'seller注册量',
+            name: '加购物车数',
             type: 'bar',
-            data: [246, 545, 650, 264, 207,160, 203, 287, 183, 707,842, 956]
+            data: [2.6, 5.9, 9.0, 26.4, 28.7,6.0, 2.3, 48.7, 18.8, 70.7,182.2, 195.6]
           },
           {
-            name: '网站访问量',
-            type: 'bar',
-            data: [220, 232, 343, 455, 663,570, 682, 100, 102,165, 203, 234]
-          }
-          ]
+            name: '金额',
+            type: 'line',
+            yAxisIndex: 1,
+            data: [2.0, 2.2, 3.3, 4.5, 6.3,5.0, 6.2, 10.0, 10.2,16.5, 20.3, 23.4]
+          }]
       })
     }
   }

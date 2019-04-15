@@ -1,6 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="myEchart">
-  </div>
+  <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
 </template>
 <script>
 import echarts from 'echarts'
@@ -28,6 +27,7 @@ export default {
   },
   data() {
     return {
+      
       chart: null
     }
   },
@@ -43,9 +43,15 @@ export default {
   },
   methods: {
     initChart() {
+      //改变主题颜色
       this.chart = echarts.init(this.$refs.myEchart)
       // 把配置和数据放这里
       this.chart.setOption({
+        color: ["#13CE66", "#20a0ff", "#F7BA2A"],
+        title: {
+            text: "Sales Statistics",
+            x: 'left'
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -64,11 +70,12 @@ export default {
           }
         },
         legend: {
-          data: ['订单数', '加购物车数', '金额']
+          data: ['总销售额', 'seller销售额', '成本']
         },
         xAxis: [
           {
             type: 'category',
+            //name: '月份',
             data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             axisPointer: {
               type: 'shadow'
@@ -77,40 +84,30 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '单价',
+            //name: '金额',
             min: 0,
-            max: 250,
-            interval: 50,
+            max: 2500,
+            interval: 500,
             axisLabel: {
               formatter: '{value} dollars'
             }
           },
-          {
-            type: 'value',
-            name: '比数',
-            min: 0,
-            max: 25,
-            interval: 5,
-            axisLabel: {
-              formatter: '{value}'
-            }
-          }],
+          ],
         series: [
           {
-            name: '订单数',
+            name: '总销售额',
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 6.4, 3.3, 76.7, 32.6, 20.0, 135.6, 162.2]
+            data: [200, 490, 700, 232, 256, 345, 344, 767, 326, 1200, 1356, 1622]
           },
           {
-            name: '加购物车数',
+            name: 'seller销售额',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7,6.0, 2.3, 48.7, 18.8, 70.7,182.2, 195.6]
+            data: [246, 545, 650, 264, 207,160, 203, 287, 183, 707,842, 956]
           },
           {
-            name: '金额',
-            type: 'line',
-            yAxisIndex: 1,
-            data: [2.0, 2.2, 3.3, 4.5, 6.3,5.0, 6.2, 10.0, 10.2,16.5, 20.3, 23.4]
+            name: '成本',
+            type: 'bar',
+            data: [220, 232, 343, 455, 663,570, 682, 100, 102,165, 203, 234]
           }]
       })
     }

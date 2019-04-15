@@ -44,10 +44,14 @@ export default {
   methods: {
     initChart() {
       //改变主题颜色
-      // this.chart = echarts.init(dom, 'light'),
       this.chart = echarts.init(this.$refs.myEchart)
       // 把配置和数据放这里
       this.chart.setOption({
+        color: ["#13CE66", "#20a0ff", "#F7BA2A"],
+        title: {
+            text: "Sales Statistics",
+            x: 'left'
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -66,11 +70,12 @@ export default {
           }
         },
         legend: {
-          data: ['销售额', '成本', '支出']
+          data: ['总销售额', 'seller销售额', '成本']
         },
         xAxis: [
           {
             type: 'category',
+            //name: '月份',
             data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             axisPointer: {
               type: 'shadow'
@@ -79,7 +84,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '金额',
+            //name: '金额',
             min: 0,
             max: 2500,
             interval: 500,
@@ -90,17 +95,17 @@ export default {
           ],
         series: [
           {
-            name: '销售额',
+            name: '总销售额',
             type: 'bar',
             data: [200, 490, 700, 232, 256, 345, 344, 767, 326, 1200, 1356, 1622]
           },
           {
-            name: '成本',
+            name: 'seller销售额',
             type: 'bar',
             data: [246, 545, 650, 264, 207,160, 203, 287, 183, 707,842, 956]
           },
           {
-            name: '支出',
+            name: '成本',
             type: 'bar',
             data: [220, 232, 343, 455, 663,570, 682, 100, 102,165, 203, 234]
           }]
