@@ -38,8 +38,9 @@
         <!--添加-->
         <el-card class="operate-container" shadow="never">
             <i class="el-icon-tickets"></i>
-            <span>数据列表</span>
-            <el-button size="mini" type="primary" class="btn-add" @click="handleAdd()">添加</el-button>
+            <span>属性列表</span>
+            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrValue()">添加属性值</el-button>
+            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrKey()">添加商品属性</el-button>
         </el-card>
 
         <!-- v-loading="listLoading"  @selection-change="handleSelectionChange"-->
@@ -67,7 +68,7 @@
                 <!-- <el-table-column label="创建时间" width="200" align="center">
                     <template slot-scope="scope">{{scope.row.updateTime | dateFormatter}}</template>
                 </el-table-column> -->
-                <!-- <el-table-column label="导航栏" width="100" align="center">
+                <!-- <el-table-column label="" width="100" align="center">
                     <template slot-scope="scope">
                         <el-switch
                         @change="handleNavStatusChange(scope.$index, scope.row)"
@@ -103,12 +104,12 @@
             </div>
         </div>
         
-<!--修改信息的弹出框 S！！！！！！！！！！！！！！！！！！！！！-->
+<!--添加商品属性名称 S----------------------------------------------------------------->
         <el-dialog                    
-            title="添加属性信息"
+            title="添加商品属性"
             
-            :visible.sync="dialogFormVisible"  width="35%" height="100%">
-            <el-form :model="AddAttr" :inline="true" size="small"
+            :visible.sync="dialogAddAttrKeyVisible"  width="35%" height="100%">
+            <el-form :model="AddAttrKey" :inline="true" size="small"
                 ref="DetailForm" label-width="100px">
                 <el-form-item label="商品分类：" >
                     <el-cascader
@@ -116,50 +117,72 @@
                         placeholder="please selete"
                         expand-trigger="click"
                         clearable
-                        v-model="productCateValue"
+                        v-model="AddAttrKey.categoryId"
                         :options="productCateOptions"
                         change-on-select>
                     </el-cascader>
                 </el-form-item>
                 <el-form-item label="属性名称：">
-                    <el-input v-model="AddAttr.Attrname" style="width: 203px"></el-input>
+                    <el-input v-model="AddAttrKey.attrName" style="width: 203px"></el-input>
                 </el-form-item>
-                <el-form-item label="属性值：">
-                    <el-input v-model="AddAttr.AttrValue" style="width: 203px"></el-input>
-                    <el-button type="primary" size="mini" style="margin-left:10px;" @click="handleAddProductAttrValue">添加</el-button>
-                    <el-checkbox-group v-model="AddAttr.values">
-                        <div style="display: none" class="littleMarginLeft">
-                            <el-checkbox :label="item" :key="item"></el-checkbox>
-                            <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx,index)">删除</el-button>
-                        </div>
-                    </el-checkbox-group>
-                </el-form-item>
-                <!-- 
-                    <el-checkbox-group v-model="selectProductAttr[idx].values">
-                <div v-for="(item,index) in selectProductAttr[idx].options" style="display: inline-block"
-                     class="littleMarginLeft">
-                  <el-checkbox :label="item" :key="item"></el-checkbox>
-                  <el-button type="text" class="littleMarginLeft" @click="handleRemoveProductAttrValue(idx,index)">删除
-                  </el-button>
-                </div>
-              </el-checkbox-group>
-              <el-input v-model="addProductAttrValue" style="width: 160px;margin-left: 10px" clearable></el-input>
-              <el-button class="littleMarginLeft" @click="handleAddProductAttrValue(idx)">增加</el-button>
-            
-                 -->
+                <!-- <el-form-item label="属性值：">
+                    <el-input v-model="AddAttrKey.attrValue" style="width: 203px"></el-input>
+                    <el-button type="primary" size="mini" style="margin-left:10px;" @click="handleAddProductAttrValue()">添加</el-button>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-                <el-button type="primary" @click="handleConfirm" size="mini">确 定</el-button>
+                <el-button @click="dialogAddAttrKeyVisible = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="handleAddAttrKeyConfirm" size="mini">保 存</el-button>
             </span>
         </el-dialog>
-<!--修改信息的弹出框 E-->
+<!--添加商品属性名称 E--------------------------------------------------------->
+<!--添加商品属性值 S----------------------------------------------------------->
+        <el-dialog                    
+            title="添加属性信息"
+            
+            :visible.sync="dialogAddAttrValueVisible"  width="35%" height="100%">
+            <el-form :model="AddAttrValue" :inline="true" size="small"
+                ref="DetailForm" label-width="100px">
+                <el-form-item label="商品分类：" >
+                    <el-cascader
+                        style="width:203px"
+                        placeholder="please selete"
+                        expand-trigger="click"
+                        clearable
+                        v-model="AddAttrValue.categoryId"
+                        :options="productCateOptions"
+                        change-on-select>
+                    </el-cascader>
+                </el-form-item>
+                <el-form-item label="属性名称：">
+                    <el-select v-model="AddAttrValue.attrName" style="width: 203px" class="input-width" placeholder="All" clearable>
+                        <el-option v-for="item in statusOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <!-- <el-form-item label="属性名称：">
+                    <el-input v-model="AddAttrValue.attrName" style="width: 203px"></el-input>
+                </el-form-item> -->
+                <el-form-item label="属性值：">
+                    <el-input v-model="AddAttrValue.attrValue" style="width: 203px"></el-input>
+                    <el-button type="primary" size="mini" style="margin-left:10px;" @click="handleAddProductAttrValue()">添加</el-button>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogAddAttrValueVisible = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="handleConfirm" size="mini">保 存</el-button>
+            </span>
+        </el-dialog>
+<!--添加商品属性名称 E--------------------------------------------------------->
     </div>
 </template>
 
 <script>
-// import {fetchList,createProductCate,getProductCate} from '@/api/productCate';
 import {fetchListLevel,fetchListChildrenLevel,fetchAttrList,fetchSearchingList} from '@/api/productCate'
+import {AddAttributeValue,AddAttributeKey} from '@/api/productAttr'
 import {fetchListBycategoryId} from '@/api/statistics'
 import {formatDate} from '@/utils/date';
 const defaultProductCate = {
@@ -173,11 +196,31 @@ const defaultProductCate = {
     productAttributeIdList: [],
 };
 
-const defaultAddAttr = {
-    managerInfoId:null,
-    Attrname:'',
-    AttrValue:'',
+//属性名称
+const defaultAddAttrKey = {
+    //商品分类
+    categoryId:null,
+    //分类名称
+    attrName:null,
+    attrKeyId:null,
+    //属性值
+    attrValue:null,
 };
+
+//属性值
+const defaultAddAttrValue = {
+    //商品分类
+    // categoryId:null,
+
+    //分类名称
+    //attrName:null,
+
+    //属性分类id
+    attrKeyId:null,
+    //属性值
+    attrValue:null,
+};
+
 export default {
     props: {
       isEdit: {
@@ -187,12 +230,14 @@ export default {
     },
     data(){
         return{
-            dialogFormVisible:false,
+            dialogAddAttrKeyVisible:false,
+            dialogAddAttrValueVisible:false,
             productCateOptions:[],
             productCateValue:null,
 
             productCate: Object.assign({}, defaultProductCate),
-            AddAttr: Object.assign({}, defaultAddAttr),
+            AddAttrKey: Object.assign({}, defaultAddAttrKey),
+            AddAttrValue: Object.assign({}, defaultAddAttrValue),
             selectProductCateList: [],
             rules: {
             attrName: [
@@ -200,24 +245,7 @@ export default {
                 {min: 2, max: 14, message: '长度在 2 到 14 个字符', trigger: 'blur'}
             ]
             },
-            list: [
-                {
-                    keyId:'0001',
-                    attrName:'外套',
-                    categoryLevel:'颜色',
-                    createTime:'2018-8-8'
-                },{
-                    keyId:'0001',
-                    attrName:'外套',
-                    categoryLevel:'颜色',
-                    createTime:'2018-8-8'
-                },{
-                    keyId:'0001',
-                    attrName:'外套',
-                    categoryLevel:'颜色',
-                    createTime:'2018-8-8'
-                },
-            ],
+            list:null,
             //listLoading: true,
             offset: 0,
             limit: 20,
@@ -314,33 +342,75 @@ export default {
 
         },
         
-        //跳转路由
-        handleAdd(){
-            this.dialogFormVisible=true
-            
-            // this.$router.push({path: '/product/Attributes_product/add_attr'})
+        //添加商品属性值
+        handleAddAttrValue(){
+            this.dialogAddAttrValueVisible=true
+        },
+        
+        //添加商品属性名称
+        handleAddAttrKey(){
+            this.dialogAddAttrKeyVisible=true
         },
 
-        handleAddProductAttrValue(idx) {
-            let options = this.selectProductAttr[idx].options;
-            if (this.addProductAttrValue == null || this.addProductAttrValue == '') {
-            this.$message({
-                message: '属性值不能为空',
-                type: 'warning',
-                duration: 1000
-            });
-            return
+        //保存商品属性名称
+        handleAddAttrKeyConfirm(){
+            if (this.AddAttrKey.attrName == null || this.AddAttrKey.attrName == '') {
+                this.$message({
+                    message: '属性名称不能为空',
+                    type: 'warning',
+                    duration: 1000
+                });
+                return
             }
-            if (options.indexOf(this.addProductAttrValue) !== -1) {
-            this.$message({
-                message: '属性值不能重复',
-                type: 'warning',
-                duration: 1000
+            AddAttributeKey(AddAttrValue).then(response => {
+                this.list = response.data;
+                this.$message({
+                    message: '添加成功',
+                    type: 'success',
+                    duration: 1000
+                });
+                return
             });
-            return;
+        },
+
+        handleAddProductAttrValue() {
+            // let options = this.selectProductAttr[idx].options;
+            // if (this.addProductAttrValue == null || this.addProductAttrValue == '') {
+            if (this.AddAttrValue.attrValue == null || this.AddAttrValue.attrValue == '') {
+                this.$message({
+                    message: '属性值不能为空',
+                    type: 'warning',
+                    duration: 1000
+                });
+                return
             }
-            this.selectProductAttr[idx].options.push(this.addProductAttrValue);
-            this.addProductAttrValue = null;
+            
+            // if (options.indexOf(this.addProductAttrValue) !== -1) {
+            //     this.$message({
+            //         message: '属性值不能重复',
+            //         type: 'warning',
+            //         duration: 1000
+            //     });
+            //     return;
+            // }
+            //this.selectProductAttr[idx].options.push(this.addProductAttrValue);
+            
+
+            AddAttributeValue(this.AddAttrValue.categoryId,this.AddAttrValue.attrName).then(response => {
+                this.list = response.data;
+                // this.$message({
+                //     message: '添加成功',
+                //     type: 'success',
+                //     duration: 1000
+                // });
+                // return
+            });
+
+            
+
+            //这样做差点！！！
+            //this.AddAttr.selectProductAttrValues.push(this.ProductAttrValue);
+            this.AddAttrKey.ProductAttrValue = null;
         },
 
         //显示商品分类

@@ -29,48 +29,6 @@
         <el-card class="box-card">
             <Userechart></Userechart>
         </el-card>
-
-        <!-- <div>
-            <div class="pro-form">
-                <el-form :inline="true"  size="small" ref="productCateFrom">
-                    <el-form-item label="商品分类：">
-                        <el-cascader
-                            placeholder="please selete"
-                            expand-trigger="click"
-                            clearable
-                            v-model="CateId"
-                            :options="productCateOptions"
-                            change-on-select>
-                        </el-cascader>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-date-picker
-                            style="width:203px"
-                            v-model="beginTime2"
-                            type="date"
-                            placeholder="Please select time"
-                            align="right"
-                            format="yyyy-MM-dd 0:0:0"
-                            :picker-options="pickerOptions1">
-                        </el-date-picker>
-                        -
-                        <el-date-picker
-                            v-model="endTime2"
-                            style="width:203px"
-                            type="date"
-                            placeholder="Please select time"
-                            align="right"
-                            format="yyyy-MM-dd 0:0:0"
-                            :picker-options="pickerOptions1">
-                        </el-date-picker>
-                    <el-button type="primary" style="margin-left:10px;" @click="handleSearchList">查询</el-button>
-                    </el-form-item>
-                </el-form> 
-            </div>
-            <el-card class="box-card">
-                <Userechart></Userechart>
-            </el-card>
-        </div> -->
     </div>
 </template>
 
@@ -87,9 +45,11 @@ import moment from 'moment'
 export default{
 
     mounted: function () {
-        this.beginTime1 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
+        this.beginTime1 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
+        //this.beginTime1 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
         this.endTime1 = moment().format('MM-DD-YYYY 00:00:00');
-        this.beginTime2 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
+        this.beginTime2 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
+        //this.beginTime2 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
         this.endTime2 = moment().format('MM-DD-YYYY 00:00:00');
 
         this.handleSearchList();

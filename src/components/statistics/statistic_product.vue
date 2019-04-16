@@ -14,19 +14,34 @@
                             v-model="listQuery.id"
                             :options="productCateOptions"
                             change-on-select>
-                        </el-cascader>
-                        <el-button 
-                            type="primary" 
-                            style="margin-left:10px;" 
-                            @click="handleSearchList"
-                            size="small">
-                            查询
-                        </el-button>
+                        </el-cascader>                        
+                    </el-form-item>
+                    <el-form-item>
+                        <el-date-picker
+                            style="width:203px"
+                            v-model="beginTime1"
+                            type="date"
+                            placeholder="Please select time"
+                            align="right"
+                            format="yyyy-MM-dd 0:0:0"
+                            :picker-options="pickerOptions1">
+                        </el-date-picker>
+                        -
+                        <el-date-picker
+                            v-model="endTime1"
+                            style="width:203px"
+                            type="date"
+                            placeholder="Please select time"
+                            align="right"
+                            format="yyyy-MM-dd 0:0:0"
+                            :picker-options="pickerOptions1">
+                        </el-date-picker>
+                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">查询</el-button>
                     </el-form-item>
                 </el-form> 
             </div>
         </el-card>
-<!--列表 S-->
+<!--列表 S  @selection-change="handleSelectionChange"  -->
         <div class="table-container">
             <el-table ref="productTable"
                     highlight-current-row
@@ -34,7 +49,7 @@
                     :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                     :data="list"
                     style="width: 100%"
-                    @selection-change="handleSelectionChange"  
+                    
                     v-loading="listLoading"
                     fixed
                     show-summary
@@ -75,12 +90,21 @@
 <script>
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
 import {fetchProductList,} from '@/api/statistics'
+import moment from 'moment'
 const defaultListQuery = {
     pageindex: 0,
     pagesize: 20,
     id:null
-};
+}
+
 export default {
+    mounted: function () {
+        this.beginTime1 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
+        //this.beginTime1 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
+        this.endTime1 = moment().format('MM-DD-YYYY 00:00:00');
+
+        this.handleSearchList();
+    },
     created() {
         this.getList();
         this.getProductCateList();
@@ -90,6 +114,38 @@ export default {
         return{
             listQuery: Object.assign({}, defaultListQuery),
             productCateOptions:[],
+            count:null,
+            currentPage:null,
+            //时间
+            pickerOptions1: {
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = moment().subtract(1, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '7天前',
+                    onClick(picker) {
+                        const date = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '30天前',
+                    onClick(picker) {
+                        const date = moment().subtract(30, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
+            beginTime1: '',
+            endTime1: '',
+            
             list:null,
             listLoading:false,
         }
@@ -125,7 +181,7 @@ export default {
             });
         },
 
-        //
+        //统计一个月的销量
         handleSearchList(){
             //this.listLoading=true;
             fetchProductList(this.listQuery.id).then(response => {
@@ -160,6 +216,10 @@ export default {
             });
             return sums;
         },
+
+        currentPage(){},
+        handleSizeChange(){},
+        handleCurrentChange(){},
 
     },
 }
