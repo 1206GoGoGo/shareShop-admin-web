@@ -1,5 +1,16 @@
 import request from '@/utils/request'
 
+
+
+//订单查询：根据///////查询 
+export function fetchProductList(params) { 
+    return request({
+    url:'/member/order/getListSearch',
+    method:'get',
+    params:params
+    })
+}
+
 ////订单查询：根据商品id查询 
 export function fetchListByproductId(params) { 
     return request({

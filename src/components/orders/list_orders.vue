@@ -27,10 +27,10 @@
                 <el-input v-model="listQuery.username" style="width: 203px" class="input-width" placeholder="Login Name" clearable></el-input>
             </el-form-item>
             <el-form-item label="收货人：">
-                <el-input v-model="listQuery.consigneeName" style="width: 203px" class="input-width" placeholder="consignee Name" clearable></el-input>
+                <el-input v-model="listQuery.consignee" style="width: 203px" class="input-width" placeholder="consignee Name" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单状态：">
-                <el-select v-model="listQuery.orderStatus" style="width: 203px" class="input-width" placeholder="All" clearable>
+                <el-select v-model="listQuery.status" style="width: 203px" class="input-width" placeholder="All" clearable>
                     <el-option v-for="item in statusOptions"
                         :key="item.value"
                         :label="item.label"
@@ -43,11 +43,34 @@
                   style="width: 363px"
                   v-model="listQuery.selectTime"
                   type="datetimerange"
-                  range-separator="至"
+                  unlink-panels
+                  range-separator="-"
                   start-placeholder="开始日期"
-                  end-placeholder="结束日期">
+                  end-placeholder="结束日期"
+                  :picker-options="pickerOptions2">
                 </el-date-picker>
             </el-form-item> -->
+            <el-form-item label="查询时间：">
+              <el-date-picker
+                  style="width:203px"
+                  v-model="listQuery.timeBe"
+                  type="date"
+                  placeholder="Please select time"
+                  align="right"
+                  format="MM - dd - yyyy"
+                  :picker-options="pickerOptions1">
+              </el-date-picker>
+              -
+              <el-date-picker
+                  v-model="listQuery.timeEn"
+                  style="width:203px"
+                  type="date"
+                  placeholder="Please select time"
+                  align="right"
+                  format="MM - dd - yyyy"
+                  :picker-options="pickerOptions1">
+              </el-date-picker>
+            </el-form-item>
           </el-form>
         </div>
     </el-card>
@@ -70,7 +93,7 @@
           <template slot-scope="scope">{{scope.row.orderId}}</template>
         </el-table-column>
         <el-table-column label="收货人" width="130" align="center">
-          <template slot-scope="scope">{{scope.row.consigneeName}}</template>
+          <template slot-scope="scope">{{scope.row.consignee}}</template>
         </el-table-column>
         <el-table-column label="订单号" width="180" align="center">
           <template slot-scope="scope">{{scope.row.orderNumber}}</template>
@@ -85,7 +108,7 @@
           <template slot-scope="scope">{{scope.row.paymentMode | typeFormatter}}</template>
         </el-table-column>
         <el-table-column label="订单状态" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.orderStatus | statusFormatter}}</template>
+          <template slot-scope="scope">{{scope.row.status | statusFormatter}}</template>
         </el-table-column>
         <el-table-column  label="操作" width="220" align="center">
           <template slot-scope="scope">
@@ -96,20 +119,20 @@
             <el-button
               size="mini"
               @click="handleCloseOrder(scope.$index, scope.row)"
-              v-show="scope.row.orderStatus===0">关闭订单</el-button><!--待付款-->
+              v-show="scope.row.status===0">关闭订单</el-button><!--待付款-->
             <el-button
               size="mini"
               @click="handleDeliveryOrder(scope.$index, scope.row)"
-              v-show="scope.row.orderStatus===1">订单发货</el-button><!--待发货-->
+              v-show="scope.row.status===1">订单发货</el-button><!--待发货-->
             <el-button
               size="mini"
               @click="handleViewLogistics(scope.$index, scope.row)"  
-              v-show="scope.row.orderStatus===2||scope.row.orderStatus===3">订单跟踪</el-button><!--已发货、已完成-->
+              v-show="scope.row.status===2||scope.row.status===3">订单跟踪</el-button><!--已发货、已完成-->
             <el-button
               size="mini"
               type="danger"
               @click="handleDeleteOrder(scope.$index, scope.row)"
-              v-show="scope.row.orderStatus===4">删除订单</el-button><!--已完成-->
+              v-show="scope.row.status===4">删除订单</el-button><!--已完成-->
           </template>
         </el-table-column>
       </el-table>
@@ -177,17 +200,26 @@
   </div> 
 </template>
 <script>
-import {fetchListByorderNo,fetchListByproductId,fetchListByuserName,fetchListByStatus} from '@/api/orders'
+import {fetchProductList,fetchListByorderNo,fetchListByproductId,fetchListByuserName,fetchListByStatus} from '@/api/orders'
 import {formatDate} from '@/utils/date'
 const defaultListQuery = {
     pageindex: 0,
     pagesize: 20,
-    orderNumber: null,
-    username:null,
-    orderStatus:null,
-    // selectTime:null,
+    orderNumber: '',
+    username:'',
+    status:'',
+    timeBe:"2019-02-01",
+    timeEn:"2019-04-20",
+    // timeBe:'',
+    // timeEn:'',
+    consignee:"",
+
   };
 export default {
+    created() {
+        this.getList();
+    },
+
     data(){
         return{
           listQuery: Object.assign({}, defaultListQuery),
@@ -249,55 +281,33 @@ export default {
               value:'1',
             },
           ],
-          // list:[
-          //   {
-          //     orderId:'1231',
-          //     orderNumber:'2323434',
-          //     consigneeName:'张三张三张三张三张三张三张三张三张三张三张三',
-          //     createTime:'2019-2-2',
-          //     paymentMoney:'2000',
-          //     paymentMode:'',
-          //     orderStatus:0,
-
-          //   },
-          //   {
-          //     orderId:'1231',
-          //     orderNumber:'2323434',
-          //     consigneeName:'张三',
-          //     createTime:'2017-2-2',
-          //     paymentMoney:'2000',
-          //     paymentMode:'1',
-          //     orderStatus:1,
-          //   },
-          //   {
-          //     orderId:'1231',
-          //     orderNumber:'2323434',
-          //     consigneeName:'张三',
-          //     createTime:'2018-2-2',
-          //     paymentMoney:'2000',
-          //     paymentMode:'0',
-          //     orderStatus:2,
-          //   },
-          //   {
-          //     orderId:'1231',
-          //     orderNumber:'2323434',
-          //     consigneeName:'张三',
-          //     createTime:'2015-2-2',
-          //     paymentMoney:'2000',
-          //     paymentMode:'0',
-          //     orderStatus:3,
-          //   },
-          //   {
-          //     orderId:'1231',
-          //     orderNumber:'2323434',
-          //     consigneeName:'张三',
-          //     createTime:'2019-2-2',
-          //     paymentMoney:'2000',
-          //     paymentMode:'1',
-          //     orderStatus:4,
-          //   },
-          // ],
-
+          
+          pickerOptions1: {
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = moment().subtract(1, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '7天前',
+                    onClick(picker) {
+                        const date = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '30天前',
+                    onClick(picker) {
+                        const date = moment().subtract(30, 'days').format('MM-DD-YYYY 00:00:00');
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
           // pickerOptions2: {
           // shortcuts: [{
           //     text: '最近一周',
@@ -364,11 +374,18 @@ export default {
     },
 
     methods:{
+      getList(){
+        fetchProductList(this.listQuery).then(response => {
+            this.listLoading = false;
+            this.list = response.data;
+            // this.total = response.data.total;
+          });
+      },
 
       //获取搜索列表     有问题！！！！！！！！！！！！！
       getSearchList(){
           this.listLoading=true;
-          
+
           //根据订单编号查询订单详情
           // if(this.listQuery)
           // {
@@ -382,11 +399,13 @@ export default {
           // }
 
           //根据用户登录名查询订单详情
-          fetchListByuserName(this.listQuery).then(response => {
-            this.listLoading = false;
-            this.list = response.data;
-            this.total = response.data.total;
-          });
+          // fetchListByuserName(this.listQuery).then(response => {
+          //   this.listLoading = false;
+          //   this.list = response.data;
+          //   this.total = response.data.total;
+          // });
+
+
 
           //根据订单状态查询订单详情
           // fetchListByStatus(this.listQuery).then(response => {
