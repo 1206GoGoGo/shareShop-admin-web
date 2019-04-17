@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-//
+//???????????????
 export function fetchList(parentId,params) {
   return request({
     url:'/pro/category/'+parentId,
@@ -26,12 +26,12 @@ export function fetchSearchingList(id) {
   })
 }
 
-//添加商品分类
-export function createProductCate(data) {
+//---------------------------------添加商品分类-----------------------------------------
+export function AddProductCate(params) {
     return request({
       url:'/productCategory/create',
       method:'post',
-      data:data
+      params:params
     })
   }
 
@@ -56,6 +56,15 @@ export function fetchListChildrenLevel(id) {
   return request({
     url:'/pro/category/getListByParentId?id='+id,
     method:'get',
+  })
+}
+
+//------------------------------------------根据分类名称获取分类列表-------------------------------------
+export function getDetailByName(params) {
+  return request({
+    url:'/pro/category/getCategoryByName',
+    method:'get',
+    params:params,
   })
 }
 

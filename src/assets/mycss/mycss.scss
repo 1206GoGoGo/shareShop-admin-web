@@ -40,6 +40,10 @@ a:-webkit-any-link{
     margin-bottom: 18px;
 }
 
+.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
+    margin-bottom: 10px;
+}
+
 //数据列表距上高度
 .operate-container {
     margin-top: 20px;
@@ -128,4 +132,9 @@ element .style{
 .home-container{
     padding: 20px;
     background-color: #f2f2f2;
+}
+
+.side-icon{
+    font-size: 18px;
+    padding-right:10px;
 }

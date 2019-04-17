@@ -51,7 +51,7 @@ export default{
         this.beginTime2 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
         //this.beginTime2 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
         this.endTime2 = moment().format('MM-DD-YYYY 00:00:00');
-
+        
         this.handleSearchList();
     },
 

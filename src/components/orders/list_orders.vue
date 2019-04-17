@@ -52,7 +52,7 @@
             </el-form-item> -->
             <el-form-item label="查询时间：">
               <el-date-picker
-                  style="width:203px"
+                  style="width:163px"
                   v-model="listQuery.timeBe"
                   type="date"
                   placeholder="Please select time"
@@ -63,7 +63,7 @@
               -
               <el-date-picker
                   v-model="listQuery.timeEn"
-                  style="width:203px"
+                  style="width:163px"
                   type="date"
                   placeholder="Please select time"
                   align="right"

@@ -37,10 +37,11 @@
 
         <!--添加-->
         <el-card class="operate-container" shadow="never">
-            <i class="el-icon-tickets"></i>
-            <span>属性列表</span>
-            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrValue()">添加属性值</el-button>
-            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrKey()">添加商品属性</el-button>
+            <!-- <svg-icon icon-class="Add" class="side-icon"></svg-icon> -->
+            <i class="el-icon-circle-plus-outline"></i>
+            <span>添加商品属性</span>
+            <el-button  size="mini" type="primary" class="btn-add" @click="handleAddAttrValue()">添加属性值</el-button>
+            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrKey()">添加属性</el-button>
         </el-card>
 
         <!-- v-loading="listLoading"  @selection-change="handleSelectionChange"-->
@@ -143,7 +144,7 @@
             :visible.sync="dialogAddAttrValueVisible"  width="35%" height="100%">
             <el-form :model="AddAttrValue" :inline="true" size="small"
                 ref="DetailForm" label-width="100px">
-                <el-form-item label="商品分类：" >
+                <!-- <el-form-item label="商品分类：" >
                     <el-cascader
                         style="width:203px"
                         placeholder="please selete"
@@ -153,7 +154,7 @@
                         :options="productCateOptions"
                         change-on-select>
                     </el-cascader>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="属性名称：">
                     <el-select v-model="AddAttrValue.attrName" style="width: 203px" class="input-width" placeholder="All" clearable>
                         <el-option v-for="item in statusOptions"
