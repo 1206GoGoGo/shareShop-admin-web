@@ -26,12 +26,14 @@ export function fetchSearchingList(id) {
   })
 }
 
+//注意：添加时用post方法，且传的参数是data!
+
 //---------------------------------添加商品分类-----------------------------------------
-export function AddProductCate(params) {
+export function AddProductCate(data) {
     return request({
-      url:'/productCategory/create',
+      url:'/pro/category/add',
       method:'post',
-      params:params
+      data:data
     })
   }
 

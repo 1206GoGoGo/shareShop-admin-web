@@ -40,6 +40,7 @@
                             placeholder="please selete"
                             expand-trigger="click"
                             clearable
+                           
                             v-model="productCate.parentId"
                             :options="productCateOptions"
                             change-on-select>
@@ -183,7 +184,7 @@ const defaultAddProductCate = {
     //分类名称
     categoryName:null,
     //分类父分类id
-    parentId:4,
+    parentId:0,
     //本分级别
     //categoryLevel:null,
     //是否显示在导航栏
@@ -345,6 +346,11 @@ export default {
                     else{
                         this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
                     }
+                }
+                if(this.label=="所属分类")
+                {
+                    this.productCateOptions.unshift({label:'无上级分类', value:0 });
+                    //this.productCateOptions.unshift({categoryId: 0, categoryName: '无上级分类'});
                 }
             });
         },
