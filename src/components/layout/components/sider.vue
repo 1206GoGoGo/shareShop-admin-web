@@ -51,7 +51,7 @@
         <el-submenu index="4">
             <template  slot="title"><svg-icon icon-class="couponside" class="side-icon"></svg-icon>Coupon</template>  
             <el-menu-item index="/coupon/list_coupon">优惠券列表</el-menu-item><!--包括数量、使用条件、有效期……-->
-            <el-menu-item index="/coupon/info_coupon">优惠券添加</el-menu-item><!--使用情况-->
+            <el-menu-item index="/coupon/add_coupon">优惠券添加</el-menu-item><!--使用情况-->
         </el-submenu>
 
         <el-submenu index="5">

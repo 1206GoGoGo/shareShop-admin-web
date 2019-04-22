@@ -13,8 +13,8 @@ module.exports = {
     proxyTable: {
       // target: 'https://10.120.203.64:8443/', //陈澄IP
       // target: 'http://10.141.1.206:8443/shareshopDM/',//服务器IP  
-      target: 'http://10.120.203.1:8080/shareshopDM/', //王启论IP
-      // target: 'https://112.74.165.55:8443/shareshopDM/',  //阿里云
+      //target: 'http://10.120.203.1:8080/shareshopDM/', //王启论IP
+      target: 'https://112.74.165.55:8443/shareshopDM/',  //阿里云
       changeOrigin: true,
       // pathRewrite: {  
       //     '^/api': '/', //这里理解成用‘/api’代替target里面的地址，后面组件中我们掉接口时直接用api代替 比如我要调用'http://m.kugou.com/rank/info/?rankid=23784&page=1&json=true'，直接写‘/api/rank/info/?rankid=23784&page=1&json=true’即可  
@@ -41,12 +41,14 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+    // devtool: 'cheap-module-eval-source-map',
+    devtool: 'source-map',  //调试工具让改的。
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
+    // cacheBusting: true,  
+    cacheBusting: false,  //调试工具让改的  修改这两项是为了vscode中的断点能够正确定位到行
 
     cssSourceMap: true
   },
@@ -71,7 +73,8 @@ module.exports = {
 
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+    devtool: 'source-map',  //调试工具让改的。 修改这两项是为了vscode中的断点能够正确定位到行
+    //devtool: '#source-map',  
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

@@ -79,7 +79,8 @@
       <el-button
         class="btn-add"
         @click="handleAddProduct()"
-        size="mini">
+        size="mini"
+        type="primary">
         添加
       </el-button>
     </el-card>
@@ -93,22 +94,22 @@
           v-loading="listLoading"
           border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="商品编号" width="100" align="center">
+        <el-table-column label="商品编号" width="140" align="center">
           <template slot-scope="scope">{{scope.row.productCode}}</template>
         </el-table-column>
-        <el-table-column label="商品名称" align="center">
+        <el-table-column label="商品名称" width="200" align="center">
           <template slot-scope="scope">
             <p>{{scope.row.productName}}</p>
             <!-- <p>品牌：{{scope.row.brandName}}</p> -->
           </template>
         </el-table-column>
-        <el-table-column label="商品图片" width="120" align="center">
+        <el-table-column label="商品图片" width="200" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
         </el-table-column>
-        <el-table-column label="价格" width="120" align="center">
+        <el-table-column label="价格" width="100" align="center">
           <template slot-scope="scope">
-            <p>价格：￥{{scope.row.price}}</p>
-            <!-- <p>货号：{{scope.row.productSn}}</p> -->
+            <p>价格：${{scope.row.price}}</p>
+            <p>货号：{{scope.row.productSn}}</p>
           </template>
         </el-table-column>
         <el-table-column label="标签" width="140" align="center">
@@ -148,6 +149,12 @@
           </template>
         </el-table-column>
         <el-table-column label="销量" sortable width="100" align="center">
+          <template slot-scope="scope">{{scope.row.sale}}</template>
+        </el-table-column>
+        <el-table-column label="被收藏次数" sortable width="120" align="center">
+          <template slot-scope="scope">{{scope.row.sale}}</template>
+        </el-table-column>
+        <el-table-column label="加购物车次数" sortable width="130" align="center">
           <template slot-scope="scope">{{scope.row.sale}}</template>
         </el-table-column>
         <el-table-column label="审核状态" width="100" align="center">

@@ -42,6 +42,7 @@
     </el-card>
     <div class="table-container">
       <el-table ref="couponTable"
+                size="medium"
                 highlight-current-row
                 :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                 :data="list"
@@ -194,15 +195,6 @@
           return '指定商品';
         }
       },
-      // formatPlatform(platform){
-      //   if(platform===1){
-      //     return '移动平台';
-      //   }else if(platform===2){
-      //     return 'PC平台';
-      //   }else{
-      //     return '全平台';
-      //   }
-      // },
       formatDate(time){
         if(time==null||time===''){
           return 'N/A';
@@ -241,10 +233,11 @@
         this.getList();
       },
       handleAdd(){
-        this.$router.push({path: '/Coupon/info_Coupon'})
+        //this.$router.push({path: '/Coupon/info_Coupon'})  add_coupon , query: {id: row.id}
+        this.$router.push({path: '/Coupon/add_coupon'})
       },
       handleView(index, row) {
-        this.$router.push({path: '/sms/couponHistory', query: {id: row.id}})
+        this.$router.push({path: '/Coupon/info_coupon'})
       },
       handleUpdate(index, row) {
         this.$router.push({path: '/sms/updateCoupon', query: {id: row.id}})

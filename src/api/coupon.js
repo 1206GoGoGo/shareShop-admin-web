@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+
+//---------------------------------获取所有优惠券-----------------------------------------
 export function fetchList(params) {
   return request({
     url:'/pro/coupon/getList',
@@ -7,6 +9,8 @@ export function fetchList(params) {
   })
 }
 
+//---------------------------------添加优惠券--------------------------------------------
+//没改!
 export function createCoupon(data) {
   return request({
     url:'/coupon/create',

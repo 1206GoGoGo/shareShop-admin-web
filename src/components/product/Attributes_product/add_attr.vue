@@ -180,7 +180,8 @@
 
 <script>
 // import {fetchList,createProductCate,getProductCate} from '@/api/productCate';
-import {fetchListLevel,fetchListChildrenLevel,fetchAttrList,fetchSearchingList} from '@/api/productCate'
+import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
+import {fetchAttrList} from '@/api/productAttr'
 import {fetchListBycategoryId} from '@/api/statistics'
 import {formatDate} from '@/utils/date';
 const defaultProductCate = {

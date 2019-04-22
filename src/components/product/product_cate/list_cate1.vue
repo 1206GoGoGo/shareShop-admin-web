@@ -381,6 +381,39 @@ export default {
             });
         },
 
+
+        //显示商品分类
+        // getProductCateList1()
+        // {
+        //     fetchListLevel().then(response => {                
+        //         let list = response.data;
+        //         for (let i = 0; i < list.length; i++) {
+        //             // alert(list[i])  4个对象
+        //             //这里有问题！！！！！！！！！！！！list[i] != null && 
+        //             if(list[i]!= null && list[i].length > 1){
+        //                 fetchListChildrenLevel(list[i].categoryId).then(response => {
+        //                     //注意级联！！！
+        //                     list[i].children = response.data;
+        //                     let children = [];
+        //                     if (list[i].children != null && list[i].children.length > 0) {
+        //                         for (let j = 0; j < list[i].children.length; j++) {
+        //                             children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+        //                         }
+        //                     }
+        //                     this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId, children: children});
+        //                 })    
+        //             }
+        //             else
+        //             {
+        //                 //let children=null;
+        //                 this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+        //             }
+        //         }
+        //         this.productCateOptions.unshift({label:'无上级分类', value:0 });
+        //     });
+        // },
+
+
         //显示商品分类
         resetcategoryId(){
             if (this.$route.query.categoryId != null) {

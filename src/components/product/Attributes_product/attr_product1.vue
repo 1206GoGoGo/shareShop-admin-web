@@ -1,28 +1,50 @@
 <template>
     <div class="app-container">
-<!--条件查询/添加、按钮 S--------------------------------------------------------------------------->
-        <el-card shadow="never">
-            <el-form :inline="true" size="small" label-width="100px" :model="productCate" :rules="rules" ref="productCateFrom" style="margin-bottom:0px;">
-                <el-form-item label="商品分类：">
-                    <!-- :props="props" -->
-                    <el-cascader
-                        
-                        style="width:203px"
-                        placeholder="please selete"
-                        expand-trigger="click"
-                        clearable
-                        v-model="productCate.id"
-                        :options="productCateOptions"
-                        :show-all-levels="false">
-                    </el-cascader>
-                </el-form-item>
-                <el-button @click="handleSearchList('productCateFrom')" size="small" type="primary">Search</el-button>
-                <el-button @click="refreshList()" size="small" type="primary">Refresh</el-button>  
-                <el-button @click="handleAddAttrKey()" size="small" type="primary" class="btn-add">添加属性</el-button>
-                <el-button @click="handleAddAttrValue()"  size="small" type="primary" class="btn-add" >添加属性值</el-button>
-            </el-form> 
+        <el-card shadow="never" style="background:#f2f2f2;">
+            <div>
+                <i class="el-icon-search"></i>
+                <span>Conditional Search</span>
+                <el-button
+                    style="float: right"
+                    @click="handleSearchList('productCateFrom')"
+                    type="primary"
+                    size="small">
+                    Search
+                </el-button>
+                <el-button
+                    style="float: right; margin-right: 15px"
+                    @click="handleResetSearch()"
+                    size="small">
+                    Reset
+                </el-button>
+            </div>
+            <div style="margin-top: 10px">
+                <el-form :inline="true"  size="small" label-width="140px" :model="productCate" :rules="rules" ref="productCateFrom">
+                    <el-form-item label="商品分类：">
+                        <!-- :props="props" -->
+                        <el-cascader
+                            
+                            style="width:203px"
+                            placeholder="please selete"
+                            expand-trigger="click"
+                            clearable
+                            v-model="productCate.id"
+                            :options="productCateOptions"
+                            :show-all-levels="false">
+                        </el-cascader>
+                    </el-form-item>
+                </el-form> 
+            </div>
         </el-card>
-<!--添加、按钮 E--------------------------------------------------------------------------->
+
+        <!--添加-->
+        <el-card class="operate-container" shadow="never">
+            <i class="el-icon-circle-plus-outline"></i>
+            <span>添加商品属性</span>
+            <el-button  size="mini" type="primary" class="btn-add" @click="handleAddAttrValue()">添加属性值</el-button>
+            <el-button style="margin-right:20px;" size="mini" type="primary" class="btn-add" @click="handleAddAttrKey()">添加属性</el-button>
+        </el-card>
+
         <!-- v-loading="listLoading"  @selection-change="handleSelectionChange"-->
         <div class="table-container">
             <el-table ref="productTable"
@@ -36,6 +58,9 @@
                 <el-table-column label="编号" width="60" align="center">
                     <template slot-scope="scope">{{scope.row.keyId}}</template>
                 </el-table-column>
+                <!-- <el-table-column label="商品分类名称" align="center">
+                    <template slot-scope="scope">{{scope.row.categoryName}}</template>
+                </el-table-column> -->
                 <el-table-column label="属性名称" width="160" align="center">
                     <template slot-scope="scope"><el-tag type="primary">{{scope.row.attrName}}</el-tag></template>
                 </el-table-column>
@@ -123,6 +148,17 @@
             :visible.sync="dialogAddAttrValueVisible"  width="35%" height="100%">
             <el-form :model="AddAttrValue" :inline="true" size="small"
                 ref="DetailForm" label-width="100px">
+                <!-- <el-form-item label="商品分类：" >
+                    <el-cascader
+                        style="width:203px"
+                        placeholder="please selete"
+                        expand-trigger="click"
+                        clearable
+                        v-model="AddAttrValue.categoryId"
+                        :options="productCateOptions"
+                        change-on-select>
+                    </el-cascader>
+                </el-form-item> -->
                 <el-form-item label="属性名称：">
                     <el-select v-model="AddAttrValue.attrName" style="width: 203px" class="input-width" placeholder="All" clearable>
                         <el-option v-for="item in AttrNameOptions"
@@ -151,8 +187,6 @@ import {fetchListLevel,fetchListChildrenLevel,getCategoryById} from '@/api/produ
 import {fetchAttrList,AddAttributeValue,AddAttributeKey,fetchKeyByCategoryID,fetchValueByKeyID,fetchAttrNameList} from '@/api/productAttr'
 import {fetchListBycategoryId} from '@/api/statistics'
 import {formatDate} from '@/utils/date';
-
-//商品分类
 const defaultProductCate = {
     pageindex:0,
     pagesize:20,
@@ -195,6 +229,7 @@ const defaultAddAttrValue = {
 };
 
 export default {
+
     data(){
         return{
             dialogAddAttrKeyVisible:false,
@@ -213,7 +248,8 @@ export default {
             rules: {
             attrName: [
                 {required: true, message: '请输入分类名称', trigger: 'blur'},
-                {min: 2, max: 14, message: '长度在 2 到 14 个字符', trigger: 'blur'}]  
+                {min: 2, max: 14, message: '长度在 2 到 14 个字符', trigger: 'blur'}
+            ]
             },
             list:null,
             //listLoading: true,
@@ -304,6 +340,8 @@ export default {
         
         handleConfirm(){},
 
+        handleSearchList(){},
+
         //初始化 显示列表内容
         getAttrKeyList(){
             this.listLoading = true;
@@ -319,6 +357,8 @@ export default {
 
         },
 
+        
+
         //显示商品分类 完整版
         getProductCateList()
         {
@@ -332,31 +372,22 @@ export default {
                         list[i].children = response.data;
                         let children = [];
                         if (list[i].children != null && list[i].children.length > 0) {
-                            for (let j = 0; j < list[i].children.length; j++) 
-                            {
+                            for (let j = 0; j < list[i].children.length; j++) {
                                 children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
-                            }  
+                            }
+                            let currentName=list[i].categoryName;
+                            //比较:如果有分类名称相同的,删除上面的父分类
+                            for(let k=0; k<list.length; k++)
+                            {
+                                if(list[k].categoryName==currentName)
+                                this.productCateOptions.splice(k,1);
+                            }
+                            //最后添加有子分类的全部项
+                            this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});
                         }
-                        let currentName=list[i].categoryName;
-                        //比较:如果有分类名称相同的,删除上面的父分类
-                        for(let k= 0; k < list.length; k++)
-                        {
-                            if(list[k].categoryName==currentName)
-                            this.productCateOptions.splice(k,1);
-                        }
-                        //最后添加有子分类的全部项
-                        this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});   
                     })
-                    
-                    
                 }
             });
-        },
-
-        //刷新
-        refreshList(){
-            this.productCate = Object.assign({}, defaultProductCate);
-            this.getList();
         },
 
         //查询商品属性

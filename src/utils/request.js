@@ -17,8 +17,8 @@ service.interceptors.request.use(config => {
   return config
 }, error => {
   // Do something with request error
-  console.log(error) // for debug
-  Promise.reject(error)
+  // console.log(error) // for debug
+  return Promise.reject(error)
 })
 
 // respone拦截器
@@ -47,6 +47,72 @@ service.interceptors.response.use(
           })
         })
       }
+      
+      //400
+      if (res.code === 400) {
+        Message({
+          message: res.message,
+          type: 'warning',
+          message:'没有查到相关信息',
+          duration: 3 * 1000
+        })
+        return;
+      }
+
+      //404 查询数据找不到
+      if (res.code === 404) {
+        Message({
+          message: res.message,
+          type: 'error',
+          message:'查询数据找不到',
+          duration: 3 * 1000
+        })
+        return;
+      }
+
+      //403
+      if (res.code === 403) {
+        Message({
+          message: res.message,
+          type: 'warning',
+          message:'非法访问哦',
+          duration: 3 * 1000
+        })
+        return;
+      }
+
+      //406
+      if (res.code === 406) {
+        Message({
+          message: res.message,
+          type: 'warning',
+          message:'查询的参数不正确',
+          duration: 3 * 1000
+        })
+        return;
+      }
+      //408
+      if (res.code === 408) {
+        Message({
+          message: res.message,
+          type: 'warning',
+          message:'访问超时啦',
+          duration: 3 * 1000
+        })
+        return;
+      }
+
+      //500 访问后台的参数不正确
+      if (res.code === 500) {
+        Message({
+          message: res.message,
+          type: 'warning',
+          message:'后台出了点小问题',
+          duration: 3 * 1000
+        })
+        return;
+      }
+
       return Promise.reject('error')
     } else {
       return response.data

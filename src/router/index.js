@@ -41,6 +41,8 @@ const return_money = r => require.ensure([], () => r(require('@/components/order
 //优惠券
 const list_coupon = r => require.ensure([], () => r(require('@/components/coupon/list_coupon')), 'list_coupon');
 const info_coupon = r => require.ensure([], () => r(require('@/components/coupon/info_coupon')), 'info_coupon');
+const add_coupon = r => require.ensure([], () => r(require('@/components/coupon/add_coupon')), 'add_coupon');
+
 //评价
 const view_user = r => require.ensure([], () => r(require('@/components/news/view_user')), 'view_user');
 const comment_user = r => require.ensure([], () => r(require('@/components/news/comment_user')), 'comment_user');
@@ -251,6 +253,11 @@ const routes = [
 					path: '/coupon/info_coupon',
 					component: info_coupon,
 					meta: ['Coupon','Information'],
+				},
+				{
+					path: '/coupon/add_coupon',
+					component: add_coupon,
+					meta: ['Coupon','Add'],
 				},
 			]
 		},

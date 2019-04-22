@@ -1,5 +1,5 @@
 <template> 
-  <el-card class="form-container" shadow="never">
+  <el-card class="form-container" shadow="never" style="background:#f2f2f2;">
     <el-form :model="coupon"
              :rules="rules"
              ref="couponFrom"
@@ -18,12 +18,27 @@
       <el-form-item label="优惠券名称：" prop="name">
         <el-input v-model="coupon.name" class="input-width"></el-input>
       </el-form-item>
+      <el-form-item label="适用平台：">
+        <el-select v-model="coupon.platform">
+          <el-option
+            v-for="item in platformOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="总发行量：" prop="publishCount">
         <el-input v-model.number="coupon.publishCount" placeholder="只能输入正整数" class="input-width"></el-input>
       </el-form-item>
       <el-form-item label="面额：" prop="amount">
         <el-input v-model.number="coupon.amount" placeholder="面值只能是数值，限2位小数" class="input-width">
           <template slot="append">元</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="每人限领：">
+        <el-input v-model="coupon.perLimit" placeholder="只能输入正整数" class="input-width">
+          <template slot="append">张</template>
         </el-input>
       </el-form-item>
       <el-form-item label="使用门槛：" prop="minPoint">
@@ -176,7 +191,7 @@
     }
   ];
   export default {
-    name: 'detail_coupon',
+    name: 'CouponDetail',
     props: {
       isEdit: {
         type: Boolean,
@@ -353,5 +368,3 @@
     width: 60%;
   }
 </style>
-
-

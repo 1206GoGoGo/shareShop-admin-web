@@ -35,7 +35,7 @@
   import productAttr_detail from './productAttr_detail';
   import ProductSale_detail from './ProductSale_detail';
   
-//   import {createProduct,getProduct,updateProduct} from '@/api/product';
+//import {createProduct,getProduct,updateProduct} from '@/api/product';
 
 const defaultProductParam = {
     // albumPics: '',

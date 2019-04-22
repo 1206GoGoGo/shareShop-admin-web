@@ -9,23 +9,6 @@ export function fetchList(parentId,params) {
   })
 }
 
-//--------------------------------查询商品属性（无条件）-----------------------------------------
-export function fetchAttrList(params) {
-  return request({
-    url:'/pro/attribute/getProductAttributeKeyList',
-    method:'get',
-    params:params
-  })
-}
-
-//--------------------------------根据条件查询商品属性-----------------------------------------
-export function fetchSearchingList(id) {
-  return request({
-    url:'/pro/attribute/getProductAttributeKeyByCategoryID?id='+id,
-    method:'get',
-  })
-}
-
 //注意：添加时用post方法，且传的参数是data!
 
 //---------------------------------添加商品分类-----------------------------------------
@@ -37,10 +20,10 @@ export function AddProductCate(data) {
     })
   }
 
-//接口未写好   查看信息
+//-------------------------------------查看信息-------------------------------------------
 export function getProductCate(id) {
   return request({
-    url:'/productCategory/'+id,
+    url:'/pro/category/getCategoryById?id='+id,
     method:'get',
   })
 }
@@ -70,6 +53,15 @@ export function getDetailByName(params) {
   })
 }
 
+//-----------------------------------------根据商品ID获取商品信息-----------------------------
+export function getCategoryById(id) {
+  return request({
+    url:'/pro/category/getCategoryById?id='+id,
+    method:'get',
+    //params:params,
+  })
+}
+
 //删除
 export function deleteProductCate(id) {
   return request({
@@ -78,7 +70,7 @@ export function deleteProductCate(id) {
   })
 }
 
-
+//？？？？？？？？？？？？？？？？
 export function fetchListWithChildren() {
   return request({
     url:'/productCategory/list/withChildren',
