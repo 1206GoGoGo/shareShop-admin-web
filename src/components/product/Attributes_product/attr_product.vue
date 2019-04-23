@@ -204,6 +204,7 @@ export default {
             // props:{
             //     label:null,
             // },
+            z:0,
             valueList:null,
             AttrNameOptions:[],
             productCate: Object.assign({}, defaultProductCate),
@@ -319,36 +320,52 @@ export default {
 
         },
 
-        //显示商品分类 完整版
+        //显示商品分类 
         getProductCateList()
         {
             fetchListLevel().then(response => {                
                 let list = response.data;
-                for (let i = 0; i < list.length; i++) {
-                    //不管有没有子级别先列出来
-                    this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+                for (let i = 0; i < list.length; i++) { 
+                    // if (list[i].children != null && list[i].children.length > 0) {                                                                                          []                     
                     fetchListChildrenLevel(list[i].categoryId).then(response => {
                         //注意级联！！！
                         list[i].children = response.data;
-                        let children = [];
-                        if (list[i].children != null && list[i].children.length > 0) {
+                        // alert(list[i].label);
+                        // if (list[i].children != null && list[i].children.length > 0) {
+                            let children = [];
                             for (let j = 0; j < list[i].children.length; j++) 
                             {
                                 children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+                                
                             }  
-                        }
-                        let currentName=list[i].categoryName;
-                        //比较:如果有分类名称相同的,删除上面的父分类
-                        for(let k= 0; k < list.length; k++)
-                        {
-                            if(list[k].categoryName==currentName)
-                            this.productCateOptions.splice(k,1);
-                        }
+                            this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId, children: children}); 
+                        // }
+                        // else
+                        // {
+                        //     this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId}); 
+                        // }
                         //最后添加有子分类的全部项
-                        this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});   
+                          
+                    }).catch(function(e){
+                        this.$message({
+                        message: '406',
+                        type: 'warning',
+                        duration: 1000
+                        });
+                        return
                     })
-                    
-                    
+                // }else
+                    // if (list[i].children == null || list[i].children.length == 0) {
+                    //     this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+                    // }
+                    // let currentName=list[i].categoryName;
+
+                    // for(let k= 0; k < list.length; k++)
+                    // {
+                    //     if(list[k].categoryName != currentName)
+                    //     //this.productCateOptions.splice(k,1);
+                    //     this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+                    // }
                 }
             });
         },

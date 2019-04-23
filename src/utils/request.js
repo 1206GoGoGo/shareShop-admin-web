@@ -34,6 +34,12 @@ service.interceptors.response.use(
         type: 'error',
         duration: 3 * 1000
       })
+    // if (res.code === 200) {
+    //   Message({
+    //     message: res.message,
+    //     type: 'success',
+    //     duration: 3 * 1000
+    //   })
 
       // 401:未登录;
       if (res.code === 401||res.code === 403) {
@@ -86,7 +92,7 @@ service.interceptors.response.use(
         Message({
           message: res.message,
           type: 'warning',
-          message:'查询的参数不正确',
+          message:'请求参数不正确',
           duration: 3 * 1000
         })
         return;
@@ -114,7 +120,8 @@ service.interceptors.response.use(
       }
 
       return Promise.reject('error')
-    } else {
+    } 
+    else {
       return response.data
     }
   },

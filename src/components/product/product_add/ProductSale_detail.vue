@@ -1,22 +1,6 @@
 <template>
   <div style="margin-top: 50px">
     <el-form :model="value" ref="productSaleForm" label-width="120px" style="width: 600px" size="small">
-      <!-- <el-form-item label="赠送积分：">
-        <el-input v-model="value.giftPoint"></el-input>
-      </el-form-item>
-      <el-form-item label="赠送成长值：">
-        <el-input v-model="value.giftGrowth"></el-input>
-      </el-form-item>
-      <el-form-item label="积分购买限制：">
-        <el-input v-model="value.usePointLimit"></el-input>
-      </el-form-item>
-      <el-form-item label="预告商品：">
-        <el-switch
-          v-model="value.previewStatus"
-          :active-value="1"
-          :inactive-value="0">
-        </el-switch>
-      </el-form-item> -->
       <el-form-item label="商品上架：">
         <el-switch
           v-model="value.publishStatus"

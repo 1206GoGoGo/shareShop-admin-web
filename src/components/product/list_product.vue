@@ -5,29 +5,34 @@
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
         <el-button
+          style="float:right;"
+          @click="handleAddProduct()"
+          size="small"
+          type="primary">
+          添加
+        </el-button>
+        <el-button
+          style="float: right;margin-right: 10px"
+          @click="handleResetSearch()"
+          type="primary"
+          size="small">
+          重置
+        </el-button>
+        <el-button
           style="float: right"
           @click="handleSearchList()"
           type="primary"
           size="small">
-          查询结果
-        </el-button>
-        <el-button
-          style="float: right;margin-right: 15px"
-          @click="handleResetSearch()"
-          size="small">
-          重置
+          查询
         </el-button>
       </div>
       <div style="margin-top: 15px">
-        <!-- :model="listQuery" -->
-        <el-form :inline="true"  size="small" label-width="140px">
+        <el-form :inline="true" :model="listQuery" size="small" label-width="120px">
           <el-form-item label="商品名称：">
-            <!-- v-model="listQuery.productName" -->
-            <el-input style="width: 203px"  placeholder="商品名称"></el-input>
+            <el-input  v-model="listQuery.productName" style="width: 203px" placeholder="商品名称"></el-input>
           </el-form-item>
           <el-form-item label="商品编号：">
-            <!-- v-model="listQuery.productCode" -->
-            <el-input style="width: 203px"  placeholder="商品编号"></el-input>
+            <el-input v-model="listQuery.productCode" style="width: 203px"  placeholder="商品编号"></el-input>
           </el-form-item>
           <!-- <el-form-item label="商品品牌：">
             <el-select v-model="listQuery.brandId" placeholder="请选择品牌" clearable>
@@ -40,8 +45,7 @@
             </el-select>
           </el-form-item> -->
           <el-form-item label="上架状态：">
-            <!-- v-model="listQuery.publishStatus" -->
-            <el-select  style="width:203px" placeholder="全部" clearable>
+            <el-select v-model="listQuery.publishStatus" style="width:203px" placeholder="全部" clearable>
               <el-option
                 v-for="item in publishStatusOptions"
                 :key="item.value"
@@ -51,8 +55,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="审核状态：">
-            <!-- v-model="listQuery.auditStatus" -->
-            <el-select  style="width:203px" placeholder="全部" clearable>
+            <el-select v-model="listQuery.auditStatus" style="width:203px" placeholder="全部" clearable>
               <el-option
                 v-for="item in verifyStatusOptions"
                 :key="item.value"
@@ -62,35 +65,26 @@
             </el-select>
           </el-form-item>
           <el-form-item label="商品分类：">
-            <!-- v-model="selectProductCateValue" -->
-            <el-cascader
-              clearable
-              style="width:203px"
-              
-              :options="productCateOptions">
-            </el-cascader>
+              <el-cascader
+                  style="width:203px"
+                  placeholder="please selete"
+                  expand-trigger="click"
+                  clearable
+                  v-model="listQuery.id"
+                  :options="productCateOptions"
+                  :show-all-levels="false">
+              </el-cascader>
           </el-form-item>
         </el-form>
       </div>
     </el-card>
-    <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
-      <el-button
-        class="btn-add"
-        @click="handleAddProduct()"
-        size="mini"
-        type="primary">
-        添加
-      </el-button>
-    </el-card>
+    <!-- @selection-change="handleSelectionChange" -->
     <div class="table-container">
       <el-table ref="productTable"
           highlight-current-row
           :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
           :data="list"
-          style="width: 100%"
-          @selection-change="handleSelectionChange"
+          
           v-loading="listLoading"
           border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
@@ -106,7 +100,7 @@
         <el-table-column label="商品图片" width="200" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
         </el-table-column>
-        <el-table-column label="价格" width="100" align="center">
+        <el-table-column label="价格" width="160" align="center">
           <template slot-scope="scope">
             <p>价格：${{scope.row.price}}</p>
             <p>货号：{{scope.row.productSn}}</p>
@@ -159,7 +153,8 @@
         </el-table-column>
         <el-table-column label="审核状态" width="100" align="center">
           <template slot-scope="scope">
-            <p>{{scope.row.auditStatus | auditStatusFilter}}</p>
+            <p>{{scope.row.auditStatus}}</p>
+            <!-- <p>{{scope.row.auditStatus | auditStatusFilter}}</p> -->
             <p>
               <el-button
                 type="text"
@@ -290,25 +285,58 @@
 </template>
 
 <script>
-
-// const defaultListQuery = {
-//     // keyword: null,
-//     pageNum: 1,
-//     pageSize: 5,
-//     productName:null, //商品名称
-//     publishStatus: null,  //上下架状态
-//     auditStatus: null,  //审核状态
-//     productCode: null,  //商品编号
-//     // sale:null,
-//     // pic:null,
-//     // price:null,
-//     // productCategoryId: null,
-//     // brandId: null
-//   };
+import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
+const defaultListQuery = {
+    // keyword: null,
+    pageNum: 1,
+    pageSize: 5,
+    productName:null, //商品名称
+    publishStatus: null,  //上下架状态
+    auditStatus: null,  //审核状态
+    productCode: null,  //商品编号
+    // sale:null,
+    // pic:null,
+    // price:null,
+    // productCategoryId: null,
+    // brandId: null
+  };
 
 export default {
-    data:{
-        // listQuery: Object.assign({}, defaultListQuery),
+    data(){
+      return{
+        productCateOptions:[],
+        listQuery: Object.assign({}, defaultListQuery),
+        operateType:null,
+        publishStatusOptions:[
+          {
+            label:"上架",
+            value:0
+          },
+          {
+            label:"下架",
+            value:1
+          }
+        ],
+        verifyStatusOptions:[
+        {
+          label:"已通过",
+          value:0
+        },
+        {
+          label:"未通过",
+          value:1
+        }
+        ],
+        operates:[
+          {
+            label:'全选',
+            value:0
+          },
+          {
+            label:'全部更改',
+            value:1
+          }
+        ],
         list: [
           {
             productName:'帽子',
@@ -318,12 +346,19 @@ export default {
             pic:'无',
             price:'123',
             sale:1232,
+            productSn:212322
           }
         ],
         // total: null,
-        // listLoading: true,
+        listLoading: false,
         selectProductCateValue: null,
+      }
     },
+    
+    created(){
+        this.getProductCateList();
+    },
+
     watch: {
       selectProductCateValue: function (newValue) {
         if (newValue != null && newValue.length == 2) {
@@ -340,6 +375,41 @@ export default {
         this.selectProductCateValue = [];
         this.listQuery = Object.assign({}, defaultListQuery);
       },
+
+      //显示商品分类 完整版
+      getProductCateList()
+      {
+          fetchListLevel().then(response => {                
+              let list = response.data;
+              for (let i = 0; i < list.length; i++) {
+                  //不管有没有子级别先列出来
+                  this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+                  fetchListChildrenLevel(list[i].categoryId).then(response => {
+                      //注意级联！！！
+                      list[i].children = response.data;
+                      let children = [];
+                      if (list[i].children != null && list[i].children.length > 0) {
+                          for (let j = 0; j < list[i].children.length; j++) 
+                          {
+                              children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+                          }  
+                      }
+                      let currentName=list[i].categoryName;
+                      //比较:如果有分类名称相同的,删除上面的父分类
+                      for(let k= 0; k < list.length; k++)
+                      {
+                          if(list[k].categoryName==currentName)
+                          this.productCateOptions.splice(k,1);
+                      }
+                      //最后添加有子分类的全部项
+                      this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});   
+                  })
+                  
+                  
+              }
+          });
+      },
+
       handleAddProduct(){
         this.$router.push({path: '/product/add_product'})
       },

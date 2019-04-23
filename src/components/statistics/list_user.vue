@@ -79,7 +79,7 @@ export default{
     data(){
         return{
             productCateOptions:[],
-            CateId:null,
+            CateId:0,
             //时间
             pickerOptions1: {
                 shortcuts: [{
