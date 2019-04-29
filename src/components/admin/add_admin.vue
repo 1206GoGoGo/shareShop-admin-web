@@ -11,9 +11,9 @@
             </div>
         </el-card>
 <!--添加须知 E-->      
-<!--添加管理员部分 S-->
+<!--添加管理员部分 S  inline-message-->
         <div class="table-container">
-            <el-form :inline="true" :model="AddManagerForm" status-icon :rules="Vrules" ref="AddManagerForm" label-width="100px" >
+            <el-form :inline="true"  :model="AddManagerForm" status-icon :rules="Vrules" ref="AddManagerForm" label-width="100px" >
                 <el-form-item label="登陆名:"  prop="username">
                     <el-input clearable  v-model="AddManagerForm.username" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>

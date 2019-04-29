@@ -167,7 +167,7 @@
         useTypeOptions:Object.assign({},defaultUseTypeOptions),
         list:null,
         total:null,
-        listLoading:false
+        listLoading:false,
       }
     },
     created() {
@@ -245,7 +245,7 @@
     },
     methods: {
       getList(){
-        this.listLoading=true;
+        //this.listLoading=true;
         fetchCouponHistoryList(this.listQuery).then(response=>{
           this.listLoading=false;
           this.list=response.data.list;

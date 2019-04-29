@@ -4,8 +4,8 @@
         Share Shop Admin
     </div>
     <!--<i class="el-icon-menu"></i>  @select="handleSelect"选择路由跳转:default-active="defaultActive" :default-active="defaultActive"  router-->
-    <el-menu :unique-opened='true' background-color="#5b6270" text-color="#fff" active-text-color="#ffd04b" router>
-        <el-submenu index="1">
+    <el-menu :unique-opened='true' background-color="#5b6270" text-color="#fff" :default-active="$route.path" active-text-color="#ffd04b" router>
+        <el-submenu index="1">         <!--:default-active="$route.path" 侧边栏跟着自己的路由高亮-->
             <template slot="title"><svg-icon icon-class="userside" class="side-icon"></svg-icon>User</template>   
             
             <el-menu-item index="/user/general_user/general_info"><svg-icon icon-class="usermsgside" class="side-icon"></svg-icon>用户信息</el-menu-item>

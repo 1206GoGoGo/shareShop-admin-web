@@ -20,17 +20,11 @@
                     size="small">
                     查询
                 </el-button>
-                <!-- <el-button
-                    style="float: right;margin-right:45px"
-                    @click="handleResetSearch()"
-                    size="small">
-                    重置
-                </el-button> v-model="listQuery.search" value-key="value"-->
             </div>
             <div style="margin-top: 10px">
                 <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
                     <el-form-item label="搜索条件：">
-                        <el-select v-model="listQuery.search" style="width: 203px" @change="changesearch" placeholder="Please select one or more" clearable>
+                        <el-select v-model="listQuery.search" multiple default-first-option @change="changesearch" style="width: 700px" placeholder="Please select one or more" clearable>
                             <el-option
                                 v-for="item in selectSearch"
                                 :key="item.value"
@@ -307,7 +301,8 @@ import {formatDate} from '@/utils/date';
 const defaultListQuery = {
     pageindex: 0,
     pagesize: 20,
-    search:null,
+    //search:null,
+    search:[],
 
     id:null,
     name:null,
@@ -447,20 +442,20 @@ export default {
       this.getList();
     },
     methods:{
-        changesearch(value){
-            if(value===1)
-                {this.flag1=true; this.listQuery.search=""}
-            if(value===2)
-                {this.flag2=true; this.listQuery.search=""}
-            if(value===3)
-                {this.flag3=true; this.listQuery.search=""}
-            if(value===4)
-                {this.flag4=true; this.listQuery.search=""}
-            if(value===5)
-                {this.flag5=true; this.listQuery.search=""}
-            if(value===6)
-                {this.flag6=true; this.listQuery.search=""}
-        },
+        // changesearch(value){
+        //     if(value===1)
+        //         {this.flag1=true; this.listQuery.search=""}
+        //     if(value===2)
+        //         {this.flag2=true; this.listQuery.search=""}
+        //     if(value===3)
+        //         {this.flag3=true; this.listQuery.search=""}
+        //     if(value===4)
+        //         {this.flag4=true; this.listQuery.search=""}
+        //     if(value===5)
+        //         {this.flag5=true; this.listQuery.search=""}
+        //     if(value===6)
+        //         {this.flag6=true; this.listQuery.search=""}
+        // },
         handleClear(){
             this.flag1=false
             this.flag2=false

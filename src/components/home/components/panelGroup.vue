@@ -2,7 +2,7 @@
   <el-row class="panel-group" :gutter="35">
     <!--第一个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
-      <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
+      <div class='card-panel' @click="orders()">
         <div class="card-panel-icon-wrapper icon-deliver">
           <svg-icon icon-class="deliver" class-name="card-panel-icon"></svg-icon>
         </div>
@@ -12,9 +12,9 @@
         </div>
       </div>
     </el-col>
-    <!--第二个-->
+    <!--第二个 @click="handleSetLineChartData('shoppings')"-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" @click="orders()">
         <div class="card-panel-icon-wrapper icon-Refund">
           <svg-icon icon-class="Refund" class-name="card-panel-icon" />
         </div>
@@ -26,7 +26,7 @@
     </el-col>
     <!--第三个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel" @click="orders()">
         <div class="card-panel-icon-wrapper icon-tight">
           <svg-icon icon-class="tight" class-name="card-panel-icon" />
         </div>
@@ -38,7 +38,7 @@
     </el-col>
     <!--第四个-->
     <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('system')">
+      <div class="card-panel" @click="orders()">
         <div class="card-panel-icon-wrapper icon-system">
           <svg-icon icon-class="system" class-name="card-panel-icon" />
         </div>
@@ -61,7 +61,10 @@ export default {
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
+    orders(){
+      this.$router.push({path:"../../orders/list_orders"});
+    },
   }
 }
 </script>

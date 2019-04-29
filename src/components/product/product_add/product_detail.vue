@@ -167,6 +167,6 @@ export default {
 
 <style scoped>
   .form-container {
-    width: 800px;
+    width: 900px;
   }
 </style>

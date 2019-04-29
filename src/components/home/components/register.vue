@@ -1,7 +1,7 @@
 <!--普通用户、会员、seller近7天的注册量--------------------------------------------->
 
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
+  <div @click="register()" :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
 </template>
 <script>
 import echarts from 'echarts'
@@ -43,6 +43,9 @@ export default {
     this.chart = null
   },
   methods: {
+    register(){
+      this.$router.push({path:"../../statistics/list_user"});
+    },
     initChart() {
         this.chart = echarts.init(this.$refs.myEchart)
         // 把配置和数据放这里

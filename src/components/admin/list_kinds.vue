@@ -47,23 +47,23 @@
                     <template slot-scope="scope">{{scope.row.level | levelFormatter }}</template>
                 </el-table-column>
                 <el-table-column label="描述" align="center">
-                    <template slot-scope="scope">{{scope.row.description}}</template>
-                </el-table-column>
-                <!-- <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            @click="handleUpdateUser(scope.$index, scope.row)">编辑
-                        </el-button>
-                        
-                        <el-button
+                        <el-input v-show="scope.row.edit" size="small" v-model="scope.row.description"></el-input>
+                        <span v-show="!scope.row.edit">{{scope.row.description}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="编辑" width="140" align="center">
+                    <template slot-scope="scope">
+                        <el-button v-show="!scope.row.edit" size="mini" type="primary" @click='scope.row.edit=true' icon="el-icon-edit">编辑</el-button>
+                        <el-button v-show="scope.row.edit" size="mini" type="success" @click="scope.row.edit=false" icon="el-icon-success">完成</el-button>
+
+                        <!-- <el-button
                             size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)">删除
-                        </el-button>
-                        
+                        </el-button>   -->
                     </template>
-                </el-table-column> -->
+                </el-table-column>
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -90,6 +90,9 @@ const defaultListQuery = {
     describe:null
   };
 export default {
+    watch:{
+
+    },
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),

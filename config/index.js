@@ -11,7 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // target: 'https://10.120.203.64:8443/', //陈澄IP
+      // target: 'http://10.120.203.64:8443/', //陈澄IP
+      // target: 'http://10.120.78.76:8081/', //陆阳洋IP
       // target: 'http://10.141.1.206:8443/shareshopDM/',//服务器IP  
       //target: 'http://10.120.203.1:8080/shareshopDM/', //王启论IP
       target: 'https://112.74.165.55:8443/shareshopDM/',  //阿里云

@@ -106,7 +106,7 @@
       </el-form-item> -->
       <el-form-item v-show="value.promotionType===3">
         <el-table :data="value.productLadderList"
-                  style="width: 80%" border>
+                  style="width: 85%" border>
           <el-table-column
             label="数量"
             align="center"
@@ -164,7 +164,6 @@
       </el-form-item>
       <el-form-item style="text-align: center">
         <el-button size="medium" @click="handlePrev">上一步，填写商品属性</el-button>
-        
         <el-button type="primary" size="medium" @click="handleFinishCommit">完成，提交商品</el-button>
       </el-form-item>
     </el-form>

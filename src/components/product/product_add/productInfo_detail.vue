@@ -1,20 +1,20 @@
 <template>
   <div style="margin-top: 50px">
-    <el-form :model="value" :rules="rules" ref="productInfoForm" label-width="120px" style="width: 600px" size="small">
+    <el-form :model="value" :rules="rules" ref="productInfoForm" style="width: 600px" label-width="120px" size="small">
       <!-- prop="productCategoryId" -->
-      <el-form-item label="商品分类：" >
+      <el-form-item label="商品分类：" prop="productCategoryId">
         <el-cascader
-          v-model="CateId"
+          v-model="selectProductCateValue"
           expand-trigger="click"
           clearable
           :options="productCateOptions"
           change-on-select>
         </el-cascader>
       </el-form-item>
-      <el-form-item label="商品名称：" prop="name">
+      <el-form-item label="商品名称：" style="margin-bottom:18px" prop="name">
         <el-input v-model="value.name"></el-input>
       </el-form-item>
-      <el-form-item label="商品编号：" prop="productSn">
+      <el-form-item label="商品编号：" style="margin-bottom:18px" prop="productSn">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>
       <el-form-item label="成本：">
@@ -62,12 +62,13 @@ export default {
       //   });
       // }
     },
+
     data() {
       return {
         hasEditCreated:false,
         CateId:null,
         //选中商品分类的值
-        //selectProductCateValue: [],
+        selectProductCateValue: [],
         productCateOptions: [],
         brandOptions: [],
         rules: {
@@ -108,15 +109,15 @@ export default {
               this.CateId = 0;
           }
       },
-      // selectProductCateValue: function (newValue) {
-      //   if (newValue != null && newValue.length === 2) {
-      //     this.value.productCategoryId = newValue[1];
-      //     this.value.productCategoryName= this.getCateNameById(this.value.productCategoryId);
-      //   } else {
-      //     this.value.productCategoryId = null;
-      //     this.value.productCategoryName=null;
-      //   }
-      // }
+      selectProductCateValue: function (newValue) {
+        if (newValue != null && newValue.length === 2) {
+          this.value.productCategoryId = newValue[1];
+          this.value.productCategoryName= this.getCateNameById(this.value.productCategoryId);
+        } else {
+          this.value.productCategoryId = '';
+          this.value.productCategoryName='';
+        }
+      }
     },
     methods: {
       //处理编辑逻辑
@@ -145,35 +146,87 @@ export default {
     // },
 
     //显示商品分类 完整版
-    getProductCateList()
-    {
-      fetchListLevel().then(response => {                
-          let list = response.data;
-          for (let i = 0; i < list.length; i++) {
-              //不管有没有子级别先列出来
-              this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
-              fetchListChildrenLevel(list[i].categoryId).then(response => {
-                  //注意级联！！！
-                  list[i].children = response.data;
-                  let children = [];
-                  if (list[i].children != null && list[i].children.length > 0) {
-                      for (let j = 0; j < list[i].children.length; j++) {
-                          children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
-                      }
-                      let currentName=list[i].categoryName;
-                      //比较:如果有分类名称相同的,删除上面的父分类
-                      for(let k=0; k<list.length; k++)
-                      {
-                          if(list[k].categoryName==currentName)
-                          this.productCateOptions.splice(k,1);
-                      }
-                      //最后添加有子分类的全部项
-                      this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});
-                  }
-              }) 
+    // getProductCateList()
+    // {
+    //   fetchListLevel().then(response => {                
+    //       let list = response.data;
+    //       for (let i = 0; i < list.length; i++) {
+    //           //不管有没有子级别先列出来
+    //           this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+    //           fetchListChildrenLevel(list[i].categoryId).then(response => {
+    //               //注意级联！！！
+    //               list[i].children = response.data;
+    //               let children = [];
+    //               if (list[i].children != null && list[i].children.length > 0) {
+    //                   for (let j = 0; j < list[i].children.length; j++) {
+    //                       children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+    //                   }
+    //                   let currentName=list[i].categoryName;
+    //                   //比较:如果有分类名称相同的,删除上面的父分类
+    //                   for(let k=0; k<list.length; k++)
+    //                   {
+    //                       if(list[k].categoryName==currentName)
+    //                       this.productCateOptions.splice(k,1);
+    //                   }
+    //                   //最后添加有子分类的全部项
+    //                   this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});
+    //               }
+    //           }) 
+    //       }
+    //   });
+    // },
+
+    // getProductCateList1()
+    // {
+    //   fetchListLevel().then(response => {                
+    //       let list = response.data;
+    //       for (let i = 0; i < list.length; i++) {
+    //           //不管有没有子级别先列出来
+    //           this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
+    //           fetchListChildrenLevel(list[i].categoryId).then(response => {
+    //               //注意级联！！！
+    //               list[i].children = response.data;
+    //               let children = [];
+    //               if (list[i].children != null && list[i].children.length > 0) {
+    //                   for (let j = 0; j < list[i].children.length; j++) {
+    //                       children.push({label: list[i].children[j].categoryName, value: list[i].children[j].categoryId});
+    //                   }
+    //                   let currentName=list[i].categoryName;
+    //                   //比较:如果有分类名称相同的,删除上面的父分类
+    //                   for(let k=0; k<list.length; k++)
+    //                   {
+    //                       if(list[k].categoryName==currentName)
+    //                       this.productCateOptions.splice(k,1);
+    //                   }
+    //                   //最后添加有子分类的全部项
+    //                   this.productCateOptions.unshift({label: list[i].categoryName, value: list[i].categoryId, children: children});
+    //               }
+    //           }) 
+    //       }
+    //   });
+    // },
+    
+    getProductCateList() {
+        fetchListLevel().then(response => {
+          let list1 = response.data;
+          this.productCateOptions = [];
+          for (let i = 0; i < list1.length; i++) {
+            fetchListChildrenLevel(list1[i].categoryId).then(response => {
+              let list2 = response.data;
+              let children = [];
+              if (list2 != null && list2.length > 0) {
+                for (let j = 0; j < list2.length; j++) {
+                  children.push({label: list2[j].categoryName, value: list2[j].categoryId});
+                }
+              }
+              this.productCateOptions.push({label: list1[i].categoryName, value: list1[i].categoryId, children: children});
+            }).catch(function(error){
+              console.log(error);
+              //alert(error);
+            })
           }
-      });
-    },
+        });
+      },
 
 
     // getBrandList() {
@@ -185,32 +238,36 @@ export default {
     //     }
     // });
     // },
-      // getCateNameById(id){
-      //   let name=null;
-      //   for(let i=0;i<this.productCateOptions.length;i++){
-      //     for(let j=0;i<this.productCateOptions[i].children.length;j++){
-      //       if(this.productCateOptions[i].children[j].value===id){
-      //         name=this.productCateOptions[i].children[j].label;
-      //         return name;
-      //       }
-      //     }
-      //   }
-      //   return name;
-      // },
-      handleNext(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$emit('nextStep');
-          } else {
-            this.$message({
-              message: '验证失败',
-              type: 'error',
-              duration:1000
-            });
-            return false;
+
+    //根据id得到商品名称
+    getCateNameById(id){
+      let name=null;
+      for(let i=0;i<this.productCateOptions.length;i++){
+        for(let j=0;i<this.productCateOptions[i].children.length;j++){
+          if(this.productCateOptions[i].children[j].value===id){
+            name=this.productCateOptions[i].children[j].label;
+            return name;
           }
-        });
-      },
+        }
+      }
+      return name;
+    },
+
+    //
+    handleNext(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$emit('nextStep');
+        } else {
+          this.$message({
+            message: '验证失败',
+            type: 'error',
+            duration:1000
+          });
+          return false;
+        }
+      });
+    },
     
     // handleBrandChange(val) {
     // let brandName = '';

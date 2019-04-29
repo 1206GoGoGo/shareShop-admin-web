@@ -1,7 +1,7 @@
 <!--商品按分类的销量-------------------------------------------------------------->
 
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
+  <div @click="onsale()" :class="className" :style="{height:height,width:width}" ref="myEchart"></div>
 </template>
 <script>
 import echarts from 'echarts'
@@ -43,6 +43,9 @@ export default {
     this.chart = null
   },
   methods: {
+    onsale(){
+      this.$router.push({path:'../../statistics/statistic_product'});
+    },
     initChart() {
       this.chart = echarts.init(this.$refs.myEchart)
       // 把配置和数据放这里

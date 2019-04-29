@@ -6,7 +6,7 @@
                 <el-form-item label="商品分类：">
                     <!-- :props="props" -->
                     <el-cascader
-                        
+
                         style="width:203px"
                         placeholder="please selete"
                         expand-trigger="click"

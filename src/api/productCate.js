@@ -44,6 +44,14 @@ export function fetchListChildrenLevel(id) {
   })
 }
 
+//---------------------------------------根据子分类id查询父分类信息----------------------------------------------
+export function fetchListParentLevel(id){
+  return request({
+    url:'/pro/category/getCategoryByChildrenID?id='+id,
+    method:'get',
+  })
+}
+
 //------------------------------------------根据分类名称获取分类列表-------------------------------------
 export function getDetailByName(params) {
   return request({

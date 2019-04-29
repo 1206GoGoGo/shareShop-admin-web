@@ -104,15 +104,17 @@
                 <el-table-column label="Date of Birth" width="140" align="center">
                     <template slot-scope="scope">{{scope.row.birthday | date2Formatter}}</template>
                 </el-table-column>
-                <el-table-column label="Operate" width="160" align="center" fixed="right">
+                <el-table-column label="Operate" width="200" align="center" fixed="right">
                     <template slot-scope="scope"> 
                         <el-button
                             size="mini"
+                            icon="el-icon-edit"
                             type="primary"
                             @click="handleUpdateAdmin(scope.$index, scope.row)">Edit
                         </el-button>
                         <el-button
                             size="mini"
+                            icon="el-icon-delete"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)">Delete
                         </el-button>
@@ -177,7 +179,7 @@
                             :label="item.label"
                             :value="item.value">
                         </el-option>
-                        </el-select>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="ID Card:">
                     <el-input v-model="AdminDetail.identityCardNo" style="width: 203px" ></el-input>

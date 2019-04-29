@@ -23,7 +23,6 @@
                     border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
                 <el-table-column label="编号" width="80" type="index" align="center">
-                    <!-- <template slot-scope="scope">{{scope.row.categoryId}}</template> -->
                 </el-table-column>
                 <el-table-column label="分类名称"  align="center">
                     <template slot-scope="scope">{{scope.row.categoryName}}</template>
@@ -51,7 +50,6 @@
                         </el-button>
                         <el-button
                             size="mini"
-
                             v-if="flag4"
                             @click="handleShowFrontLevel(scope.$index, scope.row)">查看上级
                         </el-button>
@@ -87,19 +85,24 @@
             :visible.sync="dialogAddCateVisible"  width="35%" height="100%">
             <el-form :model="OperateProductCate" :inline="true" size="small"
                 ref="OperateProductCateForm" label-width="140px">
-                <!-- <el-form-item label="所属分类：" 
-                    placeholder="please selete">
-                    <el-select  style="width:203px">   
+                <!-- <el-select v-model="AdminDetail.identityCardType" placeholder="全部" style="width: 203px" clearable >
+                    <el-option v-for="item in IDCardType"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select> -->
+                <el-form-item label="所属分类：" >
+                    <el-select v-model="productCate.parentId" placeholder="please selete" style="width:203px" clearable>   
                         <el-option
-                            v-model="productCate.parentId"
                             v-for="item in productCateOptions"
-                            :key="item.categoryId"
-                            :label="item.categoryName"
-                            :value="item.categoryId">
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                         </el-option>
                     </el-select>
-                </el-form-item> -->
-                <el-form-item label="所属分类：" >
+                </el-form-item>
+                <!-- <el-form-item label="所属分类：" >
                     <el-cascader
                         style="width:203px"
                         placeholder="please selete"
@@ -109,7 +112,7 @@
                         :options="productCateOptions"
                         change-on-select>
                     </el-cascader>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="分类名称：">
                     <el-input v-model="OperateProductCate.categoryName" style="width: 203px"></el-input>
                 </el-form-item>
@@ -137,7 +140,7 @@
 </template>
 
 <script>
-import {fetchListLevel,fetchListChildrenLevel,getDetailByName,AddProductCate,getProductCate} from '@/api/productCate';
+import {fetchListLevel,fetchListChildrenLevel,fetchListParentLevel,getDetailByName,AddProductCate,getProductCate} from '@/api/productCate';
 import { truncate, truncateSync, chown } from 'fs';
 // import add_cate from "./add_cate.vue";
 const defaultProductCate = {
@@ -153,7 +156,7 @@ const defaultOperateProductCate = {
     //分类名称
     categoryName:null,
     //分类父分类id
-    parentId:null,
+    parentId:0,
     //分类级别
     //categoryLevel:null,
     //是否显示在导航栏
@@ -218,8 +221,7 @@ export default {
 
         //商品分类
         //this.getProductCateList1();
-        //所属分类
-        this.getProductCateList2();
+        this.getProductCateList();
 
 
         //this.resetcategoryId();
@@ -238,7 +240,6 @@ export default {
             this.OperateProductCate = Object.assign({}, defaultOperateProductCate);
             this.dialogAddCateVisible=true;
             this.dialogTitle = "添加商品分类";
-            //this.getProductCateList2();
         },
         //添加分类表单提交    需要验证！！！！！！！！！！！！！！！！
         handleOperateProductCateConfirm(){
@@ -282,11 +283,13 @@ export default {
 
         
         //编辑里面的商品所属分类
-        getProductCateList2()
+        getProductCateList()
         {
             fetchListLevel().then(response => {                
                 let list = response.data;
+                this.productCateOptions=[];
                 for (let i = 0; i < list.length; i++) {
+                    //alert(list[i].categoryName);
                     this.productCateOptions.push({label: list[i].categoryName, value: list[i].categoryId});
                 }
                 this.productCateOptions.unshift({label:'无上级分类', value:0 });
@@ -305,22 +308,50 @@ export default {
             return productAttributeIdList;
         },
 
-        //查看上级    有问题？？？？
-        handleShowFrontLevel(){
+        //查看上级 (根据子分类id查询父分类信息)
+        handleShowFrontLevel(index, row){
+            this.listLoading=true;
+            fetchListParentLevel(row.categoryId).then(response=>{
+                this.listLoading=false;
+                this.list=response.data;
+                //this.list.categoryName=response.data.categoryName;
+            });
             this.flag4=false;
             this.flag3=true;
-            this.getList();
         },
+
         //查看下级
         handleShowNextLevel(index, row) {
-            this.flag3=false;
-            this.flag4=true;
             this.listLoading = true;
             fetchListChildrenLevel(row.categoryId).then(response => {
                 this.listLoading = false;
-                this.list = response.data;
-                // this.total = response.data.total;
-            });
+               this.list = response.data;
+            //    let code=response.code;
+            //     if(code==406){
+            //         this.$message({
+            //             message: '无上级分类!',
+            //             type: 'warning',
+            //             duration: 1000
+            //         });
+            //         return;
+            //     }
+            //     else
+            //     {this.list = response.data;}
+            })
+
+            this.flag3=false;
+            this.flag4=true;
+
+            // .catch(response => {
+            //     if(response.data.code==406){
+            //         this.$message({
+            //             message: '无上级分类!',
+            //             type: 'warning',
+            //             duration: 1000
+            //         });
+            //         return;
+            //     }
+            // });
         },
         
         //查询-----------------------------------------------------------------
@@ -362,13 +393,16 @@ export default {
         handleUpdate(index, row){
             this.dialogAddCateVisible=true;
             this.dialogTitle = "修改商品分类";
-            //this.getProductCateList2();
-            //this.OperateProductCate = Object.assign({},row);
-            this.OperateProductCate.categoryName=row.categoryName;
-            this.OperateProductCate.productCateOptions=[
-                label=row.categoryName,
-                value=row.categoryId,
-            ]
+            this.OperateProductCate = Object.assign({},row);
+            this.productCateOptions.label=row.categoryName;
+            this.productCateOptions.value=row.categoryId;
+            //this.OperateProductCate.categoryName=row.categoryName;
+            // this.productCateOptions=[
+            //     {
+            //         label:row.categoryName,
+            //         value:row.categoryId,
+            //     }
+            // ]
 
             // if(this.OperateProductCate.parentId==0)
             // {
@@ -376,9 +410,13 @@ export default {
             // }
             // getProductCate(row.categoryId).then(response => {
             //     this.OperateProductCate = response.data;
-            //     this.OperateProductCate.productCateOptions = response.data.categoryName;
+            //     this.OperateProductCate.unshift({id: 0, name: '无上级分类'});
+            //     // this.OperateProductCate.productCateOptions = response.data.categoryName;
             // });
         },
+
+        // this.selectProductCateList = response.data.list;
+        // this.selectProductCateList.unshift({id: 0, name: '无上级分类'});
 
         //删除该分类
         handleDelete(index, row) {

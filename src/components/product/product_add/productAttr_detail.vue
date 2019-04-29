@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 50px">
-    <el-form :model="value" ref="productAttrForm" label-width="120px" style="width: 720px" size="small">
+    <el-form :model="value"  ref="productAttrForm" label-width="120px" style="width: 720px" size="small">
       <el-form-item label="属性类型：">
         <el-select v-model="value.productAttributeCategoryId"
                    placeholder="请选择属性类型"
