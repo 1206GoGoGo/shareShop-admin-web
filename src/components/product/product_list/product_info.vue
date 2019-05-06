@@ -98,7 +98,7 @@
 </template>
 <script>
   import {formatDate} from '@/utils/date';
-  import {getProductInfo,fetchListByProductId} from '@/api/product';
+  import {getProductInfo} from '@/api/product';
   const defaultListQuery = {
     pageNum: 0,
     pageSize: 20,
@@ -152,13 +152,13 @@
       },
     },
     methods: {
-      getList(){
-        //this.listLoading=true;
-        fetchListByProductId(this.listQuery.productId).then(response=>{
-          this.listLoading=false;
-          this.list=response.data;
-        });
-      },
+      // getList(){
+      //   //this.listLoading=true;
+      //   fetchListByProductId(this.listQuery.productId).then(response=>{
+      //     this.listLoading=false;
+      //     this.list=response.data;
+      //   });
+      // },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
         this.listQuery.productId=this.$route.query.id;

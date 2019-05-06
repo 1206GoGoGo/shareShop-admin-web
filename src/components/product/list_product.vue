@@ -100,38 +100,39 @@
         <el-table-column label="商品图片" width="200" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.mainImage"></template>
         </el-table-column>
-        <!-- <el-table-column label="价格" width="160" align="center">
-          <template slot-scope="scope">
-            <p>价格：${{scope.row.price}}</p>
-            <p>货号：{{scope.row.spu}}</p>
-          </template>
-        </el-table-column> -->
         <el-table-column label="标签" width="180" align="center">
           <template slot-scope="scope">
-            <p><span style="width:140px;">上架：</span>
+            <div>
+              <span style="float:left; width:90px;">上架：</span>
               <el-switch
                 @change="handlePublishStatusChange(scope.$index, scope.row)"
                 :active-value="1"
                 :inactive-value="0"
                 v-model="scope.row.publishStatus">
               </el-switch>
-            </p>
-            <p><span style="width:140px;">推荐：</span>
-              <el-switch
-                @change="handleRecommendStatusChange(scope.$index, scope.row)"
-                :active-value="1"
-                :inactive-value="0"
-                v-model="scope.row.recommandStatus">
-              </el-switch>
-            </p>
-            <p><span style="width:140px;">可用优惠券：</span>
-              <el-switch
-                @change="handleNewStatusChange(scope.$index, scope.row)"
-                :active-value="1"
-                :inactive-value="0"
-                v-model="scope.row.newStatus">
-              </el-switch>
-            </p>
+            </div>
+            <!-- <p> -->
+              <div>
+                <span style="float:left; width:90px;">推荐：</span>
+                <el-switch
+                  @change="handleRecommendStatusChange(scope.$index, scope.row)"
+                  :active-value="1"
+                  :inactive-value="0"
+                  v-model="scope.row.recommandStatus">
+                </el-switch>
+              </div>
+            <!-- </p> -->
+            <!-- <p> -->
+            <div>
+              <span style="float:left; width:90px;">可用优惠券：</span>
+                <el-switch
+                  @change="handleNewStatusChange(scope.$index, scope.row)"
+                  :active-value="1"
+                  :inactive-value="0"
+                  v-model="scope.row.newStatus">
+                </el-switch>
+            </div>
+            <!-- </p> -->
           </template>
         </el-table-column>
         <!-- <el-table-column label="排序" width="100" align="center">
