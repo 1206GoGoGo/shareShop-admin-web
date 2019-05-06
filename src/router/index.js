@@ -22,17 +22,20 @@ const member_info = r => require.ensure([], () => r(require('@/components/user/s
 //商品
 const add_product = r => require.ensure([], () => r(require('@/components/product/add_product')), 'add_product');
 const list_product = r => require.ensure([], () => r(require('@/components/product/list_product')), 'list_product');
+const product_info = r => require.ensure([], () => r(require('@/components/product/product_list/product_info')), 'product_info');
 
 //商品属性
-const attr_product = r => require.ensure([], () => r(require('@/components/product/Attributes_product/attr_product')), 'attr_product');
-const add_attr = r => require.ensure([], () => r(require('@/components/product/Attributes_product/add_attr')), 'add_attr');
+const attr_product = r => require.ensure([], () => r(require('@/components/product/product_Attributes/attr_product')), 'attr_product');
+const add_attr = r => require.ensure([], () => r(require('@/components/product/product_Attributes/add_attr')), 'add_attr');
 
 const list_cate = r => require.ensure([], () => r(require('@/components/product/product_cate/list_cate')), 'list_cate');
 //const collect_product = r => require.ensure([], () => r(require('@/components/product/collect_product')), 'collect_product');
+
 //推荐商品
 const list_recommend = r => require.ensure([], () => r(require('@/components/product/recommend/list_recommend')), 'list_recommend');
 const recommend_kinds = r => require.ensure([], () => r(require('@/components/product/recommend/recommend_kinds')), 'recommend_kinds');
 const add_recommend = r => require.ensure([], () => r(require('@/components/product/recommend/add_recommend')), 'add_recommend');
+
 //订单
 const list_orders = r => require.ensure([], () => r(require('@/components/orders/list_orders')), 'list_orders');
 const return_orders = r => require.ensure([], () => r(require('@/components/orders/return_orders')), 'return_orders');
@@ -42,6 +45,7 @@ const return_money = r => require.ensure([], () => r(require('@/components/order
 const list_coupon = r => require.ensure([], () => r(require('@/components/coupon/list_coupon')), 'list_coupon');
 const info_coupon = r => require.ensure([], () => r(require('@/components/coupon/info_coupon')), 'info_coupon');
 const add_coupon = r => require.ensure([], () => r(require('@/components/coupon/add_coupon')), 'add_coupon');
+const update_coupon = r => require.ensure([], () => r(require('@/components/coupon/update_coupon')), 'update_coupon');
 
 //评价
 const view_user = r => require.ensure([], () => r(require('@/components/news/view_user')), 'view_user');
@@ -166,15 +170,20 @@ const routes = [
 					component: list_product,
 					meta: ['Product', 'List'],
 				},
+				{
+					path: '/product/product_list/product_info',
+					component: product_info,
+					meta: ['Product', 'List','Information'],
+				},
 
 				//商品属性
 				{
-					path: '/product/Attributes_product/attr_product',
+					path: '/product/product_Attributes/attr_product',
 					component: attr_product,
 					meta: ['Product', 'Attributes'],
 				},
 				{
-					path: '/product/Attributes_product/add_attr',
+					path: '/product/product_Attributes/add_attr',
 					component: add_attr,
 					meta: ['Product', 'Attributes','Add'],
 					hidden:true
@@ -258,6 +267,18 @@ const routes = [
 					path: '/coupon/add_coupon',
 					component: add_coupon,
 					meta: ['Coupon','Add'],
+				},
+				// {
+				// 	path: 'updateCoupon',
+				// 	//name: 'updateCoupon',
+				// 	component: () => import('@/views/sms/coupon/update'),
+				// 	meta: {title: 'Update'},
+				// 	hidden:true
+				// },
+				{
+					path: '/coupon/update_coupon',
+					component: update_coupon,
+					meta: ['Coupon','Update'],
 				},
 			]
 		},

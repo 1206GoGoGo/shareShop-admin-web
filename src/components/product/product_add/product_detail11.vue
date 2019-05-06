@@ -17,37 +17,30 @@
       <el-form-item label="商品编号：" style="margin-bottom:18px" prop="productSn">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>
-      <el-form-item label="成本：">
-        <el-input v-model="value.originalPrice"></el-input>
-      </el-form-item>
       <el-form-item label="商品售价：">
         <el-input v-model="value.price"></el-input>
       </el-form-item>
-      <el-form-item label="市场价：">
+      <el-form-item label="商品原价：">
         <el-input v-model="value.originalPrice"></el-input>
       </el-form-item>
-      <el-form-item label="商品库存：">
+      <el-form-item label="商品数量：">
         <el-input v-model="value.stock"></el-input>
       </el-form-item>
-      <el-form-item label="计量单位：">
-        <el-input v-model="value.unit"></el-input>
-      </el-form-item>
-      <el-form-item label="商品重量：">
-        <el-input v-model="value.weight" style="width: 300px"></el-input>
-        <span style="margin-left: 20px">克</span>
-      </el-form-item>
-      <!-- <el-form-item style="text-align: center">
-        <el-button type="primary" size="medium" @click="handleNext('productInfoForm')">下一步，填写商品属性</el-button>
-      </el-form-item> -->
     </el-form>
   </div>
 </template>
 
 <script>
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
-
+  const defaultValue = {
+    name: null,
+    productSn:null,
+    price:null,
+    originalPrice:null,
+    stock:null
+  };
 export default {
-    name: "ProductInfoDetail",
+    name: "product_detail",
     props: {
       value: Object,
       isEdit: {
@@ -56,15 +49,16 @@ export default {
       }
     },
     created(){
-      // if(this.isEdit){
-      //   getProduct(this.$route.query.id).then(response=>{
-      //     this.productParam=response.data;
-      //   });
-      // }
+      if(this.isEdit){
+        getProduct(this.$route.query.id).then(response=>{
+          this.productParam=response.data;
+        });
+      }
     },
 
     data() {
       return {
+        value: Object.assign({}, defaultValue),
         hasEditCreated:false,
         CateId:null,
         //选中商品分类的值

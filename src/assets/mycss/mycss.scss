@@ -23,9 +23,9 @@ a:-webkit-any-link{
 // }
 
 //表格和搜索框的间距
-.table-container {
-    margin-top: 20px;
-}
+// .table-container {
+//     margin-top: 20px;
+// }
 
 //将view_user里面的横板排列！！！！！！！！
 // .el-form-item__label{
@@ -62,7 +62,7 @@ a:-webkit-any-link{
 //给所有的表格加边框
 .el-table{
     border: 1px solid #ebeef5;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 //订单设置的边框
@@ -131,10 +131,20 @@ element .style{
 //边框
 .home-container{
     padding: 20px;
-    background-color: #f2f2f2;
+    //background-color: #f2f2f2;
 }
 
 .side-icon{
     font-size: 18px;
     padding-right:10px;
+}
+
+//上传图片
+.avatar-uploader-icon[data-v-022ab5cf]{
+    margin:20px;
+    border: 1px dashed rgb(96, 98, 102);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }

@@ -19,12 +19,22 @@ export function createCoupon(data) {
   })
 }
 
+//---------------------------------根据id获取优惠券详情--------------------------------------------
 export function getCoupon(id) {
   return request({
-    url:'/coupon/'+id,
+    url:'/pro/coupon/getCouponDetailById?id='+id,
     method:'get',
   })
 }
+
+//---------------------------------根据优惠券使用状态获取优惠券详情--------------------------------------------
+export function fetchListByStatus(status) {
+  return request({
+    url:'/pro/coupon/getCouponLogsListByStatus?status='+status,
+    method:'get',
+  })
+}
+
 
 export function updateCoupon(id,data) {
   return request({

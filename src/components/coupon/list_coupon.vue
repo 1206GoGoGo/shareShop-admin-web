@@ -1,6 +1,6 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
+    <!-- <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
       <div>
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
@@ -34,11 +34,11 @@
           </el-form-item>
         </el-form>
       </div>
-    </el-card>
-    <el-card class="operate-container" shadow="never">
+    </el-card> -->
+    <el-card shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAdd()">添加</el-button>
+      <span>优惠券列表</span>
+      <el-button size="mini" type="primary" style="float:right;"  @click="handleAdd()">添加</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="couponTable"
@@ -83,15 +83,14 @@
         <el-table-column label="状态" width="100" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        type="text"
                        @click="handleView(scope.$index, scope.row)">查看</el-button>
             <el-button size="mini"
                        type="text"
-                       @click="handleUpdate(scope.$index, scope.row)">
-              编辑</el-button>
+                       @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini"
                        type="text"
                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -237,10 +236,10 @@
         this.$router.push({path: '/Coupon/add_coupon'})
       },
       handleView(index, row) {
-        this.$router.push({path: '/Coupon/info_coupon'})
+        this.$router.push({path: '/Coupon/info_coupon', query: {id: row.couponId}})
       },
       handleUpdate(index, row) {
-        this.$router.push({path: '/sms/updateCoupon', query: {id: row.id}})
+        this.$router.push({path: '/Coupon/update_coupon', query: {id: row.couponId}})
       },
       handleDelete(index, row) {
         this.$confirm('是否进行删除操作?', '提示', {

@@ -1,85 +1,113 @@
 <template>
-    <div class="home-container">
-        <div>
-            <el-form :inline="true" size="small">
-                <el-form-item>
-                    <el-date-picker
-                        style="width:203px"
-                        v-model="beginTime1"
-                        type="date"
-                        placeholder="Please select time"
-                        align="right"
-                        format="yyyy-MM-dd 0:0:0"
-                        :picker-options="pickerOptions1">
-                    </el-date-picker>
-                    -
-                    <el-date-picker
-                        v-model="endTime1"
-                        style="width:203px"
-                        type="date"
-                        placeholder="Please select time"
-                        align="right"
-                        format="yyyy-MM-dd 0:0:0"
-                        :picker-options="pickerOptions1">
-                    </el-date-picker>
-                    <el-button type="primary" style="margin-left:10px;" @click="handleSearchList">查询</el-button>
-                </el-form-item>
-            </el-form>
+    <div>
+        <!-- class="app-container" -->
+        <!-- <el-card shadow="never" style="background:#f2f2f2;"> -->
+            <div>
+                <el-form :inline="true" :model="listQuery" style="margin-bottom:0px;"  size="small" label-width="100px" ref="productCateFrom">
+                    <el-form-item label="查询时间：">
+                        <el-date-picker
+                            style="width:203px"
+                            v-model="beginTime1"
+                            type="date"
+                            placeholder="Please select time"
+                            align="right"
+                            format="yyyy-MM-dd 0:0:0"
+                            :picker-options="pickerOptions1">
+                        </el-date-picker>
+                        -
+                        <el-date-picker
+                            v-model="endTime1"
+                            style="width:203px"
+                            type="date"
+                            placeholder="Please select time"
+                            align="right"
+                            format="yyyy-MM-dd 0:0:0"
+                            :picker-options="pickerOptions1">
+                        </el-date-picker>
+                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">查询</el-button>
+                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">导出</el-button>
+                    </el-form-item>
+                </el-form> 
+            </div>
+        <!-- </el-card> -->
+<!--列表 S  @selection-change="handleSelectionChange"  -->
+        <div class="table-container">
+            <el-table ref="productTable"
+                    highlight-current-row
+                    
+                    :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
+                    :data="list"
+                    style="width: 100%"
+                    
+                    v-loading="listLoading"
+                    fixed
+                    show-summary
+                    :summary-method="getSummaries"
+                    border>     
+                <el-table-column type="selection" width="60" align="center"></el-table-column>
+                <el-table-column label="No." width="60" type="index" align="center">
+                    <!-- <template slot-scope="scope">{{scope.row.managerInfoId}}</template> -->
+                </el-table-column>
+                <el-table-column label="普通用户注册量"  align="center">
+                    <template slot-scope="scope">{{scope.row.userLogin.productName}}</template>
+                </el-table-column>
+                <el-table-column label="会员注册量" sortable    align="center">
+                    <template slot-scope="scope">{{scope.row.userLogin.Quantity }}</template>
+                </el-table-column>
+                <el-table-column label="seller注册量" sortable  align="center">
+                    <template slot-scope="scope">{{scope.row.money}}</template>
+                </el-table-column> 
+                <!-- <el-table-column label="库存" sortable width="120" align="center">
+                    <template slot-scope="scope">{{scope.row.number}}</template>
+                </el-table-column>  -->
+            </el-table>
+<!--分页 S-->
+            <div class="Pagination" style="text-align: left;margin-top: 10px;">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  :page-size="20"
+                  layout=" prev, pager, next"
+                  :total="count">
+                </el-pagination>
+            </div>
+<!--分页 E-->
         </div>
-        <el-card class="box-card">
-            <Userechart></Userechart>
-        </el-card>
+<!--列表 E--> 
+
     </div>
 </template>
-
+    
 <script>
-//统计用户的销售额、成本、支出（税率）
-import Userechart from './components/Userechart'
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
-import {fetchListBycategoryId,statisticSales} from '@/api/statistics'
-
+import {fetchProductList,} from '@/api/statistics'
 import moment from 'moment'
-// const defaultproductCate = {
-//     CateId:null,
-//   };
-export default{
+const defaultListQuery = {
+    pageindex: 0,
+    pagesize: 20,
+    id:null
+}
 
+export default {
     mounted: function () {
         this.beginTime1 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
         //this.beginTime1 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
         this.endTime1 = moment().format('MM-DD-YYYY 00:00:00');
-        this.beginTime2 = moment().subtract(1, 'month').format('MM-DD-YYYY 00:00:00');
-        //this.beginTime2 = moment().subtract(7, 'days').format('MM-DD-YYYY 00:00:00');
-        this.endTime2 = moment().format('MM-DD-YYYY 00:00:00');
-        
+
         this.handleSearchList();
     },
-
-    name:'income',
-    components:{
-        Userechart,
-    },
-
     created() {
-      //this.getList();
-      this.getProductCateList();
-    },
-
-    //监听商品ID，有问题！！！
-    watch: {
-        CateId (newValue) {
-            if (newValue != null && newValue.length == 2) {
-                this.CateId = newValue[1];
-            } else {
-                this.CateId = 0;
-            }
-        }
+        this.getList();
+        this.getProductCateList();
     },
 
     data(){
         return{
+            listQuery: Object.assign({}, defaultListQuery),
             productCateOptions:[],
-            CateId:0,
+            count:null,
+            currentPage:null,
             //时间
             pickerOptions1: {
                 shortcuts: [{
@@ -109,11 +137,11 @@ export default{
             },
             beginTime1: '',
             endTime1: '',
-            beginTime2: '',
-            endTime2: '',
+            
+            list:null,
+            listLoading:false,
         }
     },
-    
     methods:{
         //获得商品分类
         getProductCateList()
@@ -134,113 +162,66 @@ export default{
                     })
                 }
             });
-        },  
-
-        //初始化图表为空
-        initDate() {
-            let _this = this;
-            // 时间
-            _this.$refs.myEchart.xAxis.data = [];
-            // 金额
-            _this.$refs.myEchart.yAxis.data = [];
-            // 总销售额
-            _this.$refs.myEchart.series[0].data = [];
-            // seller销售额
-            _this.$refs.myEchart.series[1].data = [];
-            // 成本
-            _this.$refs.myEchart.series[2].data = [];
         },
 
-        // 统计7天内的用户增长情况
-        handleSearchList() {
-            let params = monthUserNumsReq;
-            if (null != this.beginTime1 && null != this.endTime1) {
-                let starttime = moment(this.beginTime).format('MM-DD-YYYY 00:00:00');
-                let endtime = moment(this.endTime).format('MM-DD-YYYY 00:00:00');
+        //初始化数据
+        getList(){
+            //this.listLoading=true;
+            fetchProductList(this.listQuery).then(response => {
+                this.listLoading = false;
+                this.list = response.data;
+            });
+        },
 
-                params = Object.assign({'starttime': starttime, 'endtime': endtime}, params)
-            }
-            // if (this.mock) {
-            //     params = Object.assign({'statFunc': 'handleSearchList', 'type': 0}, params)
-            // }
-            this.initDate();
-            statisticSales(params).then(data => {
-                //this.cycle_mix.legend.data = ['总销售额', 'seller销售额', '成本'];
-                this.$refs.myEchart.legend.data = ['总销售额', 'seller销售额', '成本'];
-                this.$refs.myEchart.series[0].name = '总销售额';
-                this.$refs.myEchart.series[1].name = 'seller销售额';
-                this.$refs.myEchart.series[2].name = '成本';
+        //统计一个月的销量
+        handleSearchList(){
+            //this.listLoading=true;
+            fetchProductList(this.listQuery.id).then(response => {
+                this.listLoading = false;
+                this.list = response.data;
+            });
+        },
 
-                let dateNum = moment(this.endTime).diff(moment(this.beginTime), 'days')
-
-                for (let j = dateNum; j > 0; j--) {
-
-                    let tododay = moment(this.endTime).subtract(j, 'days').format('MM-DD-YYYY');
-
-                    this.$refs.myEchart.xAxis.data.push(tododay);
-
-                    let WholeSaleNum = 0;
-                    let SellerSaleNum = 0;
-                    let CostNum = 0;
-                    for (let i = data.length - 1; i >= 0; i--) {
-
-                        let day = data[i]._id.day;
-                        let deviceType = data[i]._id.deviceType;
-                        let num = data[i].num;
-
-                        if (day == tododay) {
-
-                            if (1 == deviceType) {
-                                WholeSaleNum = num;
-                            } else if (2 == deviceType) {
-                                SellerSaleNum = num;
-                            } else if (3 == deviceType) {
-                                CostNum = num;
-                            }
-                        }
+        //求和
+        getSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+            columns.forEach((column, index) => {
+                if (index === 0) {
+                    sums[index] = '合计';
+                    return;
+                }
+                const values = data.map(item => Number(item[column.property]));
+                if (!values.every(value => isNaN(value))) {
+                    sums[index] = values.reduce((prev, curr) => {
+                    const value = Number(curr);
+                    if (!isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
                     }
-
-                    // 总销售额
-                    this.$refs.myEchart.series[0].data.push(WholeSaleNum);
-
-                    // seller销售额
-                    this.$refs.myEchart.series[1].data.push(SellerSaleNum);
-
-                    // 成本
-                    this.$refs.myEchart.series[2].data.push(CostNum);
+                    }, 0);
+                    sums[index] += ' 元';
+                } else {
+                    sums[index] = '';
                 }
             });
+            return sums;
         },
 
-        //获取搜索结果
-        handleSearchList(){
-            //根据用户登录名查询订单详情
-            fetchListBycategoryId(this.CateId).then(response => {
-                //这里写的有问题！！！！！！！！！！！！
-                var list= response.data;
-            });
-        },
-
-
+        currentPage(){},
+        handleSizeChange(){},
+        handleCurrentChange(){},
 
     },
 }
 </script>
 
 <style scoped>
-    .home-container{
-        padding: 20px;
-        background-color: #f2f2f2;
-    }
-    .title-font{
-        font-size: 18px;
-    }
-    .S-icon{
-        font-size: 25px;
-        padding:1px 0px 0px 0px;
-    }
-    .pro-form{
-        padding: 20px 0px 5px;
-    }
-    
+
+/* .home-container{
+    padding: 20px;
+    background-color: #f2f2f2;
+} */
 </style>
+    

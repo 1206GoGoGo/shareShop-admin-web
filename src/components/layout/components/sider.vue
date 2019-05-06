@@ -30,11 +30,13 @@
                 <el-menu-item index="/product/recommend/recommend_kinds">推荐商品分类</el-menu-item>
                 <el-menu-item index="/product/recommend/add_recommend">推荐商品记录</el-menu-item>
             </el-submenu>
+            <el-menu-item index="/product/add_product">新增商品</el-menu-item> 
+            <el-menu-item index="/product/list_product">商品列表</el-menu-item><!--包括销售量、库存、总金额-->
             <el-menu-item index="/product/product_cate/list_cate">商品分类</el-menu-item>
-            <el-menu-item index="/product/Attributes_product/attr_product">商品属性</el-menu-item>
+            <el-menu-item index="/product/product_Attributes/attr_product">商品属性</el-menu-item>
             <!-- <el-menu-item index="2-3">商品级别</el-menu-item> -->
-            <el-menu-item index="/product/list_product">商品查询</el-menu-item><!--包括销售量、库存、总金额-->
-            <el-menu-item index="/product/add_product">新增商品</el-menu-item>    
+            
+               
             <!-- <el-menu-item index="/product/collect_product">商品收藏</el-menu-item> -->
             <!-- <el-menu-item index="2-7">商品评价</el-menu-item>回复、删除 -->
         </el-submenu>
@@ -57,8 +59,8 @@
         <el-submenu index="5">
             <template  slot="title"><svg-icon icon-class="msgside" class="side-icon"></svg-icon>News</template>  
             <!-- <el-menu-item index="5-1">seller申请</el-menu-item> -->
-            <el-menu-item index="/news/view_user">买前留言</el-menu-item>
-            <el-menu-item index="/news/comment_user">留言回复</el-menu-item>
+            <el-menu-item index="/news/view_user">测试页面</el-menu-item>
+            <el-menu-item index="/news/comment_user">评价回复</el-menu-item>
         </el-submenu>
 
         <el-submenu index="6">

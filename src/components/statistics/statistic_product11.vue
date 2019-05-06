@@ -1,9 +1,10 @@
 <template>
-    <div>
-        <!-- class="app-container" -->
-        <!-- <el-card shadow="never" style="background:#f2f2f2;"> -->
-            <div>
-                <el-form :inline="true" :model="listQuery" style="margin-bottom:0px;"  size="small" label-width="100px" ref="productCateFrom">
+    <div class="app-container">
+        <el-card shadow="never" style="background:#f2f2f2;">
+            <svg-icon icon-class="Smoney" class="S-icon"></svg-icon>
+            <span class="title-font">商品统计</span>
+            <div class="pro-form">
+                <el-form :inline="true" :model="listQuery" style="margin-top:10px; margin-bottom:0px;"  size="small" label-width="100px" ref="productCateFrom">
                     <el-form-item label="商品分类：" style="margin-bottom:0px;">
                         <el-cascader
                             style="width:203px;"
@@ -36,11 +37,10 @@
                             :picker-options="pickerOptions1">
                         </el-date-picker>
                         <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">查询</el-button>
-                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">导出</el-button>
                     </el-form-item>
                 </el-form> 
             </div>
-        <!-- </el-card> -->
+        </el-card>
 <!--列表 S  @selection-change="handleSelectionChange"  -->
         <div class="table-container">
             <el-table ref="productTable"

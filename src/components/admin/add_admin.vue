@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 <!--添加须知 S-->        
-        <el-card class="box-card" :class="showInfo? 'show': 'hide'"> 
+        <el-card shadow="never" class="box-card" :class="showInfo? 'show': 'hide'"> 
             <div slot="header" class="clearfix" @click="show">
                 <el-button style="float: left; padding: 3px 0" type="text">添加须知</el-button>
             </div>
@@ -13,23 +13,34 @@
 <!--添加须知 E-->      
 <!--添加管理员部分 S  inline-message-->
         <div class="table-container">
-            <el-form :inline="true"  :model="AddManagerForm" status-icon :rules="Vrules" ref="AddManagerForm" label-width="100px" >
-                <el-form-item label="登陆名:"  prop="username">
+            <el-form :inline="true"  :model="AddManagerForm" status-icon :rules="Vrules" ref="AddManagerForm" label-width="140px" size="small">
+                <el-form-item label="权限:" class="formclass" prop="level">
+                    <el-select v-model="AddManagerForm.level" placeholder="请选择" style="width:203px">
+                      <el-option v-for="item in selectlevel"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                      </el-option>
+                    <!-- <el-option label="权限一" value="shanghai"></el-option>
+                    <el-option label="权限二" value="beijing"></el-option> -->
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="登陆名:" class="formclass" prop="username">
                     <el-input clearable  v-model="AddManagerForm.username" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="真实姓名:" prop="name">
-                    <el-input clearable  v-model="AddManagerForm.name" style="width:203px" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="密码:" prop="password">
+                <el-form-item label="密码:" class="formclass" prop="password">
                     <el-input type="password" v-model="AddManagerForm.password" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码:" prop="checkPass">
+                <el-form-item label="确认密码:" class="formclass" prop="checkPass">
                     <el-input type="password" v-model.number="AddManagerForm.checkPass" style="width:203px"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号码:" prop="phoneNumber">
+                <el-form-item label="真实姓名:" class="formclass" prop="name">
+                    <el-input clearable  v-model="AddManagerForm.name" style="width:203px" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号码:" class="formclass" prop="phoneNumber">
                     <el-input clearable  v-model.number="AddManagerForm.phoneNumber" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱:" prop="email">
+                <el-form-item label="邮箱:" class="formclass" prop="email">
                     <el-input clearable  v-model="AddManagerForm.email" style="width:203px" autocomplete="off"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="证件类型:" prop="identityCardType">
@@ -44,18 +55,8 @@
                 <el-form-item label="证件号码:" prop="identityCardNo">
                     <el-input clearable v-model="AddManagerForm.identityCardNo" autocomplete="off" style="width:203px"></el-input>
                 </el-form-item> -->
-                <el-form-item label="权限:" prop="level">
-                    <el-select v-model="AddManagerForm.level" placeholder="请选择" style="width:203px">
-                      <el-option v-for="item in selectlevel"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value">
-                      </el-option>
-                    <!-- <el-option label="权限一" value="shanghai"></el-option>
-                    <el-option label="权限二" value="beijing"></el-option> -->
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="出生日期:">
+                
+                <!-- <el-form-item label="出生日期:">
                     <el-date-picker
                         class="input-width"
                         v-model="AddManagerForm.birthday"
@@ -64,14 +65,14 @@
                         style="width:203px"
                         placeholder="请选择时间">
                     </el-date-picker>
-                </el-form-item>
-                <el-form-item label="性别:">
+                </el-form-item> -->
+                <el-form-item class="formclass" label="性别:" prop="gender">
                     <el-radio-group v-model="AddManagerForm.gender" style="width:203px">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item class="but">
+                <el-form-item style="display:block; margin-left:340px; margin-top:20px;">
                     <el-button type="primary" @click="submitForm('AddManagerForm')">提交</el-button>
                     <el-button @click="resetForm('AddManagerForm')">重置</el-button>
                 </el-form-item>
@@ -298,7 +299,8 @@ export default {
         clear: both
     }
     .box-card {
-        width: 950px;
+        /* width: 950px; */
+        width:100%;
     }
     .show{
 		height: 160px;
@@ -312,6 +314,10 @@ export default {
     .table-container{
         border: 1px solid #ebeef5;
         padding: 20px;
-        width: 95%;
+        /* width: 95%; */
+    }
+
+    .formclass{
+      margin-bottom:18px;
     }
 </style>

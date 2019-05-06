@@ -1,16 +1,16 @@
 <template>
     <div class="app-container">
 <!--条件查询/添加、按钮 S--------------------------------------------------------------------------->
-        <el-card shadow="never">
-            <el-form :inline="true" size="small" label-width="80px" :model="productCate" :rules="rules" ref="productCateFrom">
-                <el-form-item label="分类名称:">
+        <!-- <el-card shadow="never"> -->
+            <el-form :inline="true" size="small" label-width="90px" :model="productCate" :rules="rules" ref="productCateFrom">
+                <el-form-item label="分类名称：">
                     <el-input style="width: 203px" clearable v-model="productCate.name" placeholder="请输入分类名称"></el-input>
                 </el-form-item>  
                 <el-button @click="handleSearchList('productCateFrom')" size="small" type="primary">Search</el-button>
                 <el-button @click="refreshList()" size="small" type="primary">Refresh</el-button>  
                 <el-button @click="handleAddProductCate()" size="small" type="primary" >添加分类</el-button>
             </el-form> 
-        </el-card>
+        <!-- </el-card> -->
 <!--添加、按钮 E--------------------------------------------------------------------------->
 <!--分类列表 S--------------------------------------------------------------------------->
         <div class="table-container">

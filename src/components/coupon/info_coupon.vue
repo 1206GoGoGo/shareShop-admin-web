@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="table-layout">
       <el-row>
-        <el-col :span="4" class="table-cell-title">名称</el-col>
+        <el-col :span="4" class="table-cell-title">优惠券名称</el-col>
         <el-col :span="4" class="table-cell-title">优惠券类型</el-col>
         <el-col :span="4" class="table-cell-title">可使用商品</el-col>
         <el-col :span="4" class="table-cell-title">使用门槛</el-col>
@@ -13,51 +13,35 @@
         <el-col :span="4" class="table-cell">{{coupon.name}}</el-col>
         <el-col :span="4" class="table-cell">{{coupon.type | formatType}}</el-col>
         <el-col :span="4" class="table-cell">{{coupon.useType | formatUseType}}</el-col>
-        <el-col :span="4" class="table-cell">满{{coupon.minPoint}}元可用</el-col>
-        <el-col :span="4" class="table-cell">{{coupon.amount}}元</el-col>
+        <el-col :span="4" class="table-cell">满{{coupon.useCondition}}元可用</el-col>
+        <el-col :span="4" class="table-cell">{{coupon.faceValue}}元</el-col>
         <el-col :span="4" class="table-cell">{{coupon.endTime | formatStatus}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="4" class="table-cell-title">有效期</el-col>
+        <el-col :span="8" class="table-cell-title">有效期</el-col>
         <el-col :span="4" class="table-cell-title">总发行量</el-col>
         <el-col :span="4" class="table-cell-title">已领取</el-col>
-        <el-col :span="4" class="table-cell-title">待领取</el-col>
+        <!-- <el-col :span="4" class="table-cell-title">待领取</el-col> -->
         <el-col :span="4" class="table-cell-title">已使用</el-col>
         <el-col :span="4" class="table-cell-title">未使用</el-col>
       </el-row>
       <el-row>
-        <el-col :span="4" class="table-cell" style="font-size: 13px">
-          {{coupon.startTime|formatDate}}至{{coupon.endTime|formatDate}}
+        <el-col :span="8" class="table-cell" style="font-size: 13px">
+          {{coupon.startTime|formatDate}}-{{coupon.endTime|formatDate}}
         </el-col>
-        <el-col :span="4" class="table-cell">{{coupon.publishCount}}</el-col>
+        <el-col :span="4" class="table-cell">{{coupon.amount}}</el-col>
         <el-col :span="4" class="table-cell">{{coupon.receiveCount}}</el-col>
-        <el-col :span="4" class="table-cell">{{coupon.publishCount-coupon.receiveCount}}</el-col>
+        <!-- <el-col :span="4" class="table-cell">{{coupon.publishCount-coupon.receiveCount}}</el-col> -->
         <el-col :span="4" class="table-cell">{{coupon.useCount}}</el-col>
         <el-col :span="4" class="table-cell">{{coupon.publishCount-coupon.useCount}}</el-col>
       </el-row>
     </div>
     <el-card class="filter-container" shadow="never">
       <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          style="float:right"
-          type="primary"
-          @click="handleSearchList()"
-          size="small">
-          查询搜索
-        </el-button>
-        <el-button
-          style="float:right;margin-right: 15px"
-          @click="handleResetSearch()"
-          size="small">
-          重置
-        </el-button>
-      </div>
-      <div style="margin-top: 15px">
-        <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
+        <!------一种优惠券会发放很多张，有必要根据使用状态和订单号来查询--------------->
+        <el-form :inline="true" :model="listQuery" size="small" label-width="90px">
           <el-form-item label="使用状态：">
-            <el-select v-model="listQuery.useStatus" placeholder="全部" clearable class="input-width">
+            <el-select v-model="listQuery.Status" placeholder="全部" clearable class="input-width">
               <el-option v-for="item in useTypeOptions"
                          :key="item.value"
                          :label="item.label"
@@ -66,8 +50,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="订单编号：">
-            <el-input v-model="listQuery.orderSn" class="input-width" placeholder="订单编号"></el-input>
+            <el-input v-model="listQuery.orderNumber" class="input-width" placeholder="订单编号"></el-input>
           </el-form-item>
+          <el-button
+          type="primary"
+          @click="handleSearchList()"
+          size="small">
+          查询
+        </el-button>
         </el-form>
       </div>
     </el-card>
@@ -75,32 +65,32 @@
       <el-table ref="couponHistoryTable"  
                 highlight-current-row
                 :data="list"
-                style="width: 100%;"
+                style="width: 100%; margin-top:20px;"
                 v-loading="listLoading" border>
-        <el-table-column label="优惠码" width="160" align="center">
+        <!-- <el-table-column label="优惠码" width="160" align="center">
           <template slot-scope="scope">{{scope.row.couponCode}}</template>
-        </el-table-column>
-        <el-table-column label="领取会员" width="140" align="center">
+        </el-table-column> -->
+        <el-table-column label="领取用户" width="180" align="center">
           <template slot-scope="scope">{{scope.row.memberNickname}}</template>
         </el-table-column>
-        <el-table-column label="领取方式" width="100" align="center">
+        <!-- <el-table-column label="领取方式" width="100" align="center">
           <template slot-scope="scope">{{scope.row.getType | formatGetType}}</template>
-        </el-table-column>
-        <el-table-column label="领取时间" width="160" align="center">
+        </el-table-column> -->
+        <el-table-column label="领取时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
         </el-table-column>
-        <el-table-column label="当前状态" width="140" align="center">
-          <template slot-scope="scope">{{scope.row.useStatus | formatCouponHistoryUseType}}</template>
+        <el-table-column label="优惠券状态" width="140" align="center">
+          <template slot-scope="scope">{{scope.row.Status | formatCouponHistoryUseType}}</template>
         </el-table-column>
-        <el-table-column label="使用时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.useTime | formatTime}}</template>
+        <el-table-column label="使用时间" width="180" align="center">
+          <template slot-scope="scope">{{scope.row.time | formatTime}}</template>
         </el-table-column>
         <el-table-column label="订单编号" align="center">
-          <template slot-scope="scope">{{scope.row.orderSn===null?'N/A':scope.row.orderSn}}</template>
+          <template slot-scope="scope">{{scope.row.orderNumber===null?'N/A':scope.row.orderNumber}}</template>
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination-container">
+    <!-- <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
@@ -111,13 +101,12 @@
         :page-sizes="[5,10,15]"
         :total="total">
       </el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
   import {formatDate} from '@/utils/date';
-  import {getCoupon} from '@/api/coupon';
-  import {fetchList as fetchCouponHistoryList} from '@/api/couponHistory';
+  import {getCoupon,fetchListByStatus} from '@/api/coupon';
 
   const defaultTypeOptions = [
     {
@@ -138,10 +127,10 @@
     }
   ];
   const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
-    useStatus: null,
-    orderSn: null,
+    pageNum: 0,
+    pageSize: 20,
+    Status: null,
+    orderNumber: null,
     couponId: null
   };
   const defaultUseTypeOptions= [
@@ -209,7 +198,7 @@
           return 'N/A';
         }
         let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd')
+        return formatDate(date, 'MM/dd/yyyy')
       },
       formatStatus(endTime) {
         let now = new Date().getTime();
@@ -245,11 +234,12 @@
     },
     methods: {
       getList(){
-        //this.listLoading=true;
-        fetchCouponHistoryList(this.listQuery).then(response=>{
+        this.listLoading=true;
+        //这个需要根据状态和优惠券id查询，要不然不知道是哪一个id
+        fetchListByStatus(1).then(response=>{
           this.listLoading=false;
-          this.list=response.data.list;
-          this.total=response.data.total;
+          this.list=response.data;
+          //this.total=response.data.total;
         });
       },
       handleResetSearch() {
@@ -274,8 +264,8 @@
 </script>
 <style scoped>
   .app-container {
-    width: 80%;
-    margin: 20px auto;
+    width: 100%;
+    margin: 0px auto;
   }
 
   .filter-container {
@@ -283,7 +273,7 @@
   }
 
   .table-layout {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     border-left: 1px solid #DCDFE6;
     border-top: 1px solid #DCDFE6;
   }
@@ -304,7 +294,8 @@
     border-right: 1px solid #DCDFE6;
     border-bottom: 1px solid #DCDFE6;
     padding: 10px;
-    background: #F2F6FC;
+    /* background: #F2F6FC; */
+    background:#f2f2f2;
     text-align: center;
     font-size: 14px;
     color: #303133;

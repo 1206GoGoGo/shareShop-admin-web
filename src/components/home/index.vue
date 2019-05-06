@@ -11,7 +11,7 @@
         </el-col>
       </el-row>
       <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
-      <el-row :gutter="25">
+      <!-- <el-row :gutter="25">
           <el-col :xs="10" :sm="10" :lg="12" class="card-panel-col">
             <el-card class="box-card">
               <register></register>
@@ -27,7 +27,7 @@
         <el-card class="box-card">
           <echart></echart>
         </el-card>
-      </el-row>
+      </el-row> -->
   </div>
 </template>
 
@@ -116,7 +116,7 @@ export default {
 
 <style scoped>
   .home-container{
-    padding: 25px;
+    padding: 25px 25px 0px 25px;
     background-color: #f2f2f2;
   }
 </style>

@@ -1,12 +1,13 @@
 <template> 
   <el-card class="form-container" shadow="never">
     <el-form :model="coupon"
+             inline-message
              :rules="rules"
              ref="couponFrom"
              label-width="150px"
              size="small">
       <el-form-item label="优惠券类型：">
-        <el-select v-model="coupon.type">
+        <el-select v-model="coupon.type" clearable="true">
           <el-option
             v-for="type in typeOptions"
             :key="type.value"
@@ -18,25 +19,38 @@
       <el-form-item label="优惠券名称：" prop="name">
         <el-input v-model="coupon.name" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="总发行量：" prop="publishCount">
-        <el-input v-model.number="coupon.publishCount" placeholder="只能输入正整数" class="input-width"></el-input>
+      <el-form-item label="总发行量：" prop="amount">
+        <el-input v-model.number="coupon.amount" placeholder="只能输入正整数" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="面额：" prop="amount">
-        <el-input v-model.number="coupon.amount" placeholder="面值只能是数值，限2位小数" class="input-width">
+      <el-form-item label="面额：" prop="faceValue">
+        <el-input v-model.number="coupon.faceValue" placeholder="面值只能是数值，限2位小数" class="input-width">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="使用门槛：" prop="minPoint">
-        <el-input v-model.number="coupon.minPoint" placeholder="只能输入正整数" class="input-width">
+      <el-form-item label="使用门槛：" prop="useCondition">
+        <el-input v-model.number="coupon.useCondition" placeholder="只能输入正整数" class="input-width">
           <template slot="prepend">满</template>
           <template slot="append">元可用</template>
         </el-input>
       </el-form-item>
       <el-form-item label="有效期：">
-        <el-date-picker type="date" placeholder="选择日期" v-model="coupon.startTime" style="width: 150px"></el-date-picker>
-        <span style="margin-left: 20px;margin-right: 20px">至</span>
-        <el-date-picker type="date" placeholder="选择日期" v-model="coupon.endTime" style="width: 150px"></el-date-picker>
+        <el-date-picker type="date" placeholder="选择日期" v-model="coupon.startTime" style="width: 200px"></el-date-picker>
+        <span style="margin-left: 20px;margin-right: 20px">To</span>
+        <el-date-picker type="date" placeholder="选择日期" v-model="coupon.endTime" style="width: 200px"></el-date-picker>
       </el-form-item>
+      <el-form-item label="图片：">
+        <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      </el-form-item>
+      
+
       <el-form-item label="可使用商品：">
         <el-radio-group v-model="coupon.useType">
           <el-radio-button :label="0">全场通用</el-radio-button>
@@ -126,8 +140,8 @@
 </template>
 <script>
   import {createCoupon,getCoupon,updateCoupon} from '@/api/coupon';
-  import {fetchSimpleList as fetchProductList} from '@/api/product';
-  import {fetchListWithChildren} from '@/api/productCate'
+  // import {fetchSimpleList as fetchProductList} from '@/api/product';
+  // import {fetchListWithChildren} from '@/api/productCate'
   const defaultCoupon = {
     type: 0,
     name: null,
@@ -145,36 +159,19 @@
   };
   const defaultTypeOptions = [
     {
-      label: '全场赠券',
+      label: '现金券',
       value: 0
     },
     {
-      label: '会员赠券',
+      label: '满减券',
       value: 1
     },
     {
-      label: '购物赠券',
-      value: 2
-    },
-    {
-      label: '注册赠券',
-      value: 3
-    }
-  ];
-  const defaultPlatformOptions = [
-    {
-      label: '全平台',
-      value: 0
-    },
-    {
-      label: '移动平台',
-      value: 1
-    },
-    {
-      label: 'PC平台',
+      label: '折扣券',
       value: 2
     }
   ];
+
   export default {
     name: 'detail_coupon',
     props: {
@@ -185,9 +182,10 @@
     },
     data() {
       return {
+        imageUrl: '',
         coupon: Object.assign({}, defaultCoupon),
         typeOptions: Object.assign({}, defaultTypeOptions),
-        platformOptions: Object.assign({}, defaultPlatformOptions),
+        //platformOptions: Object.assign({}, defaultPlatformOptions),
         rules: {
           name: [
             {required: true, message: '请输入优惠券名称', trigger: 'blur'},
@@ -219,6 +217,22 @@
       this.getProductCateList();
     },
     methods:{
+      handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -351,6 +365,29 @@
 <style scoped>
   .input-width {
     width: 60%;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>
 

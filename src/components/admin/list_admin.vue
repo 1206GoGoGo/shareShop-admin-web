@@ -54,10 +54,9 @@
             <span>Administrator List</span>
             <el-button
                 class="btn-add1"
+                type="primary"
                 @click="handleAddAdmin()"
-                size="mini">
-                Add
-            </el-button>
+                size="mini">Add</el-button>
         </el-card>
 <!--列表内容-->
         <div class="table-container">

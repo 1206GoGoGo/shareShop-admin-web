@@ -32,7 +32,7 @@
             <el-input  v-model="listQuery.productName" style="width: 203px" placeholder="商品名称"></el-input>
           </el-form-item>
           <el-form-item label="商品编号：">
-            <el-input v-model="listQuery.productCode" style="width: 203px"  placeholder="商品编号"></el-input>
+            <el-input v-model="listQuery.spu" style="width: 203px"  placeholder="商品编号"></el-input>
           </el-form-item>
           <!-- <el-form-item label="商品品牌：">
             <el-select v-model="listQuery.brandId" placeholder="请选择品牌" clearable>
@@ -54,7 +54,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="审核状态：">
+          <!-- <el-form-item label="审核状态：">
             <el-select v-model="listQuery.auditStatus" style="width:203px" placeholder="全部" clearable>
               <el-option
                 v-for="item in verifyStatusOptions"
@@ -63,7 +63,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="商品分类：">
               <el-cascader
                   style="width:203px"
@@ -89,7 +89,7 @@
           border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="商品编号" width="140" align="center">
-          <template slot-scope="scope">{{scope.row.productCode}}</template>
+          <template slot-scope="scope">{{scope.row.spu}}</template>
         </el-table-column>
         <el-table-column label="商品名称" width="200" align="center">
           <template slot-scope="scope">
@@ -98,17 +98,17 @@
           </template>
         </el-table-column>
         <el-table-column label="商品图片" width="200" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.mainImage"></template>
         </el-table-column>
-        <el-table-column label="价格" width="160" align="center">
+        <!-- <el-table-column label="价格" width="160" align="center">
           <template slot-scope="scope">
             <p>价格：${{scope.row.price}}</p>
-            <p>货号：{{scope.row.productSn}}</p>
+            <p>货号：{{scope.row.spu}}</p>
           </template>
-        </el-table-column>
-        <el-table-column label="标签" width="140" align="center">
+        </el-table-column> -->
+        <el-table-column label="标签" width="180" align="center">
           <template slot-scope="scope">
-            <p>上架：
+            <p><span style="width:140px;">上架：</span>
               <el-switch
                 @change="handlePublishStatusChange(scope.$index, scope.row)"
                 :active-value="1"
@@ -116,20 +116,20 @@
                 v-model="scope.row.publishStatus">
               </el-switch>
             </p>
-            <p>新品：
-              <el-switch
-                @change="handleNewStatusChange(scope.$index, scope.row)"
-                :active-value="1"
-                :inactive-value="0"
-                v-model="scope.row.newStatus">
-              </el-switch>
-            </p>
-            <p>推荐：
+            <p><span style="width:140px;">推荐：</span>
               <el-switch
                 @change="handleRecommendStatusChange(scope.$index, scope.row)"
                 :active-value="1"
                 :inactive-value="0"
                 v-model="scope.row.recommandStatus">
+              </el-switch>
+            </p>
+            <p><span style="width:140px;">可用优惠券：</span>
+              <el-switch
+                @change="handleNewStatusChange(scope.$index, scope.row)"
+                :active-value="1"
+                :inactive-value="0"
+                v-model="scope.row.newStatus">
               </el-switch>
             </p>
           </template>
@@ -142,7 +142,17 @@
             <el-button type="primary" icon="el-icon-edit" @click="handleShowSkuEditDialog(scope.$index, scope.row)" circle></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="销量" sortable width="100" align="center">
+        <el-table-column label="折扣比率" sortable width="140" align="center">
+          <template slot-scope="scope">{{scope.row.discountRate}}%</template>
+        </el-table-column>
+        <el-table-column label="商品评分" sortable width="140" align="center">
+          <template slot-scope="scope">{{scope.row.score}}</template>
+        </el-table-column>
+        <el-table-column label="商品库存" sortable width="140" align="center">
+          <template slot-scope="scope">{{scope.row.stock}}</template>
+        </el-table-column>
+        <!--销量、被收藏次数、加购物车次数、需要统计出来！！！！！！！！！！！！！！！！！！！！！！-->
+        <!-- <el-table-column label="销量" sortable width="100" align="center">
           <template slot-scope="scope">{{scope.row.sale}}</template>
         </el-table-column>
         <el-table-column label="被收藏次数" sortable width="120" align="center">
@@ -150,11 +160,11 @@
         </el-table-column>
         <el-table-column label="加购物车次数" sortable width="130" align="center">
           <template slot-scope="scope">{{scope.row.sale}}</template>
-        </el-table-column>
-        <el-table-column label="审核状态" width="100" align="center">
+        </el-table-column> -->
+        <!-- <el-table-column label="审核状态" width="100" align="center">
           <template slot-scope="scope">
             <p>{{scope.row.auditStatus}}</p>
-            <!-- <p>{{scope.row.auditStatus | auditStatusFilter}}</p> -->
+            <p>{{scope.row.auditStatus | auditStatusFilter}}</p>
             <p>
               <el-button
                 type="text"
@@ -162,31 +172,18 @@
               </el-button>
             </p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
-            <!--需要设置查询商品收藏、商品被加购物车的情况-->
-            <p>
-              <el-button
-                size="mini"
-                @click="handleShowProduct(scope.$index, scope.row)">查看
-              </el-button>
-              <el-button
-                size="mini"
-                @click="handleUpdateProduct(scope.$index, scope.row)">编辑
-              </el-button>
-            </p>
-            <p>
-              <el-button
-                size="mini"
-                @click="handleShowLog(scope.$index, scope.row)">日志
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
-            </p>
+            <el-button size="mini"
+                type="text"
+                @click="handleView(scope.$index, scope.row)">查看</el-button>
+            <el-button size="mini"
+                type="text"
+                @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini"
+                type="text"
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -286,14 +283,19 @@
 
 <script>
 import {fetchListLevel,fetchListChildrenLevel} from '@/api/productCate'
+import {fetchList} from '@/api/product'
+
 const defaultListQuery = {
     // keyword: null,
-    pageNum: 1,
-    pageSize: 5,
+    pageNum: 0,
+    pageSize: 20,
     productName:null, //商品名称
     publishStatus: null,  //上下架状态
     auditStatus: null,  //审核状态
-    productCode: null,  //商品编号
+    spu: null,  //商品编号
+    discountRate:null,//折扣
+    stock:null, //库存
+    score:null,
     // sale:null,
     // pic:null,
     // price:null,
@@ -356,7 +358,10 @@ export default {
     },
     
     created(){
-        this.getProductCateList();
+      //获取商品信息
+      this.getProductList();
+      //获取商品分类
+      this.getProductCateList();
     },
 
     watch: {
@@ -374,6 +379,19 @@ export default {
       handleResetSearch() {
         this.selectProductCateValue = [];
         this.listQuery = Object.assign({}, defaultListQuery);
+      },
+
+      //查看商品信息
+      getProductList()
+      {
+        fetchList(this.listQuery).then(response=>{
+            this.list=response.data;
+        })
+      },
+
+      //查看详情
+      handleView(index,row){
+        this.$router.push({path:'/product/product_list/product_info',query: {id: row.productId}});
       },
 
       //显示商品分类 完整版

@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
 <!--条件查询/添加、按钮 S--------------------------------------------------------------------------->
-        <el-card shadow="never">
-            <el-form :inline="true" size="small" label-width="100px" :model="productCate" :rules="rules" ref="productCateFrom" style="margin-bottom:0px;">
+        <!-- <el-card shadow="never"> -->
+            <el-form :inline="true" size="small" label-width="90px" :model="productCate" :rules="rules" ref="productCateFrom" style="margin-bottom:0px;">
                 <el-form-item label="商品分类：">
                     <!-- :props="props" -->
                     <el-cascader
@@ -21,7 +21,7 @@
                 <el-button @click="handleAddAttrKey()" size="small" type="primary" class="btn-add">添加属性</el-button>
                 <el-button @click="handleAddAttrValue()"  size="small" type="primary" class="btn-add" >添加属性值</el-button>
             </el-form> 
-        </el-card>
+        <!-- </el-card> -->
 <!--添加、按钮 E--------------------------------------------------------------------------->
         <!-- v-loading="listLoading"  @selection-change="handleSelectionChange"-->
         <div class="table-container">

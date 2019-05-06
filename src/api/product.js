@@ -8,11 +8,23 @@ import request from '@/utils/request'
 //     params:params
 //   })
 // }
+
+//--------------------------------获取商品列表（参数为页码）---------------------------
 export function fetchList(params) {
   return request({
-    url:'/product/list',
+    url:'/pro/info/getList',
     method:'get',
     params:params
+  })
+}
+
+
+//--------------------------------根据商品id获取商品列表------------------------------------
+export function getProductInfo(id) {
+  return request({
+    url:'/pro/info/getDetail?id='+id,
+    method:'get',
+    // params:params
   })
 }
 

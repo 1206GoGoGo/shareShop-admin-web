@@ -1,12 +1,39 @@
 <template>
-    <div >
-    <!-- class="home-container"     -->
+    <div class="home-container">
+        <div>
+            <el-form :inline="true" size="small">
+                <el-form-item>
+                    <el-date-picker
+                        style="width:203px"
+                        v-model="beginTime1"
+                        type="date"
+                        placeholder="Please select time"
+                        align="right"
+                        format="yyyy-MM-dd 0:0:0"
+                        :picker-options="pickerOptions1">
+                    </el-date-picker>
+                    -
+                    <el-date-picker
+                        v-model="endTime1"
+                        style="width:203px"
+                        type="date"
+                        placeholder="Please select time"
+                        align="right"
+                        format="yyyy-MM-dd 0:0:0"
+                        :picker-options="pickerOptions1">
+                    </el-date-picker>
+                    <el-button type="primary" style="margin-left:10px;" @click="handleSearchList">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <el-card class="box-card">
+            <Mechart></Mechart>
+        </el-card>
         <div>
             <div class="pro-form">
-                <el-form :inline="true" label-width="100px" size="small" ref="productCateFrom">
+                <el-form :inline="true"  size="small" ref="productCateFrom">
                     <el-form-item label="商品分类：">
                         <el-cascader
-                            style="width:203px;"
                             placeholder="please selete"
                             expand-trigger="click"
                             clearable
@@ -35,61 +62,13 @@
                             format="yyyy-MM-dd 0:0:0"
                             :picker-options="pickerOptions1">
                         </el-date-picker>
-                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">查询</el-button>
-                        <el-button type="primary" style="margin-left:10px;" size="small" @click="handleSearchList">导出</el-button>
+                    <el-button type="primary" style="margin-left:10px;" @click="handleSearchList">查询</el-button>
                     </el-form-item>
                 </el-form> 
             </div>
-
-            <!--列表 class="table-container" S  @selection-change="handleSelectionChange"  -->
-        <div >
-            <el-table ref="productTable"
-                    highlight-current-row
-                    
-                    :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
-                    :data="list"
-                    style="width: 100%"
-                    
-                    v-loading="listLoading"
-                    fixed
-                    show-summary
-                    :summary-method="getSummaries"
-                    border>     
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="No." width="80" type="index" align="center">
-                    <!-- <template slot-scope="scope">{{scope.row.managerInfoId}}</template> -->
-                </el-table-column>
-                <!-- <el-table-column label="商品名称"  align="center">
-                    <template slot-scope="scope">{{scope.row.userLogin.productName}}</template>
-                </el-table-column> -->
-                <!-- <el-table-column label="销量" sortable  width="120"  align="center">
-                    <template slot-scope="scope">{{scope.row.userLogin.Quantity }}</template>
-                </el-table-column> -->
-                <el-table-column label="总销售额" sortable  align="center">
-                    <template slot-scope="scope">{{scope.row.money}}</template>
-                </el-table-column> 
-                <el-table-column label="seller销售额" sortable  align="center">
-                    <template slot-scope="scope">{{scope.row.money}}</template>
-                </el-table-column> 
-                <el-table-column label="商品成本" sortable width="160" align="center">
-                    <template slot-scope="scope">{{scope.row.number}}</template>
-                </el-table-column> 
-            </el-table>
-<!--分页 S-->
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="20"
-                  layout=" prev, pager, next"
-                  :total="count">
-                </el-pagination>
-            </div>
-<!--分页 E-->
-        </div>
-<!--列表 E--> 
-
+            <el-card class="box-card">
+                <Mechart></Mechart>
+            </el-card>
         </div>
     </div>
 </template>
@@ -301,8 +280,8 @@ export default{
         font-size: 25px;
         padding:1px 0px 0px 0px;
     }
-    /* .pro-form{
+    .pro-form{
         padding: 20px 0px 5px;
-    } */
+    }
     
 </style>
