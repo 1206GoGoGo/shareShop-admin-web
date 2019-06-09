@@ -10,7 +10,7 @@
         <el-col :span="18" class="table-cell">{{product.productName}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="table-cell-title">好评率</el-col>
+        <el-col :span="6" class="table-cell-title">评分</el-col>
         <el-col :span="6" class="table-cell-title">销量</el-col>
         <el-col :span="6" class="table-cell-title">收藏数</el-col>
         <el-col :span="6" class="table-cell-title">加购物车数</el-col>

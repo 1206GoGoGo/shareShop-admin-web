@@ -1,38 +1,13 @@
 <template> 
   <div class="app-container">
     <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
-      <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          style="float:right;"
-          @click="handleAddProduct()"
-          size="small"
-          type="primary">
-          添加
-        </el-button>
-        <el-button
-          style="float: right;margin-right: 10px"
-          @click="handleResetSearch()"
-          type="primary"
-          size="small">
-          重置
-        </el-button>
-        <el-button
-          style="float: right"
-          @click="handleSearchList()"
-          type="primary"
-          size="small">
-          查询
-        </el-button>
-      </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="120px">
           <el-form-item label="商品名称：">
-            <el-input  v-model="listQuery.productName" style="width: 203px" placeholder="商品名称"></el-input>
+            <el-input  v-model="listQuery.productName" style="width: 203px" placeholder="All"></el-input>
           </el-form-item>
           <el-form-item label="商品编号：">
-            <el-input v-model="listQuery.spu" style="width: 203px"  placeholder="商品编号"></el-input>
+            <el-input v-model="listQuery.spu" style="width: 203px"  placeholder="All"></el-input>
           </el-form-item>
           <!-- <el-form-item label="商品品牌：">
             <el-select v-model="listQuery.brandId" placeholder="请选择品牌" clearable>
@@ -45,7 +20,7 @@
             </el-select>
           </el-form-item> -->
           <el-form-item label="上架状态：">
-            <el-select v-model="listQuery.publishStatus" style="width:203px" placeholder="全部" clearable>
+            <el-select v-model="listQuery.publishStatus" style="width:203px" placeholder="All" clearable>
               <el-option
                 v-for="item in publishStatusOptions"
                 :key="item.value"
@@ -67,7 +42,7 @@
           <el-form-item label="商品分类：">
               <el-cascader
                   style="width:203px"
-                  placeholder="please selete"
+                  placeholder="All"
                   expand-trigger="click"
                   clearable
                   v-model="listQuery.id"
@@ -75,6 +50,27 @@
                   :show-all-levels="false">
               </el-cascader>
           </el-form-item>
+          <el-button
+          style="float:right;margin-right: 10px"
+          @click="handleAddProduct()"
+          size="small"
+          type="primary">
+          添加
+        </el-button>
+        <el-button
+          style="float: right;margin-right: 10px"
+          @click="handleResetSearch()"
+          type="primary"
+          size="small">
+          重置
+        </el-button>
+        <el-button
+          style="float: right;margin-right: 10px"
+          @click="handleSearchList()"
+          type="primary"
+          size="small">
+          查询
+        </el-button>
         </el-form>
       </div>
     </el-card>
@@ -88,6 +84,7 @@
           v-loading="listLoading"
           border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
+        <el-table-column type="index" label="编号" width="60" align="center"></el-table-column>
         <el-table-column label="商品编号" width="140" align="center">
           <template slot-scope="scope">{{scope.row.spu}}</template>
         </el-table-column>
@@ -111,26 +108,23 @@
                 v-model="scope.row.publishStatus">
               </el-switch>
             </div>
-            <!-- <p> -->
-              <div>
-                <span style="float:left; width:90px;">推荐：</span>
-                <el-switch
-                  @change="handleRecommendStatusChange(scope.$index, scope.row)"
-                  :active-value="1"
-                  :inactive-value="0"
-                  v-model="scope.row.recommandStatus">
-                </el-switch>
-              </div>
-            <!-- </p> -->
-            <!-- <p> -->
+            <div>
+              <span style="float:left; width:90px;">推荐：</span>
+              <el-switch
+                @change="handleRecommendStatusChange(scope.$index, scope.row)"
+                :active-value="1"
+                :inactive-value="0"
+                v-model="scope.row.recommandStatus">
+              </el-switch>
+            </div>
             <div>
               <span style="float:left; width:90px;">可用优惠券：</span>
-                <el-switch
-                  @change="handleNewStatusChange(scope.$index, scope.row)"
-                  :active-value="1"
-                  :inactive-value="0"
-                  v-model="scope.row.newStatus">
-                </el-switch>
+              <el-switch
+                @change="handleNewStatusChange(scope.$index, scope.row)"
+                :active-value="1"
+                :inactive-value="0"
+                v-model="scope.row.newStatus">
+              </el-switch>
             </div>
             <!-- </p> -->
           </template>
@@ -221,10 +215,10 @@
         :total="total">
       </el-pagination>
     </div> -->
-    <!-- <el-dialog
+    <el-dialog
       title="编辑货品信息"
       :visible.sync="editSkuInfo.dialogVisible"
-      width="40%">
+      width="70%">
       <span>商品货号：</span>
       <span>{{editSkuInfo.productSn}}</span>
       <el-input placeholder="按sku编号搜索" v-model="editSkuInfo.keyword" size="small" style="width: 50%;margin-left: 20px">
@@ -278,7 +272,7 @@
         <el-button @click="editSkuInfo.dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleEditSkuConfirm">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
@@ -307,6 +301,15 @@ const defaultListQuery = {
 export default {
     data(){
       return{
+        editSkuInfo:{
+          dialogVisible:false,
+          productId:null,
+          productSn:'',
+          productAttributeCategoryId:null,
+          stockList:[],
+          productAttr:[],
+          keyword:null
+        },
         productCateOptions:[],
         listQuery: Object.assign({}, defaultListQuery),
         operateType:null,
@@ -386,7 +389,7 @@ export default {
       getProductList()
       {
         fetchList(this.listQuery).then(response=>{
-            this.list=response.data;
+            this.list=response.data.indata;
         })
       },
 
@@ -433,6 +436,20 @@ export default {
         this.$router.push({path: '/product/add_product'})
       },
       
+      //
+      handleShowSkuEditDialog(index,row){
+        this.editSkuInfo.dialogVisible=true;
+        this.editSkuInfo.productId=row.id;
+        this.editSkuInfo.productSn=row.productSn;
+        this.editSkuInfo.productAttributeCategoryId = row.productAttributeCategoryId;
+        this.editSkuInfo.keyword=null;
+        fetchSkuStockList(row.id,{keyword:this.editSkuInfo.keyword}).then(response=>{
+          this.editSkuInfo.stockList=response.data;
+        });
+        fetchProductAttrList(row.productAttributeCategoryId,{type:0}).then(response=>{
+          this.editSkuInfo.productAttr=response.data.list;
+        });
+      },
     },
 }
 </script>

@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 import Layout from '@/components/layout/Layout'
 
-//const login = r => require.ensure([], () => r(require('@/components/login/login')), 'login');
+// const login = r => require.ensure([], () => r(require('@/components/login/login')), 'login');
 
 //管理员路由
 const list_kinds = r => require.ensure([], () => r(require('@/components/admin/list_kinds')), 'list_kinds');
@@ -24,6 +24,9 @@ const add_product = r => require.ensure([], () => r(require('@/components/produc
 const list_product = r => require.ensure([], () => r(require('@/components/product/list_product')), 'list_product');
 const product_info = r => require.ensure([], () => r(require('@/components/product/product_list/product_info')), 'product_info');
 
+const product_comment = r => require.ensure([], () => r(require('@/components/product/product_comment/comment_user')), 'comment_user');
+
+
 //商品属性
 const attr_product = r => require.ensure([], () => r(require('@/components/product/product_Attributes/attr_product')), 'attr_product');
 const add_attr = r => require.ensure([], () => r(require('@/components/product/product_Attributes/add_attr')), 'add_attr');
@@ -40,6 +43,15 @@ const add_recommend = r => require.ensure([], () => r(require('@/components/prod
 const list_orders = r => require.ensure([], () => r(require('@/components/orders/list_orders')), 'list_orders');
 const return_orders = r => require.ensure([], () => r(require('@/components/orders/return_orders')), 'return_orders');
 const return_money = r => require.ensure([], () => r(require('@/components/orders/return_money')), 'return_money');
+const return_detail = r => require.ensure([], () => r(require('@/components/orders/return_detail')), 'return_detail');
+const handle_return = r => require.ensure([], () => r(require('@/components/orders/handle_return')), 'handle_return');
+
+
+
+const detail_orders = r => require.ensure([], () => r(require('@/components/orders/detail_orders')), 'detail_orders');
+
+
+
 
 //优惠券
 const list_coupon = r => require.ensure([], () => r(require('@/components/coupon/list_coupon')), 'list_coupon');
@@ -50,10 +62,28 @@ const update_coupon = r => require.ensure([], () => r(require('@/components/coup
 //评价
 const view_user = r => require.ensure([], () => r(require('@/components/news/view_user')), 'view_user');
 const comment_user = r => require.ensure([], () => r(require('@/components/news/comment_user')), 'comment_user');
+
 //统计
-const list_income = r => require.ensure([], () => r(require('@/components/statistics/list_income')), 'list_income');
-const statistic_product = r => require.ensure([], () => r(require('@/components/statistics/statistic_product')), 'statistic_product');
-const list_user = r => require.ensure([], () => r(require('@/components/statistics/list_user')), 'list_user');
+const list_income = r => require.ensure([], () => r(require('@/components/statistics/income/list_income')), 'list_income');
+const list_incomeByMonth = r => require.ensure([], () => r(require('@/components/statistics/income/list_incomeByMonth')), 'list_incomeByMonth');
+const list_income_productCate = r => require.ensure([], () => r(require('@/components/statistics/income/list_income_productCate')), 'list_income_productCate');
+const list_incomeByDay = r => require.ensure([], () => r(require('@/components/statistics/income/list_incomeByDay')), 'list_incomeByDay');
+const list_income_product = r => require.ensure([], () => r(require('@/components/statistics/income/list_income_product')), 'list_income_product');
+const list_income_productCate3 = r => require.ensure([], () => r(require('@/components/statistics/income/list_income_productCate3')), 'list_income_productCate3');
+
+const statistic_product = r => require.ensure([], () => r(require('@/components/statistics/product/statistic_product')), 'statistic_product');
+const list_productByDay = r => require.ensure([], () => r(require('@/components/statistics/product/list_productByDay')), 'list_productByDay');
+const list_productByMonth = r => require.ensure([], () => r(require('@/components/statistics/product/list_productByMonth')), 'list_productByMonth');
+const list_productDetail = r => require.ensure([], () => r(require('@/components/statistics/product/list_productDetail')), 'list_productDetail');
+const list_productCateDetail1 = r => require.ensure([], () => r(require('@/components/statistics/product/list_productCateDetail1')), 'list_productCateDetail1');
+const list_productCateDetail2 = r => require.ensure([], () => r(require('@/components/statistics/product/list_productCateDetail2')), 'list_productCateDetail2');
+
+
+const list_user = r => require.ensure([], () => r(require('@/components/statistics/user/list_user')), 'list_user');
+const list_yearRegister = r => require.ensure([], () => r(require('@/components/statistics/user/list_yearRegister')), 'list_yearRegister');
+const list_monthRegister = r => require.ensure([], () => r(require('@/components/statistics/user/list_monthRegister')), 'list_monthRegister');
+const list_yearVisit = r => require.ensure([], () => r(require('@/components/statistics/user/list_yearVisit')), 'list_yearVisit');
+const list_monthVisit = r => require.ensure([], () => r(require('@/components/statistics/user/list_monthVisit')), 'list_monthVisit');
 
 const home = r => require.ensure([], () => r(require('@/components/home')), 'home');
 
@@ -175,6 +205,12 @@ const routes = [
 					component: product_info,
 					meta: ['Product', 'List','Information'],
 				},
+				{
+					path: '/product/product_comment/comment_user',
+					component: comment_user,
+					meta: ['Product', 'List','Comment'],
+				},
+				
 
 				//商品属性
 				{
@@ -241,6 +277,21 @@ const routes = [
 					path: '/orders/return_money',
 					component: return_money,
 					meta: ['Order','Return','Money'],
+				},
+				{
+					path: '/orders/return_detail',
+					component: return_detail,
+					meta: ['Order','Return','Detail'],
+				},
+				{
+					path: '/orders/handle_return',
+					component: handle_return,
+					meta: ['Order','Return'],
+				},
+				{
+					path: '/orders/detail_orders',
+					component: detail_orders,
+					meta: ['Order','Detail'],
 				},
 			]
 		},
@@ -313,20 +364,90 @@ const routes = [
 			children:
 			[
 				{
-					path: '/statistics/list_income',
+					path: '/statistics/income/list_income',
 					component: list_income,
 					meta: ['Statistics','Income'],
 				},
 				{
-					path: '/statistics/list_user',
+					path: '/statistics/income/list_income_product',
+					component: list_income_product,
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/income/list_income_productCate3',
+					component: list_income_productCate3,
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/income/list_incomeByMonth',
+					component: list_incomeByMonth,
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/income/list_income_productCate',
+					component: list_income_productCate,
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/income/list_incomeByDay',
+					component: list_incomeByDay,
+					meta: ['Statistics','Income'],
+				},
+				{
+					path: '/statistics/user/list_user',
 					component: list_user,
 					meta: ['Statistics','User'],
 				},
 				{
-					path: '/statistics/statistic_product',
+					path: '/statistics/user/list_yearRegister',
+					component: list_yearRegister,
+					meta: ['Statistics','User'],
+				},
+				{
+					path: '/statistics/user/list_monthRegister',
+					component: list_monthRegister,
+					meta: ['Statistics','User'],
+				},
+				{
+					path: '/statistics/user/list_yearVisit',
+					component: list_yearVisit,
+					meta: ['Statistics','User'],
+				},
+				{
+					path: '/statistics/user/list_monthVisit',
+					component: list_monthVisit,
+					meta: ['Statistics','User'],
+				},
+				{
+					path: '/statistics/product/statistic_product',
 					component: statistic_product,
 					meta: ['Statistics','Product'],
 				},
+				{
+					path: '/statistics/product/list_productByDay',
+					component: list_productByDay,
+					meta: ['Statistics','Product'],
+				},
+				{
+					path: '/statistics/product/list_productByMonth',
+					component: list_productByMonth,
+					meta: ['Statistics','Product'],
+				},
+				{
+					path: '/statistics/product/list_productDetail',
+					component: list_productDetail,
+					meta: ['Statistics','Product'],
+				},
+				{
+					path: '/statistics/product/list_productCateDetail1',
+					component: list_productCateDetail1,
+					meta: ['Statistics','Product'],
+				},
+				{
+					path: '/statistics/product/list_productCateDetail2',
+					component: list_productCateDetail2,
+					meta: ['Statistics','Product'],
+				},	
 			]
 		},	
 	]

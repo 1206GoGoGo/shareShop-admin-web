@@ -281,7 +281,6 @@ export default {
             });
         },
 
-        
         //编辑里面的商品所属分类
         getProductCateList()
         {

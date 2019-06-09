@@ -2,13 +2,21 @@ import request from '@/utils/request'
 
 
 
-//订单查询：根据///////查询 
+//订单查询：根据///////查询-----------------------------------------------------------
 export function fetchProductList(params) { 
     return request({
-    url:'/member/order/getListSearch',
+    url:'/member/order/getListSearch',  
     method:'get',
     params:params
     })
+}
+
+//订单查询：根据订单id获取所有信息----------------------------------------------------------- 
+export function getOrdersByOrdersId(id) { 
+  return request({
+  url:'/member/order/getDetail?id='+id,  
+  method:'get',
+  })
 }
 
 ////订单查询：根据商品id查询 

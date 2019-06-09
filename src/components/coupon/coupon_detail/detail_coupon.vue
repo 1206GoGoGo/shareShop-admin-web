@@ -49,8 +49,6 @@
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       </el-form-item>
-      
-
       <el-form-item label="可使用商品：">
         <el-radio-group v-model="coupon.useType">
           <el-radio-button :label="0">全场通用</el-radio-button>

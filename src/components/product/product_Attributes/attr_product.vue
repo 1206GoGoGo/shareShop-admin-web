@@ -29,6 +29,7 @@
                 highlight-current-row
                 :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
                 :data="list"
+                size="medium"
                 style="width: 100%"
                 
                 border>
@@ -148,7 +149,7 @@
 
 <script>
 import {fetchListLevel,fetchListChildrenLevel,getCategoryById} from '@/api/productCate'
-import {fetchAttrList,AddAttributeValue,AddAttributeKey,fetchKeyByCategoryID,fetchValueByKeyID,fetchAttrNameList} from '@/api/productAttr'
+import {fetchAttrList,AddAttributeValue,AddAttributeKey,fetchAttrByCategoryId,fetchValueByKeyID,fetchAttrNameList} from '@/api/productAttr'
 import {fetchListBycategoryId} from '@/api/statistics'
 import {formatDate} from '@/utils/date';
 
@@ -204,7 +205,6 @@ export default {
             // props:{
             //     label:null,
             // },
-            z:0,
             valueList:null,
             AttrNameOptions:[],
             productCate: Object.assign({}, defaultProductCate),
@@ -277,7 +277,7 @@ export default {
             // })
             //根据商品分类id查询商品key值
             this.listLoading = true;
-            fetchKeyByCategoryID(3).then(response => {
+            fetchAttrByCategoryId(3).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
                 // this.list.attrName = response.data.attrName;
@@ -384,7 +384,7 @@ export default {
             //值为undefined
 
             //根据商品分类id查询商品key值
-            fetchKeyByCategoryID(this.productCate.productCategoryId).then(response => {
+            fetchAttrByCategoryId(this.productCate.productCategoryId).then(response => {
                 this.listLoading = false;
                 this.list = response.data;
             });
@@ -405,7 +405,7 @@ export default {
                     // ]);
 
                     //为什么这里的属性名称显示不到下拉框里面呢???????????
-                    this.AttrNameOptions = response.data;
+                    // this.AttrNameOptions = response.data;
             //     }
             });
         },

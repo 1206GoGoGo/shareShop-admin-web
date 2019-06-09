@@ -30,10 +30,11 @@
                 <el-menu-item index="/product/recommend/recommend_kinds">推荐商品分类</el-menu-item>
                 <el-menu-item index="/product/recommend/add_recommend">推荐商品记录</el-menu-item>
             </el-submenu>
-            <el-menu-item index="/product/add_product">新增商品</el-menu-item> 
-            <el-menu-item index="/product/list_product">商品列表</el-menu-item><!--包括销售量、库存、总金额-->
-            <el-menu-item index="/product/product_cate/list_cate">商品分类</el-menu-item>
-            <el-menu-item index="/product/product_Attributes/attr_product">商品属性</el-menu-item>
+            <el-menu-item index="/product/add_product">Product Add</el-menu-item> 
+            <el-menu-item index="/product/list_product">Product List</el-menu-item><!--包括销售量、库存、总金额-->
+            <el-menu-item index="/product/product_cate/list_cate">Product Classification</el-menu-item>
+            <el-menu-item index="/product/product_Attributes/attr_product">Product Attribute</el-menu-item>
+            <el-menu-item index="/product/product_comment/comment_user">Product Comment</el-menu-item>
             <!-- <el-menu-item index="2-3">商品级别</el-menu-item> -->
             
                
@@ -43,10 +44,10 @@
 
         <el-submenu index="3">
             <template   slot="title"><svg-icon icon-class="orderside" class="side-icon"></svg-icon>Order</template>  
-            <el-menu-item index="/orders/list_orders">订单列表</el-menu-item><!--包括订单状态-->
+            <el-menu-item index="/orders/list_orders">Order List</el-menu-item><!--包括订单状态-->
             <!-- <el-menu-item index="3-2">订单设置</el-menu-item> -->
-            <el-menu-item index="/orders/return_orders">换货处理</el-menu-item>
-            <el-menu-item index="/orders/return_money">退款处理</el-menu-item>
+            <!-- <el-menu-item index="/orders/return_orders">Refund & Return</el-menu-item> -->
+            <el-menu-item index="/orders/return_money">Refund & Return</el-menu-item>
             <!-- <el-menu-item index="3-3">订单状态</el-menu-item>-->
         </el-submenu>
 
@@ -65,9 +66,9 @@
 
         <el-submenu index="6">
             <template   slot="title"><svg-icon icon-class="statistics" class="side-icon"></svg-icon>Statistics</template>  
-            <el-menu-item index="/statistics/list_income"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>收入统计</el-menu-item>
-            <el-menu-item index="/statistics/statistic_product"><svg-icon icon-class="productside" class="side-icon"></svg-icon>商品统计</el-menu-item>
-            <el-menu-item index="/statistics/list_user"><svg-icon icon-class="Suserside" class="side-icon"></svg-icon>用户统计</el-menu-item>
+            <!-- <el-menu-item index="/statistics/product/statistic_product"><svg-icon icon-class="productside" class="side-icon"></svg-icon>商品统计</el-menu-item> -->
+            <el-menu-item index="/statistics/user/list_user"><svg-icon icon-class="Suserside" class="side-icon"></svg-icon>用户统计</el-menu-item>
+            <el-menu-item index="/statistics/income/list_income"><svg-icon icon-class="incomeside" class="side-icon"></svg-icon>收入统计</el-menu-item>
             <!-- <el-menu-item index="6-2">> 导出表</el-menu-item> -->
         </el-submenu>
 

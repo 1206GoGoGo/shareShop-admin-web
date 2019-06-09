@@ -2,23 +2,6 @@
   <div class="app-container">
     <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
       <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          style="float:right"
-          type="primary"
-          @click="handleSearchList()"
-          size="small">
-          查询
-        </el-button>
-        <el-button
-          style="float:right;margin-right: 15px"
-          @click="handleResetSearch()"
-          size="small">
-          重置
-        </el-button>
-      </div>
-      <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="商品名称：">
             <el-input v-model="listQuery.productName" class="input-width" style="width:203px" placeholder="商品名称"></el-input>
@@ -39,6 +22,19 @@
               </el-option>
               </el-select>
           </el-form-item>
+          <el-button
+          style="float:right"
+          type="primary"
+          @click="handleSearchList()"
+          size="small">
+          查询
+        </el-button>
+        <el-button
+          style="float:right;margin-right: 15px"
+          @click="handleResetSearch()"
+          size="small">
+          重置
+        </el-button>
         </el-form>
       </div>
     </el-card>
@@ -48,77 +44,54 @@
     highlight-current-row
     :header-cell-style="{background:'#f2f2f2',color:'#606266','border-bottom': '1px rgb(103, 194, 58) solid'}"
     style="width: 100%">
-    <el-table-column type="expand">
-      <template slot-scope="props">
+    <!--<el-table-column type="expand">
+       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand" label-width="100px">
+           <el-form-item label="评论时间:">
+            <span>{{ props.row.commentTime }}</span>
+          </el-form-item>
           <el-form-item label="商品货号:">
             <span>{{ props.row.productCode }}</span>
           </el-form-item>
           <el-form-item label="评价用户:">
             <span>{{ props.row.userName }}</span>
           </el-form-item>
-          <!-- <el-form-item label="评论内容:">
+          <el-form-item label="评论内容:">
             <span>{{ props.row.content }}</span>
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item label="重复评论内容:">
             <span>{{ props.row.secondContent }}</span>
           </el-form-item>
-          <!-- <el-form-item label="评论回复:">
+          <el-form-item label="评论回复:">
             <span>{{ props.row.title }}</span>
-          </el-form-item> -->
-          <el-form-item label="评论时间:">
-            <span>{{ props.row.commentTime }}</span>
           </el-form-item>
         </el-form>
       </template>
-    </el-table-column>
-    <el-table-column
-      label="商品名称"
-      align='center'
-      prop="productName">
-    </el-table-column>
-    <el-table-column
-      label="评价内容"
-      align='center'
-      prop="content">
-      </el-table-column>
-      <el-table-column
-      label="评价回复"
-      align='center'
-      prop="title">
-    </el-table-column>
-    <el-table-column label="操作" width="200" align="center">
+    </el-table-column> -->
+    <el-table-column label="商品名称/属性" align='center' width="240" prop="productName"></el-table-column>
+    <el-table-column label="评价内容" align='center' prop="content"></el-table-column>
+    <el-table-column label="操作" width="140" align="center">
         <template slot-scope="scope">
             <el-button
                 size="mini"
-                type="primary"
-                @click="handleShowUser(scope.$index, scope.row)">回复
-            </el-button>
-          <!--  <el-button
-                size="mini"
-                @click="handleUpdateUser(scope.$index, scope.row)">编辑
-            </el-button>
-            </p> <p></p>-->
+                type="text"
+                @click="handleShow(scope.$index, scope.row)">查看
+            </el-button>  
             <el-button
                 size="mini"
-                type="danger"
+                type="text"
+                style="color:#E6A23C;"
+                @click="handleReplay(scope.$index, scope.row)">回复
+            </el-button>
+            <el-button
+                size="mini"
+                type="text"
+                style="color:#F56C6C;"
                 @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
         </template>
     </el-table-column>
   </el-table>
-    <div class="pagination-container">
-        <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            layout="total,sizes,prev, pager, next,jumper"
-            :current-page.sync="listQuery.pageNum"
-            :page-size="listQuery.pageSize"
-            :page-sizes="[5,10,15]"
-            :total="total">
-        </el-pagination>
-    </div>
   </div>        
 </template>
 
@@ -185,17 +158,20 @@ export default {
       }
     },
     methods:{
+      handleShow(){
+        this.$router.push({path:'/'});
+      },
       
       //获取搜索列表
-        getSearchList(){
-            this.listLoading=true;
-            //this.listQuery即为搜索条件
-            fetchList(this.listQuery).then(response => {
-              this.listLoading = false;
-              this.list = response.data.list;
-              this.total = response.data.total;
-            });
-        },
+      getSearchList(){
+          this.listLoading=true;
+          //this.listQuery即为搜索条件
+          fetchList(this.listQuery).then(response => {
+            this.listLoading = false;
+            this.list = response.data.list;
+            this.total = response.data.total;
+          });
+      },
 
         //获取搜索结果
         handleSearchList(val){
@@ -236,6 +212,10 @@ export default {
               });
           })
       },
+      handleReplay(){
+
+      },
+
     },
     
 }

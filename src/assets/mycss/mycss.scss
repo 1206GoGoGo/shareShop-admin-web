@@ -141,10 +141,14 @@ element .style{
 
 //上传图片
 .avatar-uploader-icon[data-v-022ab5cf]{
-    margin:20px;
+    margin:10px;
     border: 1px dashed rgb(96, 98, 102);
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+}
+
+.el-button+.el-button{
+    margin-left:0px;
 }

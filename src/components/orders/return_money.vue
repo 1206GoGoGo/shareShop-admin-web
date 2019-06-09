@@ -1,9 +1,7 @@
 <template> 
     <div class="app-container">
         <el-card class="filter-container" shadow="never" style="background:#f2f2f2;">
-            <div>
-                <i class="el-icon-search"></i>
-                <span>筛选搜索</span>
+            <!-- <div>
                 <el-button
                     style="float:right"
                     type="primary"
@@ -17,14 +15,14 @@
                     size="small">
                     重置
                 </el-button>
-            </div>
-            <div style="margin-top: 15px">
-                <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-                <el-form-item label="订单号：">
-                    <el-input v-model="listQuery.id" class="input-width" style="width:203px" placeholder="订单号"></el-input>
+            </div> -->
+            <div>
+                <el-form :inline="true" :model="listQuery" size="small" label-width="100px">
+                <el-form-item label="订单编号：">
+                    <el-input v-model="listQuery.id" class="input-width" style="width:183px" placeholder="All"></el-input>
                 </el-form-item>
-                <el-form-item label="处理状态：">
-                    <el-select v-model="listQuery.status" placeholder="全部"  style="width:203px" clearable class="input-width">
+                <el-form-item label="退货状态：">
+                    <el-select v-model="listQuery.status" placeholder="All"  style="width:183px" clearable class="input-width">
                     <el-option v-for="item in statusOptions"
                         :key="item.value"
                         :label="item.label"
@@ -38,12 +36,15 @@
                     v-model="listQuery.createTime"
                     value-format="yyyy-MM-dd"
                     type="date"
-                    style="width:203px"
+                    style="width:183px"
                     placeholder="请选择时间">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="操作人员：">
-                    <el-input v-model="listQuery.handleMan" class="input-width" style="width:203px" placeholder=""></el-input>
+                    <el-input v-model="listQuery.handleMan" placeholder="All" class="input-width" style="width:183px"></el-input>
+                </el-form-item>
+                <el-form-item label="退货用户：">
+                    <el-input v-model="listQuery.handleMan" class="input-width" style="width:183px" placeholder="All"></el-input>
                 </el-form-item>
                 <el-form-item label="处理时间：">
                     <el-date-picker
@@ -51,14 +52,24 @@
                     v-model="listQuery.handleTime" 
                     value-format="yyyy-MM-dd"
                     type="date"
-                    style="width:203px"
+                    style="width:183px"
                     placeholder="请选择时间">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="退货用户：">
-                    <el-input v-model="listQuery.handleMan" class="input-width" style="width:203px" placeholder=""></el-input>
-                </el-form-item>
                 </el-form>
+                <el-button
+                    style="float:right;margin-left: 10px; margin-left: 10px"
+                    @click="handleResetSearch()"
+                    size="small">
+                    重置
+                </el-button>
+                <el-button
+                    style="float:right;margin-left: 10px;margin-bottom:10px;"
+                    type="primary"
+                    @click="handleSearchList()"
+                    size="small">
+                    查询
+                </el-button>
             </div>
         </el-card>
         <div class="table-container">
@@ -70,37 +81,38 @@
                         @selection-change="handleSelectionChange"
                         v-loading="listLoading" border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column label="订单号" width="180" align="center">
+                <el-table-column label="订单编号" width="180" align="center">
                 <template slot-scope="scope">{{scope.row.id}}</template>
                 </el-table-column>
-                <el-table-column label="用户名称" width="130" align="center">
+                <el-table-column label="用户名称" align="center">
                 <template slot-scope="scope">{{scope.row.memberUsername}}</template>
                 </el-table-column>
                 <el-table-column label="申请时间" width="180" align="center">
                 <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
                 </el-table-column>
-                <el-table-column label="退款金额" width="180" align="center">
+                <el-table-column label="退货金额" width="100" align="center">
                 <template slot-scope="scope">￥{{scope.row.money | formatReturnAmount}}</template>
                 </el-table-column>
-                <el-table-column label="申请状态" width="180" align="center">
+                <el-table-column label="申请状态" width="140" align="center">
                 <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
                 </el-table-column>
-                <el-table-column label="处理人员" width="180" align="center">
-                <template slot-scope="scope">{{scope.row.handleman | formatTime}}</template>
-                </el-table-column>
-                <el-table-column label="处理时间" width="180" align="center">
-                    <template slot-scope="scope">{{scope.row.handleTime | formatTime}}</template>
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="操作" width="120" align="center">
                 <template slot-scope="scope">
-                    <el-button
-                    size="mini"
-                    @click="handleViewDetail(scope.$index, scope.row)">查看详情</el-button>
+                    <p style="margin-bottom:10px;">
+                        <el-button
+                        size="mini"
+                        @click="handleViewDetail(scope.$index, scope.row)"> Detail </el-button>
+                    </p>
+                    <p>
+                        <el-button
+                        size="mini"
+                        @click="handleReturn(scope.$index, scope.row)">Handle</el-button>
+                    </p>                
                 </template><!--需要退货详情页面-->
                 </el-table-column>
             </el-table>
         </div>
-        <div class="batch-operate-container">
+        <!-- <div class="batch-operate-container">
             <el-select
                 size="small"
                 v-model="operateType" placeholder="批量操作">
@@ -119,9 +131,9 @@
                 size="small">
                 确定
             </el-button>
-        </div>
+        </div> -->
 <!--分页 S-->
-        <div class="pagination-container">
+        <!-- <div class="pagination-container">
             <el-pagination
                 background
                 @size-change="handleSizeChange"
@@ -132,7 +144,7 @@
                 :page-sizes="[5,10,15]"
                 :total="total">
             </el-pagination>
-        </div>
+        </div> -->
 <!--分页 E-->
     </div>
 </template>
@@ -152,14 +164,20 @@ export default {
     data(){
         return{
             listQuery: Object.assign({}, defaultListQuery),
+            listLoading:false,
+            //这个需要接口实现
             statusOptions:[
                 {
+                    value:0,
+                    label:'申请退货',
+                },
+                {
                     value:1,
-                    label:'待处理',
+                    label:'退货失败',
                 },
                 {
                     value:2,
-                    label:'已处理',
+                    label:'完成退货',
                 }
             ],
             list:[
@@ -220,7 +238,12 @@ export default {
         
         //查看详情
         handleViewDetail(){
-            
+            this.$router.push({path:'/orders/return_detail'});
+        },
+
+        //处理退货
+        handleReturn(){
+            this.$router.push({path:'/orders/handle_return'});
         },
 
         handleSelectionChange(){},

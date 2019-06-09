@@ -30,8 +30,8 @@ export function fetchAttrList(params) {
   })
 }
 
-//--------------------------------根据商品分类id查询商品key值-----------------------------------------
-export function fetchKeyByCategoryID(id) {
+//------------------------根据商品分类id查询商品key值和value(商品添加页面也使用)-------------------------------------------------
+export function fetchAttrByCategoryId(id) {
   return request({
     url:'/pro/attribute/getProductAttributeKeyByCategoryID?id='+id,
     method:'get',

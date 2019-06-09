@@ -33,12 +33,12 @@
 
 <script>
 import PanelGroup from './components/panelGroup'
-import echart from './components/echart'
+// import echart from './components/echart'
 import calendar from './components/calendar'
 // import process from './components/process'
-import register from './components/register'
+// import register from './components/register'
 import onsale from './components/onsale'
-import userVechart from './components/userVechart'
+// import userVechart from './components/userVechart'
 
 const lineChartData = {
   newVisitis: {
@@ -62,11 +62,11 @@ export default {
   name: 'home',
   components: {
     PanelGroup,
-    echart,
+    // echart,
     calendar,
-    register,
+    // register,
     onsale,
-    userVechart
+    // userVechart
   },
   data() {
     return {

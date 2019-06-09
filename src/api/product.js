@@ -18,7 +18,6 @@ export function fetchList(params) {
   })
 }
 
-
 //--------------------------------根据商品id获取商品列表------------------------------------
 export function getProductInfo(id) {
   return request({
